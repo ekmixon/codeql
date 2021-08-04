@@ -122,63 +122,6 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;CookieGenerator;false;addCookie;;;Argument[-1];Argument[0];taint"
-			HttpServletResponse out = null;
-			CookieGenerator in = (CookieGenerator)source();
-			in.addCookie(out, null);
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;CookieGenerator;false;addCookie;;;Argument[1];Argument[0];taint"
-			HttpServletResponse out = null;
-			String in = (String)source();
-			CookieGenerator instance = null;
-			instance.addCookie(out, in);
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;CookieGenerator;false;getCookieDomain;;;Argument[-1];ReturnValue;taint"
-			String out = null;
-			CookieGenerator in = (CookieGenerator)source();
-			out = in.getCookieDomain();
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;CookieGenerator;false;getCookieName;;;Argument[-1];ReturnValue;taint"
-			String out = null;
-			CookieGenerator in = (CookieGenerator)source();
-			out = in.getCookieName();
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;CookieGenerator;false;getCookiePath;;;Argument[-1];ReturnValue;taint"
-			String out = null;
-			CookieGenerator in = (CookieGenerator)source();
-			out = in.getCookiePath();
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;CookieGenerator;false;setCookieDomain;;;Argument[0];Argument[-1];taint"
-			CookieGenerator out = null;
-			String in = (String)source();
-			out.setCookieDomain(in);
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;CookieGenerator;false;setCookieName;;;Argument[0];Argument[-1];taint"
-			CookieGenerator out = null;
-			String in = (String)source();
-			out.setCookieName(in);
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;CookieGenerator;false;setCookiePath;;;Argument[0];Argument[-1];taint"
-			CookieGenerator out = null;
-			String in = (String)source();
-			out.setCookiePath(in);
-			sink(out); // $hasTaintFlow
-		}
-		{
 			// "org.springframework.web.util;DefaultUriBuilderFactory;false;DefaultUriBuilderFactory;;;Argument[0];Argument[-1];taint"
 			DefaultUriBuilderFactory out = null;
 			UriComponentsBuilder in = (UriComponentsBuilder)source();
