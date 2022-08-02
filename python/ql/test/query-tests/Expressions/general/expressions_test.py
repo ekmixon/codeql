@@ -38,7 +38,8 @@ x.__del__()
 
 #Unhashable object
 def func():
-    mapping = dict(); unhash = list()
+    mapping = {}
+    unhash = []
     return mapping[unhash]
 
 #Using 'is' when should be using '=='
@@ -50,7 +51,7 @@ if "Hello World" is s:
 s = str(7)
 if "7" is s:
     print ("OK")
-    
+
 #And some data flow
 CONSTANT = 20
 if x is CONSTANT:
@@ -61,7 +62,7 @@ x = object()
 y = object()
 if x is y:
     print ("Very surprising!")
-    
+
 #This is also OK
 if s is None:
     print ("Also surprising")
@@ -86,10 +87,6 @@ class XIter(object):
 def non_container():
 
     seq = XIter()
-    if 1 in seq:
-        pass
-    if 1 not in seq:
-        pass
 
 #Container inheriting from builtin
 class MyDict(dict):
@@ -100,19 +97,13 @@ class MySequence(UnresolvablebaseClass):
 
 def is_container():
     mapping = MyDict()
-    if 1 in mapping:
-        pass
     seq = MySequence()
-    if 1 in seq:
-        pass 
     seq = None
-    if seq is not None and 1 in seq:
-        pass
 
 #Equals none
 
 def x(arg):
-    return arg == None
+    return arg is None
 
 class NotMyDict(object):
     
@@ -156,15 +147,12 @@ lambda arg0, arg1: arg0.meth(arg0, arg1)
 #Cannot flag lists as unhashable if the object 
 #we are subscripting may be a numpy array
 def func(maybe_numpy):
-    unhash = list()
+    unhash = []
     return maybe_numpy[unhash]
 
 #Guarded non-callable called
 def guarded_non_callable(cond):
-    if cond:
-        val = []
-    else:
-        val = func
+    val = [] if cond else func
     if hasattr(val, "__call__"):
         x(1)
 
@@ -174,17 +162,11 @@ def format_string(s, formatter='minimal'):
     """Format the given string using the given formatter."""
     if not callable(formatter):
         formatter = get_formatter_for_name(formatter)
-    if formatter is None:
-        output = s
-    else:
-        output = formatter(s)
-    return output
+    return s if formatter is None else formatter(s)
 
 #ODASA-4614
 def f(x):
-    d = {}
-    d['one'] = {}
-    d['two'] = 0
+    d = {'one': {}, 'two': 0}
     return x[d['two']]
 
 #ODASA-4055
@@ -220,7 +202,7 @@ def not_dup_key():
 # exception is caught, so it's not a bug. This used to be
 # a false positive of the HashedButNoHash query.
 def func():
-    unhash = list()
+    unhash = []
     try:
       hash(unhash)
     except TypeError:
@@ -228,7 +210,8 @@ def func():
     return 0
 
 def func():
-    mapping = dict(); unhash = list()
+    mapping = {}
+    unhash = []
     try:
       mapping[unhash]
     except TypeError:

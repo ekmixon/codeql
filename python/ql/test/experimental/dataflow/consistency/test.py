@@ -31,18 +31,16 @@ def test5():
 def test6(cond):
     if cond:
         t = "Safe"
+        SINK(t)
     else:
         t = SOURCE
-    if cond:
-        SINK(t)
 
 def test7(cond):
     if cond:
         t = SOURCE
+        SINK(t)
     else:
         t = "Safe"
-    if cond:
-        SINK(t)
 
 def source2(arg):
     return source(arg)
@@ -60,17 +58,11 @@ def test8(cond):
 
 #False positive
 def test9(cond):
-    if cond:
-        t  = "Safe"
-    else:
-        t = SOURCE
+    t = "Safe" if cond else SOURCE
     sink3(cond, t)
 
 def test10(cond):
-    if cond:
-        t = SOURCE
-    else:
-        t = "Safe"
+    t = SOURCE if cond else "Safe"
     sink3(cond, t)
 
 def hub(arg):
@@ -128,28 +120,20 @@ def test19():
 def test20(cond):
     if cond:
         t = CUSTOM_SOURCE
-    else:
-        t = SOURCE
-    if cond:
         CUSTOM_SINK(t)
     else:
+        t = SOURCE
         SINK(t)
 
 def test21(cond):
-    if cond:
-        t = CUSTOM_SOURCE
-    else:
-        t = SOURCE
+    t = CUSTOM_SOURCE if cond else SOURCE
     if not cond:
         CUSTOM_SINK(t)
     else:
         SINK(t)
 
 def test22(cond):
-    if cond:
-        t = CUSTOM_SOURCE
-    else:
-        t = SOURCE
+    t = CUSTOM_SOURCE if cond else SOURCE
     t = TAINT_FROM_ARG(t)
     if cond:
         CUSTOM_SINK(t)
@@ -180,27 +164,18 @@ def test_update_extend(x, y):
 
 def test_truth():
     t = SOURCE
-    if t:
-        SINK(t)
-    else:
-        SINK(t)
-    if not t:
-        SINK(t)
-    else:
-        SINK(t)
+    SINK(t)
+    SINK(t)
 
 def test_early_exit():
-    t = FALSEY
-    if not t:
+    if t := FALSEY:
+        t
+    else:
         return
-    t
 
 def flow_through_type_test_if_no_class():
     t = SOURCE
-    if isinstance(t, str):
-        SINK(t)
-    else:
-        SINK(t)
+    SINK(t)
 
 def flow_in_iteration():
     t = ITERABLE_SOURCE
@@ -209,9 +184,7 @@ def flow_in_iteration():
     return i
 
 def flow_in_generator():
-    seq = [SOURCE]
-    for i in seq:
-        yield i
+    yield from [SOURCE]
 
 def flow_from_generator():
     for x in flow_in_generator():
@@ -251,8 +224,4 @@ def synth_arg_kwUnpacked():
     overflowCallee(**{"p": "42"})
 
 def split_lambda(cond):
-    if cond:
-        pass
     foo = lambda x: False
-    if cond:
-        pass

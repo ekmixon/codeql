@@ -26,7 +26,7 @@ encrypted = encryptor.update(secret_message) # $ CryptographicOperation Cryptogr
 encrypted += encryptor.update(padding) # $ CryptographicOperation CryptographicOperationAlgorithm=AES CryptographicOperationInput=padding
 encrypted += encryptor.finalize()
 
-print("encrypted={}".format(encrypted))
+print(f"encrypted={encrypted}")
 
 print()
 
@@ -36,5 +36,5 @@ decrypted += decryptor.finalize()
 
 decrypted = decrypted[:-padding_len]
 
-print("decrypted={}".format(decrypted))
+print(f"decrypted={decrypted}")
 assert decrypted == secret_message

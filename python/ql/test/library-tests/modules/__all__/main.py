@@ -82,7 +82,7 @@ import all_indirect
 import all_set
 
 for mod in [no_all, all_list, all_tuple, all_dynamic, all_indirect, all_set]:
-    print("{}.py".format(mod.__name__))
+    print(f"{mod.__name__}.py")
     print("  foo={!r}".format(mod.foo))
     print("  bar={!r}".format(mod.bar))
     print("  baz={!r}".format(mod.baz))

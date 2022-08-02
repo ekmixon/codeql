@@ -1,27 +1,16 @@
 
 def f(d = {}):
 
-    if isinstance(d, dict):
-        use(d)
-    else:
-        use(d)
+    use(d)
 
 def g(cond):
 
     x = 0 if cond else 1.0
 
-    if isinstance(x, int):
-        use(x)
-    elif isinstance(x, float):
-        use(x)
-    else:
-        use(x)
+    use(x)
 
 def h(arg=int):
-    if issubclass(arg, int):
-        use(arg)
-    else:
-        use(arg)
+    use(arg)
 
 class D(object):
     pass
@@ -31,40 +20,25 @@ class E(D):
 
 def j(arg=E()):
 
-    if isinstance(arg, E):
-        use(arg)
-    else:
-        use(arg)
+    use(arg)
 
 def k(arg=E()):
 
-    if isinstance(arg, D):
-        use(arg)
-    else:
-        use(arg)
+    use(arg)
 
 
 def l(arg=E):
-    if issubclass(arg, E):
-        use(arg)
-    else:
-        use(arg)
+    use(arg)
 
 def m(arg=E):
-    if issubclass(arg, D):
-        use(arg)
-    else:
-        use(arg)
+    use(arg)
 
 number = int, float
 
 def n(cond):
     x = 0 if cond else 1.0
 
-    if not isinstance(x, number):
-        use(x)
-    else:
-        use(x)
+    use(x)
 
 import sys
 if sys.version < "3":

@@ -32,8 +32,7 @@ class C(base):
     class_local = 7
 
     def meth(self):
-        mlocal = self
-        return mlocal
+        return self
 
 def func4(param6):
     class Local:
@@ -42,13 +41,13 @@ def func4(param6):
     return Local()
 
 def func5(seq):
-    return [x for x in seq]
+    return list(seq)
 
 def func6(y, z):
     return [y+z for y in seq]
 
 #FP observed in sembuild
 def use_in_loop(seq):
-    [v for v in range(3)]
+    list(range(3))
     for v in seq:
         v #x redefined -- fine in 2 and 3.

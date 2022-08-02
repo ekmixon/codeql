@@ -34,8 +34,10 @@ def ok():
     print(u"%()s" % { u'' : u'Hi' })
 
 #ODASA 6401
-out = '<Transform rotation="0 1 0 %s">\n'
-out+= '    <Transform rotation="1 0 0 %s">\n'
+out = (
+    '<Transform rotation="0 1 0 %s">\n'
+    + '    <Transform rotation="1 0 0 %s">\n'
+)
 
 light = out % (az, al)
 

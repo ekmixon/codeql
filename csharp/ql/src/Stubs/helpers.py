@@ -11,9 +11,7 @@ def run_cmd(cmd, msg="Failed to run command"):
 
 
 def get_argv(index, default):
-    if len(sys.argv) > index:
-        return sys.argv[index]
-    return default
+    return sys.argv[index] if len(sys.argv) > index else default
 
 
 def trim_output_file(file):
@@ -32,9 +30,8 @@ def trim_output_file(file):
         finally:
             f.close()
 
-    f = open(file, "wb")
-    f.write(contents)
-    f.close()
+    with open(file, "wb") as f:
+        f.write(contents)
 
 
 # remove all files with extension

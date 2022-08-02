@@ -11,12 +11,9 @@ def ignore_line_ending(ch):
 def compare_files(file1, file2):
     diff = difflib.ndiff(open(file1).readlines(),
                          open(file2).readlines(), None, ignore_line_ending)
-    ret = ""
-    for line in diff:
-        if line.startswith("+") or line.startswith("-"):
-            ret += line
-
-    return ret
+    return "".join(
+        line for line in diff if line.startswith("+") or line.startswith("-")
+    )
 
 
 def compare_folders(folder1, folder2, output_file):
@@ -58,10 +55,10 @@ def compare_folders(folder1, folder2, output_file):
         if cmp1 != "" or cmp2 != "":
             print("Generated file contents are not matching", file=sys.stderr)
             return_md += f"\n### {lang}\n\n#### Generated file changes for {lang}\n\n"
-            if cmp1 != "":
-                return_md += f"- Changes to {generated_output_rst}:\n```diff\n{cmp1}```\n\n"
-            if cmp2 != "":
-                return_md += f"- Changes to {generated_output_csv}:\n```diff\n{cmp2}```\n\n"
+        if cmp1 != "":
+            return_md += f"- Changes to {generated_output_rst}:\n```diff\n{cmp1}```\n\n"
+        if cmp2 != "":
+            return_md += f"- Changes to {generated_output_csv}:\n```diff\n{cmp2}```\n\n"
 
     with open(output_file, 'w', newline='') as out:
         out.write(return_md)

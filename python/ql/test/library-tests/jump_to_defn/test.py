@@ -15,7 +15,6 @@ def no_phi_defn(seq, cond):
     x = seq[0]
     if cond:
         x = seq[1]
-    pass
     x
 
 class D(object):

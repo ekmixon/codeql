@@ -10,14 +10,14 @@ app = Flask(__name__)
 def command_injection1():
     files = request.args.get('files', '')
     # Don't let files be `; rm -rf /`
-    os.system("ls " + files)
+    os.system(f"ls {files}")
 
 
 @app.route("/command2")
 def command_injection2():
     files = request.args.get('files', '')
     # Don't let files be `; rm -rf /`
-    subprocess.Popen("ls " + files, shell=True)
+    subprocess.Popen(f"ls {files}", shell=True)
 
 
 @app.route("/command3")
@@ -30,7 +30,7 @@ def first_arg_injection():
 def others():
     files = request.args.get('files', '')
     # Don't let files be `; rm -rf /`
-    os.popen("ls " + files)
+    os.popen(f"ls {files}")
 
 
 @app.route("/multiple")
@@ -70,11 +70,11 @@ def path_exists_not_sanitizer():
     """
     path = request.args.get('path', '')
     if os.path.exists(path):
-        os.system("ls " + path) # NOT OK
+        os.system(f"ls {path}")
 
 
 @app.route("/restricted-characters")
 def restricted_characters():
     path = request.args.get('path', '')
     if re.match(r'^[a-zA-Z0-9_-]+$', path):
-        os.system("ls " + path) # OK (TODO: Currently FP)
+        os.system(f"ls {path}")

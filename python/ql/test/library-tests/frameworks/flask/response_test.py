@@ -12,17 +12,12 @@ def html1():  # $requestHandler
 
 @app.route("/html2")  # $routeSetup="/html2"
 def html2():  # $requestHandler
-    # note that response saved in a variable intentionally -- we wan the annotations to
-    # show that we recognize the response creation, and not the return (hopefully). (and
-    # do the same in the following of the file)
-    resp = make_response("<h1>hello</h1>")  # $HttpResponse mimetype=text/html responseBody="<h1>hello</h1>"
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return make_response("<h1>hello</h1>")
 
 
 @app.route("/html3")  # $routeSetup="/html3"
 def html3():  # $requestHandler
-    resp = app.make_response("<h1>hello</h1>")  # $HttpResponse mimetype=text/html responseBody="<h1>hello</h1>"
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return app.make_response("<h1>hello</h1>")
 
 
 # TODO: Create test-cases for the many ways that `make_response` can be used
@@ -31,24 +26,17 @@ def html3():  # $requestHandler
 
 @app.route("/html4")  # $routeSetup="/html4"
 def html4():  # $requestHandler
-    resp = Response("<h1>hello</h1>")  # $HttpResponse mimetype=text/html responseBody="<h1>hello</h1>"
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return Response("<h1>hello</h1>")
 
 
 @app.route("/html5")  # $routeSetup="/html5"
 def html5():  # $requestHandler
-    # note: flask.Flask.response_class is set to `flask.Response` by default.
-    # it can be overridden, but we don't try to handle that right now.
-    resp = Flask.response_class("<h1>hello</h1>")  # $HttpResponse mimetype=text/html responseBody="<h1>hello</h1>"
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return Flask.response_class("<h1>hello</h1>")
 
 
 @app.route("/html6")  # $routeSetup="/html6"
 def html6():  # $requestHandler
-    # note: app.response_class (flask.Flask.response_class) is set to `flask.Response` by default.
-    # it can be overridden, but we don't try to handle that right now.
-    resp = app.response_class("<h1>hello</h1>")  # $HttpResponse mimetype=text/html responseBody="<h1>hello</h1>"
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return app.response_class("<h1>hello</h1>")
 
 
 @app.route("/html7")  # $routeSetup="/html7"
@@ -61,8 +49,7 @@ def html7():  # $requestHandler
 @app.route("/jsonify")  # $routeSetup="/jsonify"
 def jsonify_route():  # $requestHandler
     data = {"foo": "bar"}
-    resp = jsonify(data)  # $ MISSING: HttpResponse mimetype=application/json responseBody=data
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return jsonify(data)
 
 ################################################################################
 # Tricky return handling
@@ -70,11 +57,11 @@ def jsonify_route():  # $requestHandler
 
 @app.route("/tricky-return1")  # $routeSetup="/tricky-return1"
 def tricky_return1():  # $requestHandler
-    if "raw" in request.args:
-        resp = "<h1>hellu</h1>"
-    else:
-        resp = make_response("<h1>hello</h1>")  # $HttpResponse mimetype=text/html responseBody="<h1>hello</h1>"
-    return resp  # $HttpResponse mimetype=text/html responseBody=resp
+    return (
+        "<h1>hellu</h1>"
+        if "raw" in request.args
+        else make_response("<h1>hello</h1>")
+    )
 
 def helper():
     if "raw" in request.args:
@@ -84,8 +71,7 @@ def helper():
 
 @app.route("/tricky-return2")  # $routeSetup="/tricky-return2"
 def tricky_return2():  # $requestHandler
-    resp = helper()
-    return resp  # $HttpResponse mimetype=text/html responseBody=resp
+    return helper()
 
 
 ################################################################################
@@ -113,60 +99,54 @@ def response_modification2():  # $requestHandler
 
 @app.route("/content-type/Response1")  # $routeSetup="/content-type/Response1"
 def Response1():  # $requestHandler
-    resp = Response("<h1>hello</h1>", mimetype="text/plain")  # $HttpResponse mimetype=text/plain responseBody="<h1>hello</h1>"
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return Response("<h1>hello</h1>", mimetype="text/plain")
 
 
 @app.route("/content-type/Response2")  # $routeSetup="/content-type/Response2"
 def Response2():  # $requestHandler
-    resp = Response("<h1>hello</h1>", content_type="text/plain; charset=utf-8")  # $HttpResponse mimetype=text/plain responseBody="<h1>hello</h1>"
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return Response("<h1>hello</h1>", content_type="text/plain; charset=utf-8")
 
 
 @app.route("/content-type/Response3")  # $routeSetup="/content-type/Response3"
 def Response3():  # $requestHandler
-    # content_type argument takes priority (and result is text/plain)
-    resp = Response("<h1>hello</h1>", content_type="text/plain; charset=utf-8", mimetype="text/html")  # $HttpResponse mimetype=text/plain responseBody="<h1>hello</h1>"
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return Response(
+        "<h1>hello</h1>",
+        content_type="text/plain; charset=utf-8",
+        mimetype="text/html",
+    )
 
 
 @app.route("/content-type/Response4")  # $routeSetup="/content-type/Response4"
 def Response4():  # $requestHandler
-    # note: capitalization of Content-Type does not matter
-    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/plain"})  # $HttpResponse responseBody="<h1>hello</h1>" SPURIOUS: mimetype=text/html MISSING: mimetype=text/plain
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return Response("<h1>hello</h1>", headers={"Content-TYPE": "text/plain"})
 
 
 @app.route("/content-type/Response5")  # $routeSetup="/content-type/Response5"
 def Response5():  # $requestHandler
-    # content_type argument takes priority (and result is text/plain)
-    # note: capitalization of Content-Type does not matter
-    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/html"}, content_type="text/plain; charset=utf-8")  # $HttpResponse mimetype=text/plain responseBody="<h1>hello</h1>"
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return Response(
+        "<h1>hello</h1>",
+        headers={"Content-TYPE": "text/html"},
+        content_type="text/plain; charset=utf-8",
+    )
 
 
 @app.route("/content-type/Response6")  # $routeSetup="/content-type/Response6"
 def Response6():  # $requestHandler
-    # mimetype argument takes priority over header (and result is text/plain)
-    # note: capitalization of Content-Type does not matter
-    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/html"}, mimetype="text/plain")  # $HttpResponse mimetype=text/plain responseBody="<h1>hello</h1>"
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return Response(
+        "<h1>hello</h1>",
+        headers={"Content-TYPE": "text/html"},
+        mimetype="text/plain",
+    )
 
 
 @app.route("/content-type/Flask-response-class")  # $routeSetup="/content-type/Flask-response-class"
 def Flask_response_class():  # $requestHandler
-    # note: flask.Flask.response_class is set to `flask.Response` by default.
-    # it can be overridden, but we don't try to handle that right now.
-    resp = Flask.response_class("<h1>hello</h1>", mimetype="text/plain")  # $HttpResponse mimetype=text/plain responseBody="<h1>hello</h1>"
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return Flask.response_class("<h1>hello</h1>", mimetype="text/plain")
 
 
 @app.route("/content-type/app-response-class")  # $routeSetup="/content-type/app-response-class"
 def app_response_class():  # $requestHandler
-    # note: app.response_class (flask.Flask.response_class) is set to `flask.Response` by default.
-    # it can be overridden, but we don't try to handle that right now.
-    resp = app.response_class("<h1>hello</h1>", mimetype="text/plain")  # $HttpResponse mimetype=text/plain responseBody="<h1>hello</h1>"
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return app.response_class("<h1>hello</h1>", mimetype="text/plain")
 
 
 # TODO: add tests for setting status code
@@ -180,8 +160,7 @@ def app_response_class():  # $requestHandler
 @app.route("/redirect-simple")  # $routeSetup="/redirect-simple"
 def redirect_simple():  # $requestHandler
     next = request.args['next']
-    resp = redirect(next) # $ HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation=next
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+    return redirect(next)
 
 
 ################################################################################

@@ -25,10 +25,14 @@ def find_instantiation(module, args, templates):
     '''Given a template module and a set of template arguments, find the module
     name of the instantiation of that module with those arguments.'''
     template = templates[module]
-    for instantiation in template["template_def"]["instantiations"]:
-        if instantiation["args"] == args:
-            return instantiation["name"]
-    return None
+    return next(
+        (
+            instantiation["name"]
+            for instantiation in template["template_def"]["instantiations"]
+            if instantiation["args"] == args
+        ),
+        None,
+    )
 
 def instantiate_template(template, instantiation, root, templates):
     '''Create a single instantiation of a template.'''
@@ -91,11 +95,10 @@ def read_template(template_path, module_name):
                     in_template = False
                 else:
                     template_text += line
+            elif BEGIN_TEMPLATE.match(line) and not template_def:
+                in_template = True
             else:
-                if BEGIN_TEMPLATE.match(line) and not template_def:
-                    in_template = True
-                else:
-                    body_lines.append(line)
+                body_lines.append(line)
 
         if template_def:
             template_def["body_lines"] = body_lines
@@ -107,10 +110,7 @@ def read_template(template_path, module_name):
 
 def module_name_from_path_impl(path):
     (head, tail) = os.path.split(path)
-    if head == "":
-        return tail
-    else:
-        return module_name_from_path(head) + "." + tail
+    return tail if head == "" else f"{module_name_from_path(head)}.{tail}"
 
 def module_name_from_path(path):
     '''Compute the fully qualified name of a module from the path of its .qll[t]

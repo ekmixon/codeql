@@ -2,10 +2,7 @@
 def bar(a, b=None):
     a
     b
-    if b:
-        return b
-    else:
-        return a
+    return b or a
 
 def foo():
     bar

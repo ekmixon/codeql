@@ -19,7 +19,7 @@ signature = private_key.sign(
     algorithm=HASH_ALGORITHM,
 )
 
-print("signature={}".format(signature))
+print(f"signature={signature}")
 
 print()
 

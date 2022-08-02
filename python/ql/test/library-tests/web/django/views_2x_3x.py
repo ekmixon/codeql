@@ -5,7 +5,7 @@ from django.views import View
 
 
 def url_match_xss(request, foo, bar, no_taint=None):
-    return HttpResponse('url_match_xss: {} {}'.format(foo, bar))
+    return HttpResponse(f'url_match_xss: {foo} {bar}')
 
 
 def get_params_xss(request):
@@ -27,22 +27,22 @@ class Foo(object):
 
 
     def post(self, request, untrusted):
-        return HttpResponse('Foo post: {}'.format(untrusted))
+        return HttpResponse(f'Foo post: {untrusted}')
 
 
 class ClassView(View, Foo):
 
     def get(self, request, untrusted):
-        return HttpResponse('ClassView get: {}'.format(untrusted))
+        return HttpResponse(f'ClassView get: {untrusted}')
 
 
 def show_articles(request, page_number=1):
     page_number = int(page_number)
-    return HttpResponse('articles page: {}'.format(page_number))
+    return HttpResponse(f'articles page: {page_number}')
 
 
 def xxs_positional_arg(request, arg0, arg1, no_taint=None):
-    return HttpResponse('xxs_positional_arg: {} {}'.format(arg0, arg1))
+    return HttpResponse(f'xxs_positional_arg: {arg0} {arg1}')
 
 
 urlpatterns = [
@@ -76,10 +76,10 @@ urlpatterns = [
 
 # saying page_number is an externally controlled *string* is a bit strange, when we have an int converter :O
 def page_number(request, page_number=1):
-    return HttpResponse('page_number: {}'.format(page_number))
+    return HttpResponse(f'page_number: {page_number}')
 
 def foo_bar_baz(request, foo, bar, baz):
-    return HttpResponse('foo_bar_baz: {} {} {}'.format(foo, bar, baz))
+    return HttpResponse(f'foo_bar_baz: {foo} {bar} {baz}')
 
 def path_kwargs(request, foo, bar):
     return HttpResponse('path_kwargs: {} {} {}'.format(foo, bar))

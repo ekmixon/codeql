@@ -59,9 +59,12 @@ for f in g:
     print(f())
 
 #But not if evaluated eagerly
-l = list(lambda: i for i in range(1, 4))
+l = [lambda: i for i in range(1, 4)]
 for f in l:
     print(f())
 
 def odasa4860(asset_ids):
-    return dict((asset_id, filter(lambda c : c.asset_id == asset_id, xxx)) for asset_id in asset_ids)
+    return {
+        asset_id: filter(lambda c: c.asset_id == asset_id, xxx)
+        for asset_id in asset_ids
+    }

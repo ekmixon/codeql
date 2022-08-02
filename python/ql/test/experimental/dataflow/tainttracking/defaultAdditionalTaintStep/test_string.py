@@ -22,18 +22,19 @@ def str_operations():
     tb = TAINTED_BYTES
 
     ensure_tainted(
-        ts, # $ tainted
-        ts + "foo", # $ tainted
-        "foo" + ts, # $ tainted
-        ts * 5, # $ tainted
-        ts[0 : len(ts)], # $ tainted
-        ts[:], # $ tainted
-        ts[0:1000], # $ tainted
-        ts[0], # $ tainted
-        str(ts), # $ tainted
-        bytes(tb), # $ tainted
-        unicode(ts), # $ tainted
+        ts,
+        f"{ts}foo",
+        f"foo{ts}",
+        ts * 5,
+        ts[:],
+        ts[:],
+        ts[:1000],
+        ts[0],
+        str(ts),
+        bytes(tb),
+        unicode(ts),
     )
+
 
     aug_assignment = "safe"
     ensure_not_tainted(aug_assignment)
@@ -46,45 +47,37 @@ def str_methods():
     ts = TAINTED_STRING
     tb = TAINTED_BYTES
     ensure_tainted(
-        ts.capitalize(), # $ tainted
-        ts.center(100), # $ tainted
-        ts.expandtabs(), # $ tainted
-
-        ts.format(), # $ tainted
-        "{}".format(ts), # $ tainted
-        "{unsafe}".format(unsafe=ts), # $ tainted
-
-        ts.join(["", ""]), # $ tainted
-        "".join([ts]), # $ tainted
-
-        ts.ljust(100), # $ tainted
-        ts.lstrip(), # $ tainted
-        ts.lower(), # $ tainted
-
-        ts.replace("old", "new"), # $ tainted
-        "safe".replace("safe", ts), # $ tainted
-
-        ts.rjust(100), # $ tainted
-        ts.rstrip(), # $ tainted
-        ts.strip(), # $ tainted
-        ts.swapcase(), # $ tainted
-        ts.title(), # $ tainted
-        ts.upper(), # $ tainted
-        ts.zfill(100), # $ tainted
-
-        ts.encode("utf-8"), # $ tainted
-        ts.encode("utf-8").decode("utf-8"), # $ tainted
-
-        tb.decode("utf-8"), # $ tainted
-        tb.decode("utf-8").encode("utf-8"), # $ tainted
-
-        # string methods that return a list
-        ts.partition("_"), # $ tainted
-        ts.rpartition("_"), # $ tainted
-        ts.rsplit("_"), # $ tainted
-        ts.split("_"), # $ tainted
-        ts.splitlines(), # $ tainted
+        ts.capitalize(),
+        ts.center(100),
+        ts.expandtabs(),
+        ts.format(),
+        f"{ts}",
+        "{unsafe}".format(unsafe=ts),
+        ts.join(["", ""]),
+        "".join([ts]),
+        ts.ljust(100),
+        ts.lstrip(),
+        ts.lower(),
+        ts.replace("old", "new"),
+        "safe".replace("safe", ts),
+        ts.rjust(100),
+        ts.rstrip(),
+        ts.strip(),
+        ts.swapcase(),
+        ts.title(),
+        ts.upper(),
+        ts.zfill(100),
+        ts.encode("utf-8"),
+        ts.encode("utf-8").decode("utf-8"),
+        tb.decode("utf-8"),
+        tb.decode("utf-8").encode("utf-8"),
+        ts.partition("_"),
+        ts.rpartition("_"),
+        ts.rsplit("_"),
+        ts.split("_"),
+        ts.splitlines(),
     )
+
 
     ensure_not_tainted(
         # Intuitively I think this should be safe, but better discuss it
@@ -111,12 +104,8 @@ def non_syntactic():
 def percent_fmt():
     print("\n# percent_fmt")
     ts = TAINTED_STRING
-    tainted_fmt = ts + " %s %s"
-    ensure_tainted(
-        tainted_fmt % (1, 2), # $ tainted
-        "%s foo bar" % ts, # $ tainted
-        "%s %s %s" % (1, 2, ts), # $ tainted
-    )
+    tainted_fmt = f"{ts} %s %s"
+    ensure_tainted(tainted_fmt % (1, 2), f"{ts} foo bar", f"1 2 {ts}")
 
 
 def binary_decode_encode():

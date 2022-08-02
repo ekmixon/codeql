@@ -72,7 +72,7 @@ for entry in tar:
 # Not reported, although vulnerable to '..'
 tar = tarfile.open(unsafe_filename_tar)
 for entry in tar:
-    if not (os.path.isabs(entry.name) or False):
+    if not os.path.isabs(entry.name):
         tar.extract(entry, "/tmp/unpack/")
 
 # Not reported, although vulnerable to '..'

@@ -5,8 +5,7 @@ def my_print(*args):
     print (args)
 
 def main():
-    err = my_print(sys.argv)
-    if err:
+    if err := my_print(sys.argv):
         sys.exit(err)
 
 

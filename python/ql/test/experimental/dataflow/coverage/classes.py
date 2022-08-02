@@ -148,7 +148,7 @@ class With_lt:
 def test_lt():
     with_lt = With_lt()  #$ MISSING: arg1="SSA variable with_lt" func=With_lt.__lt__
     arg2 = with_lt  #$ MISSING: arg2 func=With_lt.__lt__
-    with_lt < arg2
+    arg2 < arg2
 
 
 # object.__le__(self, other)
@@ -163,7 +163,7 @@ class With_le:
 def test_le():
     with_le = With_le()  #$ MISSING: arg1="SSA variable with_le" func=With_le.__le__
     arg2 = with_le  #$ MISSING: arg2 func=With_le.__le__
-    with_le <= arg2
+    arg2 <= arg2
 
 
 # object.__eq__(self, other)
@@ -206,7 +206,7 @@ class With_gt:
 def test_gt():
     with_gt = With_gt()  #$ MISSING: arg1="SSA variable with_gt" func=With_gt.__gt__
     arg2 = with_gt  #$ MISSING: arg2 func=With_gt.__gt__
-    with_gt > arg2
+    arg2 > arg2
 
 
 # object.__ge__(self, other)
@@ -221,7 +221,7 @@ class With_ge:
 def test_ge():
     with_ge = With_ge()  #$ MISSING: arg1="SSA variable with_ge" func=With_ge.__ge__
     arg2 = with_ge  #$ MISSING: arg2 func=With_ge.__ge__
-    with_ge >= arg2
+    arg2 >= arg2
 
 
 # object.__hash__(self)
@@ -239,7 +239,7 @@ def test_hash():
 
 def test_hash_set():
     with_hash = With_hash()  #$ MISSING: arg1="SSA variable with_hash" func=With_hash.__hash__
-    len(set([with_hash]))
+    len({with_hash})
 
 
 def test_hash_frozenset():
@@ -267,8 +267,6 @@ def test_bool():
 
 def test_bool_if():
     with_bool = With_bool()  #$ MISSING: arg1="SSA variable with_bool" func=With_bool.__bool__
-    if with_bool:
-        pass
 
 
 # 3.3.2. Customizing attribute access
@@ -438,10 +436,10 @@ def test_init_subclass():
 # 3.3.3.4. Preparing the class namespace
 # metaclass.__prepare__(name, bases, **kwds)
 class With_prepare(type):
-    def __prepare__(name, bases, **kwds):
+    def __prepare__(self, bases, **kwds):
         SINK3(kwds)  # Flow not tested
         SINK2(bases)  # Flow not tested
-        SINK1(name)  #$ MISSING: arg1="arg1, l:+6 -> name"
+        SINK1(self)
         OK()  # Call not found
         return kwds
 
@@ -531,8 +529,6 @@ def test_len_bool():
 
 def test_len_if():
     with_len = With_len()  #$ MISSING: arg1="SSA variable with_len" func=With_len.__len__
-    if with_len:
-        pass
 
 
 # object.__length_hint__(self)
@@ -620,7 +616,7 @@ class With_iter:
 
 def test_iter():
     with_iter = With_iter()  #$ MISSING: arg1="SSA variable with_iter" func=With_iter.__iter__
-    [x for x in with_iter]
+    list(with_iter)
 
 
 # object.__reversed__(self)
@@ -664,7 +660,7 @@ class With_add:
 def test_add():
     with_add = With_add()  #$ arg1="SSA variable with_add" func=With_add.__add__
     arg2 = with_add
-    with_add + arg2  #$ arg2 func=With_add.__add__
+    arg2 + arg2
 
 
 # object.__sub__(self, other)
@@ -679,7 +675,7 @@ class With_sub:
 def test_sub():
     with_sub = With_sub()  #$ arg1="SSA variable with_sub" func=With_sub.__sub__
     arg2 = with_sub
-    with_sub - arg2  #$ arg2 func=With_sub.__sub__
+    arg2 - arg2
 
 
 # object.__mul__(self, other)
@@ -694,7 +690,7 @@ class With_mul:
 def test_mul():
     with_mul = With_mul()  #$ arg1="SSA variable with_mul" func=With_mul.__mul__
     arg2 = with_mul
-    with_mul * arg2  #$ arg2 func=With_mul.__mul__
+    arg2 * arg2
 
 
 # object.__matmul__(self, other)
@@ -709,7 +705,7 @@ class With_matmul:
 def test_matmul():
     with_matmul = With_matmul()  #$ arg1="SSA variable with_matmul" func=With_matmul.__matmul__
     arg2 = with_matmul
-    with_matmul @ arg2  #$ arg2 func=With_matmul.__matmul__
+    arg2 @ arg2
 
 
 # object.__truediv__(self, other)
@@ -724,7 +720,7 @@ class With_truediv:
 def test_truediv():
     with_truediv = With_truediv()  #$ arg1="SSA variable with_truediv" func=With_truediv.__truediv__
     arg2 = with_truediv
-    with_truediv / arg2  #$ arg2 func=With_truediv.__truediv__
+    arg2 / arg2
 
 
 # object.__floordiv__(self, other)
@@ -739,7 +735,7 @@ class With_floordiv:
 def test_floordiv():
     with_floordiv = With_floordiv()  #$ arg1="SSA variable with_floordiv" func=With_floordiv.__floordiv__
     arg2 = with_floordiv
-    with_floordiv // arg2  #$ arg2 func=With_floordiv.__floordiv__
+    arg2 // arg2
 
 
 # object.__mod__(self, other)
@@ -754,7 +750,7 @@ class With_mod:
 def test_mod():
     with_mod = With_mod()  #$ arg1="SSA variable with_mod" func=With_mod.__mod__
     arg2 = with_mod
-    with_mod % arg2  #$ arg2 func=With_mod.__mod__
+    arg2 % arg2
 
 
 # object.__divmod__(self, other)
@@ -784,13 +780,13 @@ class With_pow:
 def test_pow():
     with_pow = With_pow()  #$ MISSING: arg1="SSA variable with_pow" func=With_pow.__pow__
     arg2 = with_pow
-    pow(with_pow, arg2)  #$ MISSING: arg2 func=With_pow.__pow__
+    pow(arg2, arg2)
 
 
 def test_pow_op():
     with_pow = With_pow()  #$ arg1="SSA variable with_pow" func=With_pow.__pow__
     arg2 = with_pow
-    with_pow ** arg2  #$ arg2 func=With_pow.__pow__
+    arg2**arg2
 
 
 # object.__lshift__(self, other)
@@ -805,7 +801,7 @@ class With_lshift:
 def test_lshift():
     with_lshift = With_lshift()  #$ arg1="SSA variable with_lshift" func=With_lshift.__lshift__
     arg2 = with_lshift
-    with_lshift << arg2  #$ arg2 func=With_lshift.__lshift__
+    arg2 << arg2
 
 
 # object.__rshift__(self, other)
@@ -820,7 +816,7 @@ class With_rshift:
 def test_rshift():
     with_rshift = With_rshift()  #$ arg1="SSA variable with_rshift" func=With_rshift.__rshift__
     arg2 = with_rshift
-    with_rshift >> arg2  #$ arg2 func=With_rshift.__rshift__
+    arg2 >> arg2
 
 
 # object.__and__(self, other)
@@ -835,7 +831,7 @@ class With_and:
 def test_and():
     with_and = With_and()  #$ arg1="SSA variable with_and" func=With_and.__and__
     arg2 = with_and
-    with_and & arg2  #$ arg2 func=With_and.__and__
+    arg2 & arg2
 
 
 # object.__xor__(self, other)
@@ -850,7 +846,7 @@ class With_xor:
 def test_xor():
     with_xor = With_xor()  #$ arg1="SSA variable with_xor" func=With_xor.__xor__
     arg2 = with_xor
-    with_xor ^ arg2  #$ arg2 func=With_xor.__xor__
+    arg2 ^ arg2
 
 
 # object.__or__(self, other)
@@ -865,7 +861,7 @@ class With_or:
 def test_or():
     with_or = With_or()  #$ arg1="SSA variable with_or" func=With_or.__or__
     arg2 = with_or
-    with_or | arg2  #$ arg2 func=With_or.__or__
+    arg2 | arg2
 
 
 # object.__radd__(self, other)

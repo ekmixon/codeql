@@ -1,5 +1,5 @@
 def join(a, *b):
-    return a + "/" + "/".join(b)
+    return f"{a}/" + "/".join(b)
 
 def normpath(x):
     return x

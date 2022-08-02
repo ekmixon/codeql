@@ -149,7 +149,7 @@ if True:
     async def matching(request: web.Request):  # $ requestHandler
         name = request.match_info['name']
         number = request.match_info['number']
-        return web.Response(text="matching name={} number={}".format(name, number)) # $ HttpResponse
+        return web.Response(text=f"matching name={name} number={number}")
 
     app.router.add_get(r"/matching/{name}/{number:\d+}", matching)  # $ routeSetup="/matching/{name}/{number:\d+}"
 

@@ -10,7 +10,7 @@ def separate_headers(files):
     for file in files:
         lines = iter(file)
         header = next(lines) # Will raise StopIteration if lines is exhausted
-        body = [ l for l in lines ]
+        body = list(lines)
         yield header, body
 
 def process_files(files):

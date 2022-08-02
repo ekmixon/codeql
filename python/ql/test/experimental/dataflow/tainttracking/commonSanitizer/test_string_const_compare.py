@@ -31,7 +31,7 @@ def test_eq_unsafe(x="foo"):
 
 def test_eq_with_or():
     ts = TAINTED_STRING
-    if ts == "safe" or ts == "also_safe":
+    if ts in ["safe", "also_safe"]:
         ensure_not_tainted(ts) # $ SPURIOUS: tainted
     else:
         ensure_tainted(ts) # $ tainted
@@ -47,7 +47,7 @@ def test_non_eq1():
 
 def test_non_eq2():
     ts = TAINTED_STRING
-    if not ts == "safe":
+    if ts != "safe":
         ensure_tainted(ts) # $ tainted
     else:
         ensure_not_tainted(ts) # $ SPURIOUS: tainted
@@ -79,18 +79,12 @@ def test_in_set():
 
 def test_in_unsafe1(xs):
     ts = TAINTED_STRING
-    if ts in xs:
-        ensure_tainted(ts) # $ tainted
-    else:
-        ensure_tainted(ts) # $ tainted
+    ensure_tainted(ts) # $ tainted
 
 
 def test_in_unsafe2(x):
     ts = TAINTED_STRING
-    if ts in ["safe", x]:
-        ensure_tainted(ts) # $ tainted
-    else:
-        ensure_tainted(ts) # $ tainted
+    ensure_tainted(ts) # $ tainted
 
 
 def test_not_in1():
@@ -103,7 +97,7 @@ def test_not_in1():
 
 def test_not_in2():
     ts = TAINTED_STRING
-    if not ts in ["safe", "also_safe"]:
+    if ts not in ["safe", "also_safe"]:
         ensure_tainted(ts) # $ tainted
     else:
         ensure_not_tainted(ts) # $ SPURIOUS: tainted

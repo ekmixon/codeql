@@ -54,7 +54,7 @@ def test_access(x, y, z):
         next(iter(tainted_list)), # $ tainted
     )
 
-    a, b, c = tainted_list[0:3]
+    a, b, c = tainted_list[:3]
     ensure_tainted(a, b, c) # $ tainted
 
     for h in tainted_list:
@@ -178,7 +178,7 @@ def dict_update_dict():
 
     ensure_not_tainted(my_dict)
 
-    my_dict.update(tainted_dict)
+    my_dict |= tainted_dict
     ensure_tainted(my_dict) # $ MISSING: tainted
 
 
@@ -188,7 +188,7 @@ def dict_update_kv_list():
 
     ensure_not_tainted(my_dict)
 
-    my_dict.update(tainted_kv_list)
+    my_dict |= tainted_kv_list
     ensure_tainted(my_dict) # $ MISSING: tainted
 
 
@@ -216,7 +216,7 @@ def dict_merge():
     my_dict = {"key1": "safe"}
     tainted_dict = {"key2": TAINTED_STRING}
 
-    merged = {**my_dict, **tainted_dict}
+    merged = my_dict | tainted_dict
     ensure_tainted(merged) # $ MISSING: tainted
 
 

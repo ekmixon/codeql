@@ -58,19 +58,12 @@ class E3(E2, E1):
 class F1(Base):
 
     def __init__(self, cond):
-        if cond:
-            Base.__init__(self)
-        else:
-            Base.__init__(self)
+        Base.__init__(self)
 
 #Single call, splitting causes what seems to be multiple invocations.
 class F2(Base):
 
     def __init__(self, cond):
-        if cond:
-            pass
-        if cond:
-            pass
         Base.__init__(self)
 
 

@@ -38,7 +38,7 @@ from flask.views import View
 class ShowUser(View):
 
     def dispatch_request(self, user_id):  # $ requestHandler routedParameter=user_id
-        return "user_id: {}".format(user_id)  # $ HttpResponse
+        return f"user_id: {user_id}"
 
 app.add_url_rule("/basic/user/<int:user_id>", view_func=ShowUser.as_view('show_user'))  # $routeSetup="/basic/user/<int:user_id>"
 
@@ -60,12 +60,7 @@ from flask.views import MethodView
 class UserAPI(MethodView):
 
     def get(self, user_id):  # $ requestHandler routedParameter=user_id
-        if user_id is None:
-            # return a list of users
-            pass
-        else:
-            # expose a single user
-            pass
+        pass
 
     def post(self):  # $ requestHandler
         # create a new user
@@ -101,7 +96,7 @@ bp1 = flask.Blueprint("bp1", __name__)
 
 @bp1.route("/bp1/example/<foo>") # $ routeSetup="/bp1/example/<foo>"
 def bp1_example(foo): # $ requestHandler routedParameter=foo
-    return "bp 1 example foo={}".format(foo) # $ HttpResponse
+    return f"bp 1 example foo={foo}"
 
 app.register_blueprint(bp1) # by default, URLs of blueprints are not prefixed
 

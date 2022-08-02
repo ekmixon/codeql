@@ -19,8 +19,7 @@ def add_prefix(prefix, relative):
     result = path.join(prefix, relative)
     if path.commonprefix((path.realpath(result), path.realpath(prefix))) != \
             path.realpath(prefix):
-        raise Exception("Path {} is not below {}".format(
-            result, prefix))
+        raise Exception(f"Path {result} is not below {prefix}")
     return result
 
 def load_if_exists(prefix, json_file_relative):
@@ -60,13 +59,13 @@ def file_checksum(filename):
 
 def check_group(group_name, files, master_file_picker, emit_error):
     extant_files = [f for f in files if path.isfile(f)]
-    if len(extant_files) == 0:
+    if not extant_files:
         emit_error(__file__, 0, "No files found from group '" + group_name + "'.")
         emit_error(__file__, 0,
                 "Create one of the following files, and then run this script with "
                 "the --latest switch to sync it to the other file locations.")
         for filename in files:
-            emit_error(__file__, 0, "    " + filename)
+            emit_error(__file__, 0, f"    {filename}")
         return
 
     checksums = {file_checksum(f) for f in extant_files}
@@ -85,15 +84,15 @@ def check_group(group_name, files, master_file_picker, emit_error):
                 "of that file, or run with the --latest switch to update each "
                 "group of files from the most recently modified file in the group.")
         for filename in extant_files:
-            emit_error(__file__, 0, "    " + filename)
+            emit_error(__file__, 0, f"    {filename}")
     else:
         print("  Syncing others from", master_file)
         for filename in files:
             if filename == master_file:
                 continue
-            print("    " + filename)
+            print(f"    {filename}")
             if path.isfile(filename):
-                os.replace(filename, filename + '~')
+                os.replace(filename, f'{filename}~')
             shutil.copy(master_file, filename)
         print("  Backups written with '~' appended to file names")
 
@@ -102,10 +101,7 @@ def chdir_repo_root():
     os.chdir(root_path)
 
 def choose_master_file(master_file, files):
-    if master_file in files:
-        return master_file
-    else:
-        return None
+    return master_file if master_file in files else None
 
 def choose_latest_file(files):
     latest_time = None
@@ -119,7 +115,7 @@ def choose_latest_file(files):
 
 local_error_count = 0
 def emit_local_error(path, line, error):
-    print('ERROR: ' + path + ':' + str(line) + " - " + error)
+    print(f'ERROR: {path}:{str(line)} - {error}')
     global local_error_count
     local_error_count += 1
 

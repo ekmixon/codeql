@@ -11,10 +11,7 @@ def f2():
     return return_three() / return_two()
 
 def f3(x):
-    if isinstance(x, float):
-        return x / 2
-    else:
-        return (1.0 * x) / 2
+    return x / 2 if isinstance(x, float) else (1.0 * x) / 2
 
 def f4():
     do_stuff(f3(1))

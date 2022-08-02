@@ -32,8 +32,7 @@ Namespaces are one honking great idea -- let's do more of those!
 import nonexistent
 
 def function():
-    meaning_of_life = 42
-    return meaning_of_life
+    return 42
 
 class C:
 

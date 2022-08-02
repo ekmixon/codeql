@@ -39,12 +39,12 @@ def show_user(username):
 def raw3(arg):
     m = User.objects.filter('foo')
     m = m.filter('bar')
-    m.raw("select foo from bar where baz = %s" % arg)
+    m.raw(f"select foo from bar where baz = {arg}")
 
 
 def raw4(arg):
     m = User.objects.filter('foo')
-    m.extra("select foo from bar where baz = %s" % arg)
+    m.extra(f"select foo from bar where baz = {arg}")
 
 
 def update_user(key, description1):

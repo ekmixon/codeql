@@ -3,8 +3,7 @@
 class MegaDel(object):
 
     def __del__(self):
-        a = self.x + self.y
-        if a:
+        if a := self.x + self.y:
             print(a)
         if sys._getframe().f_lineno > 100:
             print("Hello")

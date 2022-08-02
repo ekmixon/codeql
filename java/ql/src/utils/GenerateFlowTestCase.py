@@ -47,7 +47,7 @@ try:
     os.makedirs(sys.argv[3])
 except Exception as e:
     if e.errno != errno.EEXIST:
-        print("Failed to create output directory %s: %s" % (sys.argv[3], e))
+        print(f"Failed to create output directory {sys.argv[3]}: {e}")
         sys.exit(1)
 
 resultJava = os.path.join(sys.argv[3], "Test.java")
@@ -68,8 +68,7 @@ os.makedirs(projectDir)
 try:
     shutil.copyfile(sys.argv[2], os.path.join(projectDir, "pom.xml"))
 except Exception as e:
-    print("Failed to read project POM %s: %s" %
-          (sys.argv[2], e), file=sys.stderr)
+    print(f"Failed to read project POM {sys.argv[2]}: {e}", file=sys.stderr)
     sys.exit(1)
 
 commentRegex = re.compile("^\s*(//|#)")
@@ -94,9 +93,7 @@ os.makedirs(projectTestPkgDir)
 
 def qualifiedOuterNameFromCsvRow(row):
     cells = row.split(";")
-    if len(cells) < 2:
-        return None
-    return cells[0] + "." + cells[1].replace("$", ".")
+    return None if len(cells) < 2 else f"{cells[0]}." + cells[1].replace("$", ".")
 
 
 with open(projectTestFile, "w") as testJava:
@@ -106,7 +103,7 @@ with open(projectTestFile, "w") as testJava:
         outerName = qualifiedOuterNameFromCsvRow(spec)
         if outerName is None:
             print("A taint specification has the wrong format: should be 'package;classname;methodname....'", file=sys.stderr)
-            print("Mis-formatted row: " + spec, file=sys.stderr)
+            print(f"Mis-formatted row: {spec}", file=sys.stderr)
             sys.exit(1)
         testJava.write("\t%s obj%d = null;\n" % (outerName, i))
 
@@ -118,8 +115,11 @@ ret = subprocess.call(cmd, cwd=projectDir)
 if ret != 0:
     print("Failed to create project database. Check that '%s' is a valid POM that pulls in all necessary dependencies, and '%s' specifies valid classes and methods." % (
         sys.argv[2], sys.argv[1]), file=sys.stderr)
-    print("Failed command was: %s (cwd: %s)" %
-          (shlex.join(cmd), projectDir), file=sys.stderr)
+    print(
+        f"Failed command was: {shlex.join(cmd)} (cwd: {projectDir})",
+        file=sys.stderr,
+    )
+
     sys.exit(1)
 
 print("Creating test-generation query")
@@ -140,7 +140,7 @@ cmd = ['codeql', 'query', 'run', qlFile, '--database',
        os.path.join(projectDir, "db"), '--output', generatedBqrs]
 ret = subprocess.call(cmd)
 if ret != 0:
-    print("Failed to generate tests. Failed command was: " + shlex.join(cmd))
+    print(f"Failed to generate tests. Failed command was: {shlex.join(cmd)}")
     sys.exit(1)
 
 generatedJson = os.path.join(queryDir, "out.json")
@@ -148,7 +148,7 @@ cmd = ['codeql', 'bqrs', 'decode', generatedBqrs,
        '--format=json', '--output', generatedJson]
 ret = subprocess.call(cmd)
 if ret != 0:
-    print("Failed to decode BQRS. Failed command was: " + shlex.join(cmd))
+    print(f"Failed to decode BQRS. Failed command was: {shlex.join(cmd)}")
     sys.exit(1)
 
 
@@ -165,30 +165,55 @@ with open(generatedJson, "r") as f:
     expectedTables = ("getTestCase", "getASupportMethodModel",
                       "missingSummaryModelCsv", "getAParseFailure", "noTestCaseGenerated")
 
-    testCaseRows, supportModelRows, missingSummaryModelCsvRows, parseFailureRows, noTestCaseGeneratedRows = \
-        tuple([getTuples(k, generateOutput, generatedJson)
-               for k in expectedTables])
+    (
+        testCaseRows,
+        supportModelRows,
+        missingSummaryModelCsvRows,
+        parseFailureRows,
+        noTestCaseGeneratedRows,
+    ) = tuple(
+        getTuples(k, generateOutput, generatedJson) for k in expectedTables
+    )
+
 
     if len(testCaseRows) != 1 or len(testCaseRows[0]) != 1:
-        print("Expected exactly one getTestCase result with one column (got: %s)" %
-              json.dumps(testCaseRows), file=sys.stderr)
+        print(
+            f"Expected exactly one getTestCase result with one column (got: {json.dumps(testCaseRows)})",
+            file=sys.stderr,
+        )
+
     if any(len(row) != 1 for row in supportModelRows):
-        print("Expected exactly one column in getASupportMethodModel relation (got: %s)" %
-              json.dumps(supportModelRows), file=sys.stderr)
+        print(
+            f"Expected exactly one column in getASupportMethodModel relation (got: {json.dumps(supportModelRows)})",
+            file=sys.stderr,
+        )
+
     if any(len(row) != 2 for row in parseFailureRows):
-        print("Expected exactly two columns in parseFailureRows relation (got: %s)" %
-              json.dumps(parseFailureRows), file=sys.stderr)
+        print(
+            f"Expected exactly two columns in parseFailureRows relation (got: {json.dumps(parseFailureRows)})",
+            file=sys.stderr,
+        )
+
     if any(len(row) != 1 for row in noTestCaseGeneratedRows):
-        print("Expected exactly one column in noTestCaseGenerated relation (got: %s)" %
-              json.dumps(noTestCaseGeneratedRows), file=sys.stderr)
+        print(
+            f"Expected exactly one column in noTestCaseGenerated relation (got: {json.dumps(noTestCaseGeneratedRows)})",
+            file=sys.stderr,
+        )
+
 
     if len(missingSummaryModelCsvRows) != 0:
         print("Tests for some CSV rows were requested that were not in scope (SummaryModelCsv.row does not hold):\n" +
               "\n".join(r[0] for r in missingSummaryModelCsvRows))
         sys.exit(1)
     if len(parseFailureRows) != 0:
-        print("The following rows failed to generate any test case. Check package, class and method name spelling, and argument and result specifications:\n%s" %
-              "\n".join(r[0] + ": " + r[1] for r in parseFailureRows), file=sys.stderr)
+        print(
+            (
+                "The following rows failed to generate any test case. Check package, class and method name spelling, and argument and result specifications:\n%s"
+                % "\n".join(f"{r[0]}: {r[1]}" for r in parseFailureRows)
+            ),
+            file=sys.stderr,
+        )
+
         sys.exit(1)
     if len(noTestCaseGeneratedRows) != 0:
         print("The following CSV rows failed to generate any test case due to a limitation of the query. Other test cases will still be generated:\n" +

@@ -21,7 +21,7 @@ SOURCE = "source"
 
 
 def is_source(x):
-    return x == "source" or x == b"source" or x == 42 or x == 42.0 or x == 42j
+    return x in ["source", b"source", 42, 42.0, 42j]
 
 
 def SINK(x):
@@ -100,18 +100,18 @@ def test_list_display_negative():
 
 
 def test_list_comprehension():
-    x = [SOURCE for y in [NONSOURCE]]
+    x = [SOURCE for _ in [NONSOURCE]]
     SINK(x[0]) #$ flow="SOURCE, l:-1 -> x[0]"
 
 
 def test_list_comprehension_flow():
-    x = [y for y in [SOURCE]]
+    x = [SOURCE]
     SINK(x[0]) #$  flow="SOURCE, l:-1 -> x[0]"
 
 
 def test_list_comprehension_inflow():
     l = [SOURCE]
-    x = [y for y in l]
+    x = list(l)
     SINK(x[0]) #$ flow="SOURCE, l:-2 -> x[0]"
 
 
@@ -127,18 +127,18 @@ def test_set_display():
 
 
 def test_set_comprehension():
-    x = {SOURCE for y in [NONSOURCE]}
+    x = {SOURCE for _ in [NONSOURCE]}
     SINK(x.pop()) #$ flow="SOURCE, l:-1 -> x.pop()"
 
 
 def test_set_comprehension_flow():
-    x = {y for y in [SOURCE]}
+    x = {SOURCE}
     SINK(x.pop()) #$ flow="SOURCE, l:-1 -> x.pop()"
 
 
 def test_set_comprehension_inflow():
     l = {SOURCE}
-    x = {y for y in l}
+    x = set(l)
     SINK(x.pop()) #$ flow="SOURCE, l:-2 -> x.pop()"
 
 
@@ -196,7 +196,7 @@ def test_nested_comprehension_dict():
 
 
 def test_nested_comprehension_paren():
-    x = [y for y in (z for z in [SOURCE])]
+    x = [SOURCE]
     SINK(x[0]) #$ flow="SOURCE, l:-1 -> x[0]"
 
 
@@ -213,7 +213,7 @@ def test_star_unpacking_comprehension():
 
 # 6.2.8. Generator expressions
 def test_generator():
-    x = (SOURCE for y in [NONSOURCE])
+    x = (SOURCE for _ in [NONSOURCE])
     SINK([*x][0]) #$ MISSING:flow="SOURCE, l:-1 -> List[0]"
 
 
@@ -249,9 +249,7 @@ def test___next__():
 
 
 def gen2(x):
-    # argument of `send` has to flow to value of `yield x` (and so to `m`)
-    m = yield x
-    yield m
+    yield (yield x)
 
 
 def test_send():
@@ -299,9 +297,7 @@ def test___anext__():
 
 
 async def agen2(x):
-    # argument of `send` has to flow to value of `yield x` (and so to `m`)
-    m = yield x
-    yield m
+    yield (yield x)
 
 
 async def atest_asend():
@@ -365,7 +361,7 @@ l = [SOURCE]
 
 
 def test_slicing():
-    s = l[0:1:1]
+    s = l[:1:1]
     SINK(s[0]) #$ MISSING:flow="SOURCE -> s[0]"
 
 

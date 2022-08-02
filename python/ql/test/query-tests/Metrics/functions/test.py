@@ -11,11 +11,8 @@ def f2(x, y, z):
         raise z
 
 def f3(a, b):
-    if a:
-        pass
-    else:
-        if b:
-            return 0
+    if not a and b:
+        return 0
 
 def f4(a,b):
     while True:
@@ -41,11 +38,8 @@ class C:
             raise z
 
     def f3(self, a, b):
-        if a:
-            pass
-        else:
-            if b:
-                return 0
+        if not a and b:
+            return 0
 
     def f4(self, a, b):
         while True:

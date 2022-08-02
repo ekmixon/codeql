@@ -3,7 +3,7 @@ class Annotation:
     pass
 
 def print_annotation(annotation):
-    print("Message: " + annotation.message)
-    print("Line: " + annotation.line)
-    print("Offset: " + annotation.offset)
-    print("Length: " + annotation.length)
+    print(f"Message: {annotation.message}")
+    print(f"Line: {annotation.line}")
+    print(f"Offset: {annotation.offset}")
+    print(f"Length: {annotation.length}")

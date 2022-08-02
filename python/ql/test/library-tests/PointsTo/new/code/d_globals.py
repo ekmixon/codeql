@@ -48,14 +48,7 @@ x
 if cond:
     x = 3
 
-if other_cond:
-    y = 1
-else:
-    y = 2
-    if cond3:
-        pass
-    else:
-        pass
+y = 1 if other_cond else 2
 y
 v3
 

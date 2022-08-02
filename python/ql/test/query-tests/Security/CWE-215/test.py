@@ -28,11 +28,6 @@ DEBUG = 1
 
 app.run(debug=DEBUG) # NOT OK
 
-if False:
-    app.run(debug=True)
-
-
-
 runapp = app.run
 runapp(debug=True) # NOT OK
 

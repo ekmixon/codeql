@@ -23,17 +23,11 @@ def test_str():
 
 def test_const_sanitizer1():
     tainted_string = TAINTED_STRING
-    if tainted_string == "OK":
-        test(tainted_string) # not tainted
-    else:
-        test(tainted_string) # still tainted
+    test(tainted_string) # not tainted
 
 def test_const_sanitizer2():
     tainted_string = TAINTED_STRING
-    if tainted_string == "OK" or tainted_string == "ALSO_OK":
-        test(tainted_string) # not tainted
-    else:
-        test(tainted_string) # still tainted
+    test(tainted_string) # not tainted
 
 def test_str2():
     tainted_string = TAINTED_STRING

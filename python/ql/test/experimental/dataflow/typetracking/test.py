@@ -1,6 +1,5 @@
 def get_tracked():
-    x = tracked # $tracked
-    return x # $tracked
+    return tracked
 
 def use_tracked_foo(x): # $tracked
     do_stuff(x) # $tracked
@@ -100,9 +99,9 @@ def expects_string(x): # $str
     do_string_stuff(x) # $str
 
 def redefine_test():
-    x = int(5) # $int
+    x = 5
     expects_int(x) # $int
-    x = str("Hello") # $str
+    x = "Hello"
     expects_string(x) # $str
 
 # ------------------------------------------------------------------------------

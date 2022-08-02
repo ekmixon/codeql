@@ -23,7 +23,7 @@ signer = DSS.new(private_key, mode='fips-186-3')
 hasher = SHA256.new(message) # $ CryptographicOperation CryptographicOperationAlgorithm=SHA256 CryptographicOperationInput=message
 signature = signer.sign(hasher) # $ CryptographicOperation CryptographicOperationInput=hasher # MISSING: CryptographicOperationAlgorithm=DSA
 
-print("signature={}".format(signature))
+print(f"signature={signature}")
 
 print()
 

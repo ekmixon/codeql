@@ -17,7 +17,7 @@ LOGGER = logging.getLogger(__name__)
 # import IPython; sys.stdout = sys.__stdout__; IPython.embed(); sys.exit()
 
 
-_canonic_filename_cache = dict()
+_canonic_filename_cache = {}
 
 
 def canonic_filename(filename):
@@ -28,7 +28,7 @@ def canonic_filename(filename):
     angle brackets, such as "<stdin>", generated in interactive
     mode, are returned unchanged.
     """
-    if filename == "<" + filename[1:-1] + ">":
+    if filename == f"<{filename[1:-1]}>":
         return filename
     canonic = _canonic_filename_cache.get(filename)
     if not canonic:
@@ -38,7 +38,7 @@ def canonic_filename(filename):
     return canonic
 
 
-_call_cache = dict()
+_call_cache = {}
 
 
 @dataclasses.dataclass(frozen=True, eq=True, order=True)
@@ -99,7 +99,7 @@ BUILTIN_FUNCTION_OR_METHOD = type(print)
 METHOD_DESCRIPTOR_TYPE = type(dict.get)
 
 
-_unknown_module_fixup_cache = dict()
+_unknown_module_fixup_cache = {}
 
 
 def _unkown_module_fixup(func):
@@ -116,7 +116,7 @@ def _unkown_module_fixup(func):
     if key in _unknown_module_fixup_cache:
         return _unknown_module_fixup_cache[key]
 
-    matching_classes = list()
+    matching_classes = []
     for klass in object.__subclasses__():
 
         if inspect.isabstract(klass):
@@ -252,8 +252,8 @@ class CallGraphTracer:
     def __init__(self):
         # Performing `Call.from_frame` can be expensive, so we cache (call, callee)
         # pairs we have already seen to avoid double procressing.
-        self.python_calls = dict()
-        self.external_calls = dict()
+        self.python_calls = {}
+        self.external_calls = {}
 
     def run(self, code, globals, locals):
         self.exec_call_seen = False
@@ -281,9 +281,12 @@ class CallGraphTracer:
 
         # if we're going out of the exec, we should ignore anything else (for example the
         # call to `sys.setprofile(None)`)
-        if event == "c_return":
-            if arg == exec and frame.f_code.co_filename == __file__:
-                self.ignore_rest = True
+        if (
+            event == "c_return"
+            and arg == exec
+            and frame.f_code.co_filename == __file__
+        ):
+            self.ignore_rest = True
 
         if self.ignore_rest:
             return
@@ -293,24 +296,6 @@ class CallGraphTracer:
 
         if DEBUG:
             LOGGER.debug(f"profilefunc event={event}")
-        if event == "call":
-            # in call, the `frame` argument is new the frame for entering the callee
-            assert frame.f_back is not None
-
-            callee = PythonCallee.from_frame(frame)
-
-            key = (Call.hash_key(frame.f_back), callee)
-            if key in self.python_calls:
-                if DEBUG:
-                    LOGGER.debug(f"ignoring already seen call {key[0]} --> {callee}")
-                return
-
-            if DEBUG:
-                LOGGER.debug(f"callee={callee}")
-            call = Call.from_frame(frame.f_back)
-
-            self.python_calls[key] = (call, callee)
-
         if event == "c_call":
             # in c_call, the `frame` argument is frame where the call happens, and the
             # `arg` argument is the C function object.
@@ -328,6 +313,24 @@ class CallGraphTracer:
             call = Call.from_frame(frame)
 
             self.external_calls[key] = (call, callee)
+
+        elif event == "call":
+            # in call, the `frame` argument is new the frame for entering the callee
+            assert frame.f_back is not None
+
+            callee = PythonCallee.from_frame(frame)
+
+            key = (Call.hash_key(frame.f_back), callee)
+            if key in self.python_calls:
+                if DEBUG:
+                    LOGGER.debug(f"ignoring already seen call {key[0]} --> {callee}")
+                return
+
+            if DEBUG:
+                LOGGER.debug(f"callee={callee}")
+            call = Call.from_frame(frame.f_back)
+
+            self.python_calls[key] = (call, callee)
 
         if DEBUG:
             LOGGER.debug(f"{call} --> {callee}")

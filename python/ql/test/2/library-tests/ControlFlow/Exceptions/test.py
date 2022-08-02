@@ -5,11 +5,7 @@ def f(a, x):
         a.b
         a(x)
         raise Exception()
-    except AttributeError:
-        pass
-    except IndexError:
-        pass
-    except KeyError:
+    except (AttributeError, IndexError, KeyError):
         pass
     except:
         pass
@@ -20,9 +16,7 @@ def g(a, x):
         a.b
         a(x)
         raise Exception()
-    except AttributeError:
-        pass
-    except IndexError:
+    except (AttributeError, IndexError):
         pass
     except KeyError:
         pass
@@ -35,9 +29,7 @@ def h(a, x):
         a.b
         a(x)
         raise Exception()
-    except AttributeError:
-        pass
-    except IndexError:
+    except (AttributeError, IndexError):
         pass
     except KeyError:
         pass

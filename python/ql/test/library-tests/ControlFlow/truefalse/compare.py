@@ -8,13 +8,7 @@ def contains2(item, cont):
     return 2
 
 def contains3(item, cont):
-    if item in cont:
-        return 3
-    else:
-        return 3.0
+    return 3 if item in cont else 3.0
 
 def contains4(item, cont):
-    if item not in cont:
-        return 4
-    else:
-        return 4.0
+    return 4 if item not in cont else 4.0

@@ -12,12 +12,7 @@ from flask.views import MethodView
 class MyView(MethodView):
 
     def get(self, user_id): # $ requestHandler
-        if user_id is None:
-            # return a list of users
-            pass
-        else:
-            # expose a single user
-            pass
+        pass
 
 the_view = MyView.as_view('my_view')
 
@@ -31,27 +26,25 @@ def dangerous():  # $requestHandler
 @app.route("/dangerous-with-cfg-split")  # $routeSetup="/dangerous-with-cfg-split"
 def dangerous2():  # $requestHandler
     x = request.form['param0']
-    if request.method == "POST":
-        return request.form['param1']  # $HttpResponse
-    return None  # $ SPURIOUS: HttpResponse
+    return request.form['param1'] if request.method == "POST" else None
 
 @app.route("/unsafe")  # $routeSetup="/unsafe"
 def unsafe():  # $requestHandler
     first_name = request.args.get('name', '')
-    return make_response("Your name is " + first_name)  # $HttpResponse
+    return make_response(f"Your name is {first_name}")
 
 @app.route("/safe")  # $routeSetup="/safe"
 def safe():  # $requestHandler
     first_name = request.args.get('name', '')
-    return make_response("Your name is " + escape(first_name))  # $HttpResponse
+    return make_response(f"Your name is {escape(first_name)}")
 
 @app.route("/hello/<name>")  # $routeSetup="/hello/<name>"
 def hello(name):  # $requestHandler routedParameter=name
-    return make_response("Your name is " + name)  # $HttpResponse
+    return make_response(f"Your name is {name}")
 
 @app.route("/foo/<path:subpath>")  # $routeSetup="/foo/<path:subpath>"
 def foo(subpath):  # $requestHandler routedParameter=subpath
-    return make_response("The subpath is " + subpath)  # $HttpResponse
+    return make_response(f"The subpath is {subpath}")
 
 @app.route("/multiple/")  # $routeSetup="/multiple/"
 @app.route("/multiple/foo/<foo>")  # $routeSetup="/multiple/foo/<foo>"
@@ -61,7 +54,7 @@ def multiple(foo=None, bar=None):  # $requestHandler routedParameter=foo routedP
 
 @app.route("/complex/<string(length=2):lang_code>")  # $routeSetup="/complex/<string(length=2):lang_code>"
 def complex(lang_code):  # $requestHandler routedParameter=lang_code
-    return make_response("lang_code {}".format(lang_code))  # $HttpResponse
+    return make_response(f"lang_code {lang_code}")
 
 if __name__ == "__main__":
     app.run(debug=True)

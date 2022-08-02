@@ -9,4 +9,4 @@ def rec1(a):
         rec1(a - 1)
 
 def rec2(b):
-    [rec2(b - 1) for c in range(b)]
+    [rec2(b - 1) for _ in range(b)]

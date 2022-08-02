@@ -7,7 +7,7 @@ def expects(n):
             else:
                 print("Expected", n, "outputs but got", len(lines))
         else:
-            print(list(s for s in lines if s != "OK"))
+            print([s for s in lines if s != "OK"])
 
     def wrap(f):
         def wrapped(*args, **kwargs):
@@ -21,7 +21,7 @@ def expects(n):
             sys.stdout = old_stdout
             check_output(capturer.getvalue())
 
-        wrapped.__name__ = "[" + str(n) + "]" + f.__name__
+        wrapped.__name__ = f"[{str(n)}]{f.__name__}"
         return wrapped
 
     return wrap

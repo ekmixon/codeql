@@ -177,7 +177,7 @@ def test_pos_pos_only():
 
 def test_pos_star():
     def with_star(*a):
-        if len(a) > 0:
+        if a:
             SINK1(a[0])
 
     with_star(arg1)  #$ arg1 func=test_pos_star.with_star

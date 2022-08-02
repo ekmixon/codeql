@@ -11,9 +11,7 @@ class C(object):
 
     def m2(self, z):
         self.a2 = z
-        if cond:
-            pass
-        else:
+        if not cond:
             raise Error()
         return self.a2
 

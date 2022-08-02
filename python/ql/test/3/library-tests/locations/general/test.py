@@ -3,17 +3,14 @@
 
 class C:
 
-    def stmts(p0, p1):
+    def stmts(self, p1):
         global x
         assert x == 2
-        y = 3
-        y += 4
+        y = 3 + 4
         while True:
             break
         while x > 0:
             x -= 1
-            continue
-
         f()
         for x in y:
             pass
@@ -38,8 +35,8 @@ class C:
         else:
             return
 
-    def exprs(p2, p3):
-        p2.x = 2
+    def exprs(self, p3):
+        self.x = 2
         a = p3.y
         x = 1 + 2
         y = b'h4tpvhsa'
@@ -48,11 +45,11 @@ class C:
         {1:1, 2: 2}
 
         x[a, ..., 7]
-        (x for x in y)
+        iter(y)
         17 if x < y else 16
         lambda x : x * y
         [ 1, 2, a, x.b, p1.c ]
-        [ a + "Hi" for a in str(y) ]
+        [f"{a}Hi" for a in str(y)]
 
 
 
@@ -60,7 +57,7 @@ class C:
         u"Hi"
         x[0]
         x[y[0]]
-        (p2, p3, 7)
+        (self, p3, 7)
 
 #Some multiline strings
 '''
@@ -90,12 +87,7 @@ def outer():
         pass
 
 #Oddly laid out comprehension
-[[
-  x for x in y
-  ]
-  
-  for a in b
-]
+[list(y) for _ in b]
 
 #Nested binary operations
 "Hello" + " " + "world"

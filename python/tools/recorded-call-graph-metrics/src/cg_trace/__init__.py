@@ -9,7 +9,5 @@ MIN_PYTHON_VERSION_FORMATTED = ".".join(str(i) for i in MIN_PYTHON_VERSION)
 
 if not sys.version_info[:2] >= MIN_PYTHON_VERSION:
     sys.exit(
-        "You need at least Python {} to use 'cg_trace'".format(
-            MIN_PYTHON_VERSION_FORMATTED
-        )
+        f"You need at least Python {MIN_PYTHON_VERSION_FORMATTED} to use 'cg_trace'"
     )

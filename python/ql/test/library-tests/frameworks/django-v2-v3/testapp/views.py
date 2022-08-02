@@ -38,8 +38,7 @@ class MyViewHandlerWithCustomInheritance(MyCustomViewBaseClass):
 class CustomRedirectView(RedirectView):
 
     def get_redirect_url(self, foo): # $ requestHandler routedParameter=foo
-        next = "https://example.com/{}".format(foo)
-        return next # $ HttpResponse HttpRedirectResponse redirectLocation=next
+        return f"https://example.com/{foo}"
 
 
 class CustomRedirectView2(RedirectView):

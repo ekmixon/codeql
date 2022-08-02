@@ -6,17 +6,17 @@ app = Bottle()
 
 @app.route('/hello/<name>')
 def hello(name = "World!"):
-    return "Hello " + name
+    return f"Hello {name}"
 
 @route('/bye/<name>')
 def bye(name = "World!"):
-    return "Bye " + name
+    return f"Bye {name}"
 
 
 @route('/other')
 def other():
     name = request.cookies.username
-    return "User name is " + name
+    return f"User name is {name}"
 
 
 @route('/wrong/url')
@@ -33,4 +33,4 @@ def unsafe2():
 
 @route('/xss')
 def maybe_xss():
-    response.body = "name is " + request.query.name
+    response.body = f"name is {request.query.name}"

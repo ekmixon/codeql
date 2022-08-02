@@ -16,14 +16,14 @@ def python2_specific():
     """
 
     files = request.args.get("files", "")
-    os.popen2("ls " + files)
-    os.popen3("ls " + files)
-    os.popen4("ls " + files)
+    os.popen2(f"ls {files}")
+    os.popen3(f"ls {files}")
+    os.popen4(f"ls {files}")
 
-    platform.popen("ls " + files)
+    platform.popen(f"ls {files}")
 
-    popen2.popen2("ls " + files)
-    popen2.popen3("ls " + files)
-    popen2.popen4("ls " + files)
-    popen2.Popen3("ls " + files)
-    popen2.Popen4("ls " + files)
+    popen2.popen2(f"ls {files}")
+    popen2.popen3(f"ls {files}")
+    popen2.popen4(f"ls {files}")
+    popen2.Popen3(f"ls {files}")
+    popen2.Popen4(f"ls {files}")

@@ -90,12 +90,7 @@ def outer():
         pass
 
 #Oddly laid out comprehension
-[[
-  x for x in y
-  ]
-
-  for a in b
-]
+[list(y) for _ in b]
 
 #Nested binary operations
 "Hello" + " " + "world"

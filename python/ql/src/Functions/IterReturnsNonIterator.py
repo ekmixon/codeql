@@ -20,9 +20,7 @@ class MyRangeIterator(object):
             raise StopIteration
         to_return = self.current
         self.current += 1
-        if self.skip and to_return in self.skip:
-            return self.__next__()
-        return to_return
+        return self.__next__() if self.skip and to_return in self.skip else to_return
 
     # Problem is fixed by uncommenting these lines
     # def __iter__(self):

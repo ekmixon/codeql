@@ -4,7 +4,7 @@ from fabric.api import run, execute
 
 
 def unsafe(cmd, safe_arg, cmd2=None, safe_optional=5):
-    run('./venv/bin/activate && {}'.format(cmd))
+    run(f'./venv/bin/activate && {cmd}')
     ensure_tainted(cmd, cmd2)
     ensure_not_tainted(safe_arg, safe_optional)
 
@@ -12,7 +12,7 @@ def unsafe(cmd, safe_arg, cmd2=None, safe_optional=5):
 class Foo(object):
 
     def unsafe(self, cmd, safe_arg, cmd2=None, safe_optional=5):
-        run('./venv/bin/activate && {}'.format(cmd))
+        run(f'./venv/bin/activate && {cmd}')
         ensure_tainted(cmd, cmd2)
         ensure_not_tainted(safe_arg, safe_optional)
 

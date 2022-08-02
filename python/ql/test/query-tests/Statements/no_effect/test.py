@@ -36,7 +36,7 @@ def exec_used(val):
 
 #This has an effect:
 def effectful(y):
-    [x for x in y]
+    list(y)
 
 
 #Not a redundant assignment if a property.
@@ -111,7 +111,7 @@ class Horrible(object):
 
 def possible_fps(x):
     h = Horrible()
-    h + "innocent bystander"
+    f"{h}innocent bystander"
     h < "upstanding citizen"
     x - 3 #True positive
 

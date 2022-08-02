@@ -57,10 +57,10 @@ if os.path.isfile(outputFile):
 helpers.run_cmd(['codeql', 'test', 'run', '--keep-databases', testDir],
                 "codeql test failed. Please fix up the test before proceeding.")
 
-dbDir = os.path.join(testDir, os.path.basename(testDir) + ".testproj")
+dbDir = os.path.join(testDir, f"{os.path.basename(testDir)}.testproj")
 
 if not os.path.isdir(dbDir):
-    print("Expected database directory " + dbDir + " not found.")
+    print(f"Expected database directory {dbDir} not found.")
     exit(1)
 
 helpers.run_cmd(['codeql', 'query', 'run', os.path.join(

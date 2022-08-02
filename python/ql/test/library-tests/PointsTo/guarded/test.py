@@ -155,7 +155,6 @@ def f():
     if u is not K:
         u = 7
     use(u)
-
 #String and float consts.
 
     s = "not this"
@@ -293,14 +292,8 @@ def split_bool1(x=None,y=None):
         raise
     if not (x or y):
         raise
-    if x:
-        use(y)
-    else:
-        use(y)
-    if y:
-        use(x)
-    else:
-        use(x)
+    use(y)
+    use(x)
 
 def split_bool2(x,y=None,z=7):
     if x and not y or x and use(y):
@@ -310,10 +303,7 @@ def split_bool2(x,y=None,z=7):
 
 def split_bool3(a=None, b=None):
     if a or b:
-        if a:
-            use(b)
-        else:
-            use(b) # Should not infer b to be None.
+        use(b)
 
 #Guard on instance attribute
 class E(object):
@@ -420,16 +410,12 @@ class C(object):
         use(self.x)
 
     def meth(self):
-        if self.x is not None:
-            use(self.x)
-            return lambda : use(self.x)
-        else:
-            use(self.x)
-            return lambda : use(self.x)
+        use(self.x)
+        return lambda : use(self.x)
 
 
 def test_on_unknown_attr():
     e = E()
-    y = 1
     if e.attr:
+        y = 1
         use(y)

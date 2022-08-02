@@ -12,6 +12,4 @@ async def bar():
     return result # $ use=moduleImport("pkg").getMember("async_func").getReturn().getAwaited()
 
 def check_annotations():
-    # Just to make sure how annotations should look like :)
-    result = pkg.sync_func() # $ use=moduleImport("pkg").getMember("sync_func").getReturn()
-    return result # $ use=moduleImport("pkg").getMember("sync_func").getReturn()
+    return pkg.sync_func()

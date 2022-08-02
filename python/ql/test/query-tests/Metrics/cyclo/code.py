@@ -1,36 +1,19 @@
 def f_linear(x):
-    y = x
-    z = y
-    return z
+    return x
 
 def one_branch(x):
-    if x:
-        return 1
-    else:
-        return 2
+    return 1 if x else 2
 
 def two_branch(x, y):
-    if x:
-        y += 1
-    else:
-        y += 2
-    if y:
-        return 1
-    else:
-        return 2
+    y += 1 if x else 2
+    return 1 if y else 2
 
 
 def nested(x, y):
     if x:
-        if y:
-            return 0
-        else:
-            return 1
+        return 0 if y else 1
     else:
-        if y:
-            return 2
-        else:
-            return 3
+        return 2 if y else 3
 
 def exceptions(x, y):
     try:

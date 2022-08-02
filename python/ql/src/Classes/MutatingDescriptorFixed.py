@@ -19,7 +19,7 @@ class C(object):
         self.value = value
         
     def __str__(self):
-        return ("C: " + str(self.value))
+        return f"C: {str(self.value)}"
     
     show = NonMutatingDescriptor(show)
     

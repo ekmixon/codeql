@@ -43,10 +43,14 @@ class FrameworkCollection:
         self.frameworks.sort(key=lambda f: f.name)
 
     def get(self, framework_name):
-        for framework in self.frameworks:
-            if framework.name == framework_name:
-                return framework
-        return None
+        return next(
+            (
+                framework
+                for framework in self.frameworks
+                if framework.name == framework_name
+            ),
+            None,
+        )
 
     def get_frameworks(self):
         return self.frameworks

@@ -2,8 +2,7 @@ def pointless_else(container):
     for item in container:
         if of_interest(item):
             return item
-    else:
-        raise NotFoundException()
+    raise NotFoundException()
 
 def no_else(container):
     for item in container:

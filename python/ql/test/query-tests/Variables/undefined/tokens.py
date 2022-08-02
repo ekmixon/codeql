@@ -7,5 +7,4 @@ TOKEN_5 = 5
 
 __all__ = [ "TOKEN_0" ]
 
-for i in range(1,6):
-    __all__.append("TOKEN_%d" % i)
+__all__.extend("TOKEN_%d" % i for i in range(1,6))

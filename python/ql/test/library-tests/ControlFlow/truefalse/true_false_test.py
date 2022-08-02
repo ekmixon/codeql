@@ -2,9 +2,7 @@
 def func():
     if cond1:
         true1
-    if cond2:
-        pass
-    else:
+    if not cond2:
         false2
     if cond3:
         true3
@@ -31,10 +29,7 @@ def func():
             false7
     else:
         false6
-    if cond8:
-        for i in range(10):
-            pass
-    else:
+    if not cond8:
         false8
     if cond9:
         while cond10:

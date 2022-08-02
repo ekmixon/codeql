@@ -11,19 +11,19 @@ if TYPE_CHECKING:
 # Actual tests
 
 def unpacking():
-    l = TAINTED_LIST[0:3]
+    l = TAINTED_LIST[:3]
     a, b, c = l
     ensure_tainted(a, b, c) # $ tainted
 
 
 def unpacking_to_list():
-    l = TAINTED_LIST[0:3]
+    l = TAINTED_LIST[:3]
     [a, b, c] = l
     ensure_tainted(a, b, c) # $ tainted
 
 
 def nested():
-    l = TAINTED_LIST[0:3]
+    l = TAINTED_LIST[:3]
     ll = [l, l, l]
 
     # list
@@ -48,7 +48,7 @@ def unpack_from_set():
 
 def contrived_1():
     # A contrived example. Don't know why anyone would ever actually do this.
-    tainted_list = TAINTED_LIST[0:3]
+    tainted_list = TAINTED_LIST[:3]
     no_taint_list = [1,2,3]
 
     (a, b, c), (d, e, f) = tainted_list, no_taint_list
@@ -61,7 +61,7 @@ def contrived_2():
 
     # Old taint tracking was only able to handle taint nested 2 levels in sequences,
     # so would not mark a, b, c as tainted
-    [[[ (a, b, c) ]]] = [[[ TAINTED_LIST[0:3] ]]]
+    [[[ (a, b, c) ]]] = [[[TAINTED_LIST[:3]]]]
     ensure_tainted(a, b, c) # $ tainted
 
 

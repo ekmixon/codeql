@@ -12,20 +12,12 @@ def f(x):
         print(x)
 
 def g(x):
-    if False:
-        unreachable()
-    else:
-        reachable()
+    reachable()
     print(x)
     return 5
-    for x in first_unreachable_stmt():
-        raise more_unreachable()
 
 def h(a,b):
-    if True:
-        reachable()
-    else:
-        unreachable()
+    reachable()
 
 def intish(n):
     """"Regression test - the 'except' statement is reachable"""
@@ -55,8 +47,7 @@ def handle_yield_exception():
 def isnt_iter(seq):
     got_exc = False
     try:
-        for x in seq:
-            pass
+        pass
     except Exception:
         got_exc = True
     return got_exc
@@ -89,8 +80,7 @@ def odasa5387():
         pass
 
 #This is OK as type-hints require it
-if False:
-    from typing import Any
+pass
 
 def foo():
     # type: () -> None
@@ -108,32 +98,20 @@ def deliberate_name_error(cond):
 
 #ODASA-6783
 def emtpy_gen():
-    if False:
-        yield None
+    pass
 
 
 def foo(x):
-    if True:
-        if x < 3:
-            print(x, "< 3")
-        if x == 0:
-            print(x, "== 0")
+    if x < 3:
+        print(x, "< 3")
+    if x == 0:
+        print(x, "== 0")
 
 
 # Unreachable catch-all case
 
 def unreachable_catch_all_assert_false(x):
-    if x < 0:
-        return "negative"
-    elif x >= 0:
-        return "positive"
-    else:
-        assert False, x
+    return "negative" if x < 0 else "positive"
 
 def unreachable_catch_all_raise(x):
-    if x < 0:
-        pass
-    elif x >= 0:
-        pass
-    else:
-        raise ValueError(x)
+    pass

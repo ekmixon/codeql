@@ -7,5 +7,5 @@ def separate_headers(files):
         except StopIteration:
             #Empty file -- Just ignore
             continue
-        body = [ l for l in lines ]
+        body = list(lines)
         yield header, body

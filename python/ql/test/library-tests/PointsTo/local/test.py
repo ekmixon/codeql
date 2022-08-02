@@ -45,7 +45,6 @@ def foo():
     w = 2
     x = 3
     y = 4
-    z = 5
     17
     -3
     47164510561934056134523419250 # Too big
@@ -55,15 +54,10 @@ def foo():
         y
     else:
         w
+        z = 5
         z
-    if unknown():
-        v = 10
-    else:
-        v = 20
-    if v > 15:
-        v
-    else:
-        v
+    v = 10 if unknown() else 20
+    v
 
 def strings():
     version = "3.8 alpha"

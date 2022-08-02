@@ -7,7 +7,7 @@ class Spam:
         self.eggs = eggs
 
     def __str__(self):
-        return '%s and %s' % (self.spam, self.eggs) # Maybe uninitialized attribute 'eggs'
+        return f'{self.spam} and {self.eggs}'
 
 #Fixed version
 
@@ -21,5 +21,5 @@ class Spam:
         self.eggs = eggs
 
     def __str__(self):
-        return '%s and %s' % (self.spam, self.eggs) # OK
+        return f'{self.spam} and {self.eggs}'
 

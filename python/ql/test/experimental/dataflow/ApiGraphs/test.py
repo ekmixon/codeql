@@ -123,8 +123,7 @@ def redefine_print():
     print("these words")
 
 def local_redefine_chr():
-    chr = 5
-    return chr
+    return 5
 
 def global_redefine_chr():
     global chr

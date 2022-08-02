@@ -5,6 +5,5 @@ def modifies_locals_sum(x, y):
     return z
 
 def fixed_sum(x, y):
-    z = x + y
-    return z
+    return x + y
 

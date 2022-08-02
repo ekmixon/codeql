@@ -23,7 +23,7 @@ cipher = AES.new(key, AES.MODE_CBC, iv=iv)
 whole_plantext = secret_message + padding
 encrypted = cipher.encrypt(whole_plantext) # $ CryptographicOperation CryptographicOperationAlgorithm=AES CryptographicOperationInput=whole_plantext
 
-print("encrypted={}".format(encrypted))
+print(f"encrypted={encrypted}")
 
 print()
 
@@ -32,5 +32,5 @@ decrypted = cipher.decrypt(encrypted) # $ CryptographicOperation CryptographicOp
 
 decrypted = decrypted[:-padding_len]
 
-print("decrypted={}".format(decrypted))
+print(f"decrypted={decrypted}")
 assert decrypted == secret_message

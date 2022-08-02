@@ -3,17 +3,8 @@
 
 def with_phi(
     cond):
-    if cond:
-        l0 = 0
-    else:
-        l0 = 1
-    return l0
+    return 0 if cond else 1
 
 def with_phi2(
     cond):
-    l1 = 0
-    if cond:
-        pass
-    else:
-        l1 = 1
-    return l1
+    return 0 if cond else 1

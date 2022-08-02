@@ -7,14 +7,12 @@ def _f():
     assert len(x)   #Call without side-effects
     assert sys.exit(1) #Call with side-effects
     expected_types = (Response, six.text_type, six.binary_type)
-    assert isinstance(obj, expected_types), \
-        "obj must be %s, not %s" % (
-            " or ".join(t.__name__ for t in expected_types),
-            type(obj).__name__)
+    assert isinstance(
+        obj, expected_types
+    ), f'obj must be {" or ".join((t.__name__ for t in expected_types))}, not {type(obj).__name__}'
 
 def assert_tuple(x, y):
-    assert ()
-    assert (x, y)
+    assert False
 
 
 
@@ -30,10 +28,7 @@ def assert_tuple(x, y):
 
 
 def error_assert_true(x):
-    if x:
-        assert True, "Bad"
-    else:
-        assert True
+    pass
 
 def error_assert_false(x):
     if x:
@@ -71,36 +66,26 @@ class MyTest(TestCase):
 
 def ok_assert_in_final_branch3(x):
     if foo(x):
+        return
+    if bar(x):
         pass
-    elif bar(x):
-        pass
-    elif quux(x):
-        pass
-    else:
+    elif not quux(x):
         assert False, "Ok"
 
 def ok_assert_in_final_branch2(x):
     if foo(x):
         pass
-    elif bar(x):
-        pass
-    else:
+    elif not bar(x):
         assert False, "Ok"
 
 def error_assert_in_final_branch1(x):
-    if foo(x):
-        pass
-    else:
+    if not foo(x):
         assert False, "Error"
 
 def error_assert_in_intermediate_branch(x):
     if foo(x):
-        pass
-    elif bar(x):
+        return
+    if bar(x):
         pass
     elif quux(x):
         assert False, "Error"
-    elif yks(x):
-        pass
-    else:
-        pass

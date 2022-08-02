@@ -4,7 +4,7 @@ SOURCE = "source"
 
 
 def is_source(x):
-    return x == "source" or x == b"source" or x == 42 or x == 42.0 or x == 42j
+    return x in ["source", b"source", 42, 42.0, 42j]
 
 
 def SINK(x):
@@ -89,8 +89,7 @@ def test_example3_kw():
 
 def fields_with_local_flow(x):
     obj = MyObj(x)
-    a = obj.foo
-    return a
+    return obj.foo
 
 
 def test_fields():

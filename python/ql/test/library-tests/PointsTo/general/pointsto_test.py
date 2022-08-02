@@ -14,18 +14,11 @@ class D(object):
     def __init__(self):
         self.y = 'd_y'
 #Comment here
-if len(sys.argv) > 2:
-    v1 = C
-else:
-    v1 = D
+v1 = C if len(sys.argv) > 2 else D
 v2 = v1()
 
 def f():
-    if len(sys.argv) >  3:
-       v3 = C()
-    else:
-       v3 = D()
-    return v3
+    return C() if len(sys.argv) >  3 else D()
 
 def g(arg):
     return arg
@@ -51,10 +44,7 @@ v4
 list
 
 def h(args):
-    if len(sys.argv) >  4:
-       v5 = C()
-    else:
-       v5 = D()
+    v5 = C() if len(sys.argv) >  4 else D()
     return v5, list(args)
 
 def j():
@@ -93,10 +83,7 @@ def outer(x):
     return inner
 
 def never_none(x):
-    if test(x):
-        y = 1.0
-    else:
-        y = None
+    y = 1.0 if test(x) else None
     if y is None:
         y = 0.0
     return y
@@ -205,8 +192,7 @@ class E(object):
 #Builtin function calls
 def calls_next(seq):
     it = iter(seq)
-    n = next(it)
-    return n
+    return next(it)
 
 
 #Check imports from builtin modules

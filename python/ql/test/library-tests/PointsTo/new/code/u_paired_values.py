@@ -5,8 +5,7 @@ def return_if_true(cond, val):
     raise Exception()
 
 def test(cond):
-    x = return_if_true(True, 1) if cond else return_if_true(False, 2)
-    return x
+    return return_if_true(True, 1) if cond else return_if_true(False, 2)
 
 y = test(True)
 y

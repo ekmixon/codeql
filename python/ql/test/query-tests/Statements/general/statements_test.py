@@ -2,12 +2,10 @@
 #Constant in conditional
 
 def cc1():
-    if True:
-        print("Hi")
+    print("Hi")
 
 def cc2():
-    if 3:
-        print("Hi")
+    print("Hi")
 
 def not_cc():
     #Don't treat __debug__ as a constant. It may be immutable, but it is not constant from run to run.
@@ -36,7 +34,7 @@ def exec_used(val):
 
 #This has an effect:
 def effectful(y):
-    [x for x in y]
+    list(y)
 
 
 
@@ -56,21 +54,14 @@ class Redundant(object):
     def __init__(self, args):
         args = args # violation
 
-if sys.version_info < (3,):
-    bytes = str
-else:
-    bytes = bytes # Should not be flagged
-
-#Pointless else clauses
+bytes = str if sys.version_info < (3,) else bytes
 for x in range(10):
     func(x)
-else:
-    do_something()
+do_something()
 
 while x < 10:
     func(x)
-else:
-    do_something()
+do_something()
 
 #OK else clauses:
 for x in range(10):
@@ -155,10 +146,6 @@ class SideEffectingAttr(object):
 s = SideEffectingAttr()
 s.foo = s.foo
 
-#Unreachable, so don't flag as constant test.
-if False:
-    a = 1
-
 
 
 
@@ -169,10 +156,7 @@ def error_mismatched_multi_assign_list():
     a,b,c = [1,2,3,4,5]
 
 def returning_different_tuple_sizes(x):
-    if x:
-        return 1,2,3,4,5
-    else:
-        return 1,2,3,4,5,6
+    return (1, 2, 3, 4, 5) if x else (1, 2, 3, 4, 5, 6)
 
 def error_indirect_mismatched_multi_assign(x):
     a, b, c = returning_different_tuple_sizes(x)

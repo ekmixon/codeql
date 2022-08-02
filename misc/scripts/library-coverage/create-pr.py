@@ -93,12 +93,7 @@ except:
     print("Differences found")
     found_diff = True
 
-if not found_diff:
-    if already_open_pr != 0:
-        # close the PR
-        utils.subprocess_run(
-            ["gh", "pr", "close", str(already_open_pr), "-R", repo])
-else:
+if found_diff:
     utils.subprocess_run(["git", "config", "user.name",
                          "github-actions[bot]"])
     utils.subprocess_run(["git", "config", "user.email",
@@ -110,3 +105,8 @@ else:
     utils.subprocess_run(["git", "push", "-f", remote, branch_name])
     if already_open_pr == 0:
         create_pr(repo, branch_name, main)
+
+elif already_open_pr != 0:
+    # close the PR
+    utils.subprocess_run(
+        ["gh", "pr", "close", str(already_open_pr), "-R", repo])

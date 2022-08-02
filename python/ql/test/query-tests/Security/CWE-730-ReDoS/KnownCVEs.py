@@ -65,15 +65,14 @@ VCHAR = r"\x21-\x7e"
 # field-content  = field-vchar [ 1*( SP / HTAB / field-vchar )
 #                  field-vchar ]
 
-FIELD_VCHAR = "[" + VCHAR + OBS_TEXT + "]"
+FIELD_VCHAR = f"[{VCHAR}{OBS_TEXT}]"
 FIELD_CONTENT = FIELD_VCHAR + "([ \t" + VCHAR + OBS_TEXT + "]+" + FIELD_VCHAR + "){,1}"
-FIELD_VALUE = "(" + FIELD_CONTENT + "){0,}"
+FIELD_VALUE = f"({FIELD_CONTENT}" + "){0,}"
 
 HEADER_FIELD = re.compile(
-    #  tobytes(
-         "^(?P<name>" + TOKEN + "):" + OWS + "(?P<value>" + FIELD_VALUE + ")" + OWS + "$"
-    #  )
- )
+    f"^(?P<name>{TOKEN}):{OWS}(?P<value>{FIELD_VALUE}){OWS}$"
+)
+
 
 # https://github.com/github/codeql-python-CVE-coverage/issues/224
 pattern = re.compile(

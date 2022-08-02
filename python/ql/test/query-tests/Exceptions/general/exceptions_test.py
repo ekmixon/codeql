@@ -61,8 +61,6 @@ try:
     val.attr
 except Exception:
     print (2)
-except AttributeError:
-    print (3)
     
 #Catch BaseException
 def catch_base_exception():

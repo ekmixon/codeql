@@ -15,7 +15,7 @@ NONSOURCE = "not a source"
 SOURCE = "source"
 
 def is_source(x):
-    return x == "source" or x == b"source" or x == 42 or x == 42.0 or x == 42j
+    return x in ["source", b"source", 42, 42.0, 42j]
 
 
 def SINK(x):

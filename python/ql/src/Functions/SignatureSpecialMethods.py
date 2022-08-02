@@ -7,12 +7,14 @@ class Point(object):
         self.y
 
     def __add__(self, other):
-        if not isinstance(other, Point):
-            return NotImplemented
-        return Point(self.x + other.x, self.y + other.y)
+        return (
+            Point(self.x + other.x, self.y + other.y)
+            if isinstance(other, Point)
+            else NotImplemented
+        )
 
     def __str__(self, style): #Spurious extra parameter
         if style == 'polar':
             u"%s @ %s\u00b0" % (abs(self), self.angle())
         else:
-            return "[%s, %s]" % (self.x, self.y)
+            return f"[{self.x}, {self.y}]"

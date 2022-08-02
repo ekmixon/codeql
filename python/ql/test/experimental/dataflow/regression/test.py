@@ -27,18 +27,16 @@ def test5():
 def test6(cond):
     if cond:
         t = "Safe"
+        SINK_F(t)
     else:
         t = SOURCE
-    if cond:
-        SINK_F(t)
 
 def test7(cond):
     if cond:
         t = SOURCE
+        SINK(t)
     else:
         t = "Safe"
-    if cond:
-        SINK(t)
 
 def source2():
     return source()
@@ -56,17 +54,11 @@ def test8(cond):  # This test currently adds nothing, as we only track SOURCE ->
 
 #False positive
 def test9(cond):
-    if cond:
-        t  = "Safe"
-    else:
-        t = SOURCE
+    t = "Safe" if cond else SOURCE
     sink3(cond, t)
 
 def test10(cond):
-    if cond:
-        t = SOURCE
-    else:
-        t = "Safe"
+    t = SOURCE if cond else "Safe"
     sink3(cond, t)
 
 def hub(arg):
@@ -124,28 +116,20 @@ def test19():
 def test20(cond):
     if cond:
         t = CUSTOM_SOURCE
-    else:
-        t = SOURCE
-    if cond:
         CUSTOM_SINK(t)
     else:
+        t = SOURCE
         SINK(t)
 
 def test21(cond):
-    if cond:
-        t = CUSTOM_SOURCE
-    else:
-        t = SOURCE
+    t = CUSTOM_SOURCE if cond else SOURCE
     if not cond:
         CUSTOM_SINK_F(t)
     else:
         SINK_F(t)
 
 def test22(cond):
-    if cond:
-        t = CUSTOM_SOURCE
-    else:
-        t = SOURCE
+    t = CUSTOM_SOURCE if cond else SOURCE
     t = TAINT_FROM_ARG(t)  # Blocks data flow
     if cond:
         CUSTOM_SINK(t)
@@ -186,17 +170,14 @@ def test_truth():
         SINK(t)
 
 def test_early_exit():
-    t = FALSEY
-    if not t:
+    if t := FALSEY:
+        t
+    else:
         return
-    t
 
 def flow_through_type_test_if_no_class():
     t = SOURCE
-    if isinstance(t, str):
-        SINK(t)  # Flows's both here..
-    else:
-        SINK(t)  # ..and here
+    SINK(t)  # Flows's both here..
 
 def flow_in_iteration():
     t = [SOURCE]
@@ -205,9 +186,7 @@ def flow_in_iteration():
     SINK(i)
 
 def flow_in_generator():
-    seq = [SOURCE]
-    for i in seq:
-        yield i
+    yield from [SOURCE]
 
 def flow_from_generator():
     for x in flow_in_generator():

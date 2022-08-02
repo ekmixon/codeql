@@ -12,14 +12,10 @@ class NotMyDict(object):
 #Splitting
 PY2 = sys.version_info[0] == 2
 
-if PY2:
-    pass
-
 
 class InSplit(MyDict):
 
     def __init__(self):
         super(InSplit, self).f()
 
-if PY2:
-    pass
+pass

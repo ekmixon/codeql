@@ -13,8 +13,8 @@ Foo.foo(42)
 
 class BarMeta(type):
 
-    def bar(cls, arg):
-        print(cls, arg)
+    def bar(self, arg):
+        print(self, arg)
 
 class Bar(metaclass=BarMeta):
     pass

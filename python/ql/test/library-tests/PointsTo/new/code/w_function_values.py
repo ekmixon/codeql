@@ -5,11 +5,7 @@ def test_conditoinal_function(cond):
     def bar():
         return "bar"
 
-    if cond:
-        f = foo
-    else:
-        f = bar
-
+    f = foo if cond else bar
     sink = f()
     return sink
 

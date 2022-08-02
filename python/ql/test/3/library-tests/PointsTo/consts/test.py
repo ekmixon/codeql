@@ -36,13 +36,3 @@ k2
 from module import PY2
 
 PY2
-
-# Single input "phi"-nodes (due to splitting and pruning).
-if PY3:
-    pass
-
-if PY3:
-    pass
-
-if PY3:
-    pass

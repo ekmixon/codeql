@@ -6,13 +6,11 @@ class B(object):
 
     def __str__(self):
         print('B.__str__')
-        return 'B (arg={})'.format(self.arg)
+        return f'B (arg={self.arg})'
 
     def __add__(self, other):
         print('B.__add__')
-        if isinstance(other, B):
-            return B(self.arg + other.arg)
-        return B(self.arg + other)
+        return B(self.arg + other.arg) if isinstance(other, B) else B(self.arg + other)
 
     @property
     def arg(self):
@@ -29,9 +27,9 @@ b1 = B(1)
 b2 = B(2)
 b3 = b1 + b2
 
-print('value printing:', str(b1))
-print('value printing:', str(b2))
-print('value printing:', str(b3))
+print('value printing:', b1)
+print('value printing:', b2)
+print('value printing:', b3)
 
 b3.arg = 42
 b4 = b3 + 100

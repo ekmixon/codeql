@@ -22,7 +22,7 @@ def f(y):
 
     x = unknown() if cond else None
 
-    x = x if x else 1
+    x = x or 1
     use(x)
     if unknown():
         x = 1
@@ -43,9 +43,6 @@ if v2.y is not None:
     use(v2.x)
     use(v2.y)
 
-#A home for pi and phi-nodes
-pass
-
 
 def g(x):
     if x:
@@ -61,16 +58,11 @@ def loop(seq):
 def double_attr_check(x, y):
     if x.b == 3:
         return
-    if y:
-        if (x.a == 0 and 
-            x.a in seq):
-            return
+    if y and (x.a == 0 and x.a in seq):
+        return
 
 def h():
-    b = unknown() if cond else True
-    if not b:
-        b = 7
-    return b
+    return (unknown() if cond else True) or 7
 
 def k():
     t = type
@@ -89,14 +81,8 @@ def split_bool1(x=None,y=None):
         raise
     if not (x or y):
         raise
-    if x:
-        use(y)
-    else:
-        use(y)
-    if y:
-        use(x)
-    else:
-        use(x)
+    use(y)
+    use(x)
 
 def not_or_not(*a):
     if not isinstance(a, (tuple, list)):

@@ -18,23 +18,32 @@ day_distance = 1
 
 
 class Git:
-    def get_output(arr):
-        r = utils.subprocess_check_output(arr)
+    def get_output(self):
+        r = utils.subprocess_check_output(self)
         return r.strip("\n'")
 
-    def get_date(sha):
+    def get_date(self):
         d = Git.get_output(
-            ["git", "show",  "--no-patch",  "--no-notes", "--pretty='%cd'",  "--date=short", sha])
+            [
+                "git",
+                "show",
+                "--no-patch",
+                "--no-notes",
+                "--pretty='%cd'",
+                "--date=short",
+                self,
+            ]
+        )
+
         return date.fromisoformat(d)
 
-    def get_parent(sha):
-        parent_sha = Git.get_output(
-            ["git", "rev-parse",  sha + "^"])
+    def get_parent(self):
+        parent_sha = Git.get_output(["git", "rev-parse", f"{self}^"])
         parent_date = Git.get_date(parent_sha)
         return (parent_sha, parent_date)
 
-    def get_previous_sha(sha, date):
-        parent_sha, parent_date = Git.get_parent(sha)
+    def get_previous_sha(self, date):
+        parent_sha, parent_date = Git.get_parent(self)
         while parent_date > date + datetime.timedelta(days=-1 * day_distance):
             parent_sha, parent_date = Git.get_parent(parent_sha)
 
@@ -43,8 +52,8 @@ class Git:
 
 def get_packages(lang, query, search_path):
     try:
-        db = "empty_" + lang
-        ql_output = "output-" + lang + ".csv"
+        db = f"empty_{lang}"
+        ql_output = f"output-{lang}.csv"
         if os.path.isdir(db):
             shutil.rmtree(db)
         utils.create_empty_database(lang, ".java", db)
@@ -124,7 +133,10 @@ try:
 
     # Read the additional framework data, such as URL, friendly name from the latest commit
     for lang in languages_to_process:
-        input_framework_csv = settings.documentation_folder_no_prefix + "frameworks.csv"
+        input_framework_csv = (
+            f"{settings.documentation_folder_no_prefix}frameworks.csv"
+        )
+
         language_utils[lang]["frameworks"] = fr.FrameworkCollection(
             input_framework_csv.format(language=lang))
         language_utils[lang]["config"] = [
@@ -186,7 +198,7 @@ try:
                 other_packages = set()
 
                 for package in packages.get_packages():
-                    if not package.name in matched_packages:
+                    if package.name not in matched_packages:
                         sources += package.get_part_count("source")
                         sinks += package.get_part_count("sink")
                         summaries += package.get_part_count("summary")
@@ -206,7 +218,7 @@ try:
                 print(
                     f"Error getting stats for {lang} at {current_sha}. Stopping iteration for language.")
                 languages_to_process.remove(lang)
-        if len(languages_to_process) == 0:
+        if not languages_to_process:
             break
 
         current_sha, current_date = Git.get_previous_sha(

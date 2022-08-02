@@ -19,10 +19,20 @@ def subprocess_check_output(cmd):
 
 def create_empty_database(lang, extension, database):
     """Creates an empty database for the given language."""
-    subprocess_run(["codeql", "database", "init", "--language=" + lang,
-                   "--source-root=/tmp/empty", "--allow-missing-source-root", database])
-    subprocess_run(["mkdir", "-p", database + "/src/tmp/empty"])
-    subprocess_run(["touch", database + "/src/tmp/empty/empty" + extension])
+    subprocess_run(
+        [
+            "codeql",
+            "database",
+            "init",
+            f"--language={lang}",
+            "--source-root=/tmp/empty",
+            "--allow-missing-source-root",
+            database,
+        ]
+    )
+
+    subprocess_run(["mkdir", "-p", f"{database}/src/tmp/empty"])
+    subprocess_run(["touch", f"{database}/src/tmp/empty/empty{extension}"])
     subprocess_run(["codeql", "database", "finalize",
                    database, "--no-pre-finalize"])
 
@@ -30,11 +40,35 @@ def create_empty_database(lang, extension, database):
 def run_codeql_query(query, database, output, search_path):
     """Runs a codeql query on the given database."""
     # --search-path is required when the CLI needs to upgrade the database scheme.
-    subprocess_run(["codeql", "query", "run", query, "--database", database,
-                   "--output", output + ".bqrs", "--search-path", search_path])
-    subprocess_run(["codeql", "bqrs", "decode", output + ".bqrs",
-                   "--format=csv", "--no-titles", "--output", output])
-    os.remove(output + ".bqrs")
+    subprocess_run(
+        [
+            "codeql",
+            "query",
+            "run",
+            query,
+            "--database",
+            database,
+            "--output",
+            f"{output}.bqrs",
+            "--search-path",
+            search_path,
+        ]
+    )
+
+    subprocess_run(
+        [
+            "codeql",
+            "bqrs",
+            "decode",
+            f"{output}.bqrs",
+            "--format=csv",
+            "--no-titles",
+            "--output",
+            output,
+        ]
+    )
+
+    os.remove(f"{output}.bqrs")
 
 
 class LanguageConfig:

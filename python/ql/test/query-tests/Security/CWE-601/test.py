@@ -21,14 +21,14 @@ def ok():
 @app.route('/ok2')
 def ok2():
     untrusted = request.args.get('target', '')
-    safe = "https://safe.com/" + untrusted
+    safe = f"https://safe.com/{untrusted}"
     return redirect(safe, code=302)
 
 
 @app.route('/ok3')
 def ok3():
     untrusted = request.args.get('target', '')
-    safe = "https://safe.com/{}".format(untrusted)
+    safe = f"https://safe.com/{untrusted}"
     return redirect(safe, code=302) # FP
 
 
@@ -42,7 +42,7 @@ def ok4():
 @app.route('/ok5')
 def ok5():
     untrusted = request.args.get('target', '')
-    safe = "https://safe.com/%s" % untrusted
+    safe = f"https://safe.com/{untrusted}"
     return redirect(safe, code=302) # FP
 
 
@@ -58,14 +58,14 @@ def const_str_compare():
 @app.route('/not_ok1')
 def not_ok1():
     untrusted = request.args.get('target', '')
-    unsafe = untrusted + "?login=success"
+    unsafe = f"{untrusted}?login=success"
     return redirect(unsafe, code=302)
 
 
 @app.route('/not_ok2')
 def not_ok2():
     untrusted = request.args.get('target', '')
-    unsafe = "{}?login=success".format(untrusted)
+    unsafe = f"{untrusted}?login=success"
     return redirect(unsafe, code=302)
 
 
@@ -79,5 +79,5 @@ def not_ok3():
 @app.route('/not_ok4')
 def not_ok4():
     untrusted = request.args.get('target', '')
-    unsafe = "%s?login=success" % untrusted
+    unsafe = f"{untrusted}?login=success"
     return redirect(unsafe, code=302)

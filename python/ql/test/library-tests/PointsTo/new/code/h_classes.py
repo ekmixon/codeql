@@ -54,7 +54,7 @@ class D(object):
 
 int()
 type("")()
-list()
-dict()
+[]
+{}
 bool("hi")
 bool(0)

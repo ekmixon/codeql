@@ -25,7 +25,7 @@ encrypt_cipher = PKCS1_OAEP.new(public_key)
 
 encrypted = encrypt_cipher.encrypt(secret_message) # $ CryptographicOperation CryptographicOperationInput=secret_message # MISSING: CryptographicOperationAlgorithm=RSA-OAEP?
 
-print("encrypted={}".format(encrypted))
+print(f"encrypted={encrypted}")
 
 print()
 
@@ -33,7 +33,7 @@ decrypt_cipher = PKCS1_OAEP.new(private_key)
 
 decrypted = decrypt_cipher.decrypt(encrypted) # $ CryptographicOperation CryptographicOperationInput=encrypted # MISSING: CryptographicOperationAlgorithm=RSA-OAEP?
 
-print("decrypted={}".format(decrypted))
+print(f"decrypted={decrypted}")
 assert decrypted == secret_message
 
 print("\n---\n")
@@ -52,7 +52,7 @@ signer = pss.new(private_key)
 hasher = SHA256.new(message) # $ CryptographicOperation CryptographicOperationAlgorithm=SHA256 CryptographicOperationInput=message
 signature = signer.sign(hasher) # $ CryptographicOperation CryptographicOperationInput=hasher # MISSING: CryptographicOperationAlgorithm=RSA-PSS?
 
-print("signature={}".format(signature))
+print(f"signature={signature}")
 
 print()
 

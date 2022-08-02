@@ -21,8 +21,7 @@ class Handler(object):
 
     def on_delete(self, req, resp):
         env = req.env
-        qs = env["QUERY_STRING"]
-        return qs
+        return env["QUERY_STRING"]
 
 app.add_route('/hello', Handler())
 

@@ -10,10 +10,7 @@ def ok1(x):
         return
 
 def ok2(x):
-    if x:
-        return 4
-    else:
-        return "Hi"
+    return 4 if x else "Hi"
 
 def cr1(x):
     if x:
@@ -228,10 +225,7 @@ def use_implicit_return_value_ok(arg):
     return do_nothing()
 
 def mutli_return(arg):
-    if arg:
-        return do_something()
-    else:
-        return do_nothing()
+    return do_something() if arg else do_nothing()
 
 #Modification of parameter with default
 
@@ -242,8 +236,8 @@ def augassign(x = []):
 #Possible FPs for non-self. ODASA-2439
 
 class C(object):
-    def _func(f):
-        return f
+    def _func(self):
+        return self
 
     _func(x)
 
@@ -263,8 +257,8 @@ class C(object):
 class Meta(type):
 
     #__new__ is an implicit class method, so the first arg is the metaclass
-    def __new__(metacls, name, bases, cls_dict):
-        return super(Meta, metacls).__new__(metacls, name, bases, cls_dict)
+    def __new__(cls, name, bases, cls_dict):
+        return super(Meta, cls).__new__(cls, name, bases, cls_dict)
 
 #ODASA 3658
 from sys import exit
@@ -304,16 +298,10 @@ y = foo()
 # Returning tuples with different sizes
 
 def returning_different_tuple_sizes(x):
-    if x:
-        return 1,2
-    else:
-        return 1,2,3
+    return (1, 2) if x else (1, 2, 3)
 
 def ok_tuple_sizes(x):
-    if x:
-        return 1,2
-    else:
-        return 2,3
+    return (1, 2) if x else (2, 3)
 
 def function_returning_2_tuple():
     return 1,2
@@ -322,10 +310,7 @@ def function_returning_3_tuple():
     return 1,2,3
 
 def indirectly_returning_different_tuple_sizes(x):
-    if x:
-        return function_returning_2_tuple()
-    else:
-        return function_returning_3_tuple()
+    return function_returning_2_tuple() if x else function_returning_3_tuple()
     
 
 def mismatched_multi_assign(x):

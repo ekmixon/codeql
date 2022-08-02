@@ -8,4 +8,4 @@ app = Flask(__name__)
 def command_injection1():
     files = request.args.get('files', '')
     # Don't let files be `; rm -rf /`
-    os.system("ls " + files)
+    os.system(f"ls {files}")

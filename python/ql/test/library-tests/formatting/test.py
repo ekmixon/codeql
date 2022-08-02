@@ -12,7 +12,7 @@
 
 "{ {{ 0} }}".format("X")
 "{ { { 0} }}".format("X")
-"{{{{{}".format("X")
+f"{{{{X"
 u'{}\r{}{:<{width}}'.format(1, 2, 3, width=msg_width)
 u'{}\r{}{:<{}}'.format(1, 2, 3, 4)
 #ODASA 6428

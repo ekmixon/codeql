@@ -133,9 +133,9 @@ cmd = shlex.join(["echo", tainted])
 args = shlex.split(tainted)
 
 # will handle tainted = 'foo; rm -rf /'
-safe_cmd = "ls {}".format(shlex.quote(tainted))
+safe_cmd = f"ls {shlex.quote(tainted)}"
 
 # not how you are supposed to use shlex.quote
-wrong_use = shlex.quote("ls {}".format(tainted))
+wrong_use = shlex.quote(f"ls {tainted}")
 # still dangerous, for example
-cmd = "sh -c " + wrong_use
+cmd = f"sh -c {wrong_use}"

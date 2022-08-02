@@ -12,6 +12,4 @@ def f(cond1, cond2):
         var = var + 1
     elif var == 2:
         var +- 3
-    if cond2:
-        pass
     var = var + 4 # var must be defined to have passed line 11

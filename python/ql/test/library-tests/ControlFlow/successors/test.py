@@ -46,7 +46,7 @@ class DiGraph(object):
 
     def remove_node(self, x):
         if x not in self.succ:
-            raise ValueError("Node %s does not exist." % x)
+            raise ValueError(f"Node {x} does not exist.")
         preds = self.pred[x]
         succs = self.succ[x]
         for p in preds:
@@ -64,14 +64,14 @@ class DiGraph(object):
         '''Set the annotation on the edge (x -> y) to note.
         '''
         if x not in self.succ or y not in self.succ[x]:
-            raise ValueError("Edge %s -> %s does not exist." % (x, y))
+            raise ValueError(f"Edge {x} -> {y} does not exist.")
         self.edge_annotations[(x,y)] = note
 
     def annotate_node(self, x, note):
         '''Set the annotation on the node x to note.
         '''
         if x not in self.succ:
-            raise ValueError("Node %s does not exist." % x)
+            raise ValueError(f"Node {x} does not exist.")
         self.node_annotations[x] = note
 
     def nodes(self):
@@ -83,7 +83,7 @@ class DiGraph(object):
     def edges(self):
         '''Return an iterator for all edges, in the form of (pred, succ, note) triple.
            Do not modify the graph while using this iterator'''
-        index = dict((n, i) for i, n in enumerate(self.all_nodes))
+        index = {n: i for i, n in enumerate(self.all_nodes)}
         for n in self.all_nodes:
             n_succs = self.succ[n]
             for succ in sorted(n_succs, key = lambda n : index[n]):
@@ -122,9 +122,9 @@ class FlowGraph(DiGraph):
 
     def _require(self, what):
         '''Ensures that 'what' has been computed (computing if needed).'''
-        if hasattr(self, "_" + what):
+        if hasattr(self, f"_{what}"):
             return
-        setattr(self, "_" + what, getattr(self, "_compute_" + what)())
+        setattr(self, f"_{what}", getattr(self, f"_compute_{what}")())
 
     def add_deletion(self, node, var):
         assert node in self.succ
@@ -162,11 +162,7 @@ class FlowGraph(DiGraph):
     def _compute_bb_depth_first_pre_order(self):
         self._require('depth_first_pre_order')
         self._require('bb_heads')
-        bbs = []
-        for n in self._depth_first_pre_order:
-            if n in self._bb_heads:
-                bbs.append(n)
-        return bbs
+        return [n for n in self._depth_first_pre_order if n in self._bb_heads]
 
     def _compute_bb_reversed_depth_first_pre_order(self):
         self._require("bb_depth_first_pre_order")
@@ -216,10 +212,7 @@ class FlowGraph(DiGraph):
                     if p == self.root:
                         idom = p
                     elif p in idoms:
-                        if idom is None:
-                            idom = p
-                        else:
-                            idom = idom_intersection(idom, p)
+                        idom = p if idom is None else idom_intersection(idom, p)
                 if idom is not None:
                     idoms[node] = idom
         return idoms
@@ -252,7 +245,7 @@ class FlowGraph(DiGraph):
         dom_tree = _reverse_map(idoms)
         self._require('reversed_depth_first_pre_order')
         for node in self._reversed_depth_first_pre_order:
-            df_local_n = set(n for n in self.succ[node] if node != idoms[n])
+            df_local_n = {n for n in self.succ[node] if node != idoms[n]}
             dfn = df_local_n
             if node in dom_tree:
                 for child in dom_tree[node]:
@@ -260,7 +253,7 @@ class FlowGraph(DiGraph):
             dominance_frontier[node] = dfn
             if node in idoms:
                 imm_dom = idoms[node]
-                df_up[node] = set(n for n in dfn if not dominates(imm_dom, n))
+                df_up[node] = {n for n in dfn if not dominates(imm_dom, n)}
             else:
                 df_up[node] = dfn
         return dominance_frontier
@@ -277,11 +270,9 @@ class FlowGraph(DiGraph):
         # We must count deletions as definitions here. Otherwise, we can have
         # uses of a deleted variable whose SSA definition is an actual definition,
         # rather than a deletion.
-        definitions.update(self.deletions)
+        definitions |= self.deletions
         phi_nodes = {}
-        defsites = {}
-        for a in definitions.values():
-            defsites[a] = set()
+        defsites = {a: set() for a in definitions.values()}
         for n in definitions:
             a = definitions[n]
             defsites[a].add(n)
@@ -299,16 +290,11 @@ class FlowGraph(DiGraph):
                         if y not in definitions or a != definitions[y]:
                             W.add(y)
         trimmed = {}
-        for node in phi_nodes:
+        for node, phi_vars in phi_nodes.items():
             assert node in self._bb_heads
             if node not in self._liveness:
                 continue
-            new_phi_vars = set()
-            phi_vars = phi_nodes[node]
-            for v in phi_vars:
-                if v in self._liveness[node]:
-                    new_phi_vars.add(v)
-            if new_phi_vars:
+            if new_phi_vars := {v for v in phi_vars if v in self._liveness[node]}:
                 trimmed[node] = new_phi_vars
         return trimmed
 
@@ -385,10 +371,6 @@ class FlowGraph(DiGraph):
                         var = live_vars[a]
                         ssa_vars.add(var)
                         ssa_uses[node] = [ var ]
-                    else:
-                        #If no var is defined here we don't need to create one
-                        #as a new one will be immediately be defined by the deletion.
-                        pass
                     var = make_ssa_var(a, node)
                     ssa_defns[var] = node
                     live_vars[a] = var
@@ -435,8 +417,7 @@ class FlowGraph(DiGraph):
         for n in self.all_nodes:
             if n in node_to_var:
                 variables = node_to_var[n]
-                for v in sorted(variables, key=lambda v:v.variable.id):
-                    yield v
+                yield from sorted(variables, key=lambda v:v.variable.id)
 
     def ssa_definitions(self):
         '''Returns all the SSA definition as an iterator of (node, variable) pairs.'''
@@ -476,7 +457,7 @@ class FlowGraph(DiGraph):
         self._require('ssa_data')
         ssa_phis = self._ssa_data[3]
         ssa_vars = self._ssa_data[0]
-        indexed = dict((v, index) for index, v in enumerate(ssa_vars))
+        indexed = {v: index for index, v in enumerate(ssa_vars)}
         for v in ssa_vars:
             if v not in ssa_phis:
                 continue
@@ -511,10 +492,7 @@ class FlowGraph(DiGraph):
 
     def _compute_bb_succ(self):
         self._require('basic_blocks')
-        bb_succs = {}
-        for bb in self._bb_heads:
-            bb_succs[bb] = self.succ[self._bb_tails[bb]]
-        return bb_succs
+        return {bb: self.succ[self._bb_tails[bb]] for bb in self._bb_heads}
 
     def _compute_bb_pred(self):
         self._require('basic_blocks')
@@ -659,8 +637,8 @@ class FlowGraph(DiGraph):
 
     def dominated_by(self, node):
         self._require('idoms')
-        assert node in self, str(node) + " is not in graph"
-        dominated = set([node])
+        assert node in self, f"{str(node)} is not in graph"
+        dominated = {node}
         todo = set(self.succ[node])
         while todo:
             n = todo.pop()

@@ -17,11 +17,8 @@ class _OK:
 def f_ok(x, y):
     'And functions'
     pass
-    pass
 
 def _f_ok(y, z):
-    #Unless they are private
-    pass
     pass
 
 class OK2:
@@ -30,11 +27,8 @@ class OK2:
     def meth_ok(self):
         'Methods need docstrings'
         pass
-        pass
 
     def _meth_ok(self):
-        #Unless they are private
-        pass
         pass
 
 class Not_OK:
@@ -43,16 +37,11 @@ class Not_OK:
     def meth_ok(self):
         'Methods need docstrings'
         pass
-        pass
 
     def meth_not_ok(self):
-        #No doc-string
-        pass
         pass
 
 def not_ok(x, y):
-    #Should have a doc-string
-    pass
     pass
 
 

@@ -6,9 +6,7 @@ def gcd(a, b):
             a = a % b
         else:
             b = b % a
-    if(a == 0):
-        return (b)
-    return (a)
+    return b if (a == 0) else a
 
 #Written in a more Pythonic style
 def gcd(a, b):
@@ -17,7 +15,5 @@ def gcd(a, b):
             a = a % b
         else:
             b = b % a
-    if a == 0:
-        return b
-    return a
+    return b if a == 0 else a
 

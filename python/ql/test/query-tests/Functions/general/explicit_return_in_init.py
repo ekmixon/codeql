@@ -76,10 +76,7 @@ class InitReturnsCallResult3(object):
 class InitReturnsCallResult4(object):
 
     def __init__(self, b):
-        if b:
-            p = procedure
-        else:
-            p = explicit_none
+        p = procedure if b else explicit_none
         return p()
 
 class InitReturnsCallResult5(object):
@@ -95,8 +92,5 @@ def not_ok():
 class InitReturnsCallResult6(object):
 
     def __init__(self, b):
-        if b:
-            p = procedure_implicit_none()
-        else:
-            p = not_ok
+        p = procedure_implicit_none() if b else not_ok
         return p()

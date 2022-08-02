@@ -12,99 +12,70 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
     # https://docs.djangoproject.com/en/3.0/ref/request-response/#httprequest-objects
 
     ensure_tainted(
-        request, # $ tainted
-
-        request.body, # $ tainted
-        request.path, # $ tainted
-        request.path_info, # $ tainted
-
-        # With CSRF middleware disabled, it's possible to use custom methods,
-        # for example by `curl -X FOO <url>`
-        request.method, # $ tainted
-
-        request.encoding, # $ tainted
-        request.content_type, # $ tainted
-
-        # Dict[str, str]
-        request.content_params, # $ tainted
-        request.content_params["key"], # $ tainted
-        request.content_params.get("key"), # $ tainted
-
-        # django.http.QueryDict
-        # see https://docs.djangoproject.com/en/3.0/ref/request-response/#querydict-objects
-        request.GET, # $ tainted
-        request.GET["key"], # $ tainted
-        request.GET.get("key"), # $ tainted
-        request.GET.getlist("key"), # $ MISSING: tainted
-        request.GET.getlist("key")[0], # $ MISSING: tainted
-        request.GET.pop("key"), # $ tainted
-        request.GET.pop("key")[0], # $ tainted
-        # key
-        request.GET.popitem()[0], # $ tainted
-        # values
-        request.GET.popitem()[1], # $ tainted
-        # values[0]
-        request.GET.popitem()[1][0], # $ tainted
-        request.GET.dict(), # $ MISSING: tainted
-        request.GET.dict()["key"], # $ MISSING: tainted
-        request.GET.urlencode(), # $ MISSING: tainted
-
-        # django.http.QueryDict (same as above, did not duplicate tests)
-        request.POST, # $ tainted
-
-        # Dict[str, str]
-        request.COOKIES, # $ tainted
-        request.COOKIES["key"], # $ tainted
-        request.COOKIES.get("key"), # $ tainted
-
-        # MultiValueDict[str, UploadedFile]
-        request.FILES, # $ tainted
-        request.FILES["key"], # $ tainted
-        request.FILES["key"].content_type, # $ MISSING: tainted
-        request.FILES["key"].content_type_extra, # $ MISSING: tainted
-        request.FILES["key"].content_type_extra["key"], # $ MISSING: tainted
-        request.FILES["key"].charset, # $ MISSING: tainted
-        request.FILES["key"].name, # $ MISSING: tainted
-        request.FILES["key"].file, # $ MISSING: tainted
-        request.FILES["key"].file.read(), # $ MISSING: tainted
-
-        request.FILES.get("key"), # $ tainted
-        request.FILES.get("key").name, # $ MISSING: tainted
-        request.FILES.getlist("key"), # $ MISSING: tainted
-        request.FILES.getlist("key")[0], # $ MISSING: tainted
-        request.FILES.getlist("key")[0].name, # $ MISSING: tainted
-        request.FILES.dict(), # $ MISSING: tainted
-        request.FILES.dict()["key"], # $ MISSING: tainted
-        request.FILES.dict()["key"].name, # $ MISSING: tainted
-
-        # Dict[str, Any]
-        request.META, # $ tainted
-        request.META["HTTP_USER_AGENT"], # $ tainted
-        request.META.get("HTTP_USER_AGENT"), # $ tainted
-
-        # HttpHeaders (case insensitive dict-like)
-        request.headers, # $ tainted
-        request.headers["user-agent"], # $ tainted
-        request.headers["USER_AGENT"], # $ tainted
-
-        # django.urls.ResolverMatch
-        request.resolver_match, # $ tainted
-        request.resolver_match.args, # $ MISSING: tainted
-        request.resolver_match.args[0], # $ MISSING: tainted
-        request.resolver_match.kwargs, # $ MISSING: tainted
-        request.resolver_match.kwargs["key"], # $ MISSING: tainted
-
-        request.get_full_path(), # $ MISSING: tainted
-        request.get_full_path_info(), # $ MISSING: tainted
-        # build_absolute_uri handled below
-        # get_signed_cookie handled below
-
-        request.read(), # $ MISSING: tainted
-        request.readline(), # $ MISSING: tainted
-        request.readlines(), # $ MISSING: tainted
-        request.readlines()[0], # $ MISSING: tainted
-        [line for line in request], # $ MISSING: tainted
+        request,
+        request.body,
+        request.path,
+        request.path_info,
+        request.method,
+        request.encoding,
+        request.content_type,
+        request.content_params,
+        request.content_params["key"],
+        request.content_params.get("key"),
+        request.GET,
+        request.GET["key"],
+        request.GET.get("key"),
+        request.GET.getlist("key"),
+        request.GET.getlist("key")[0],
+        request.GET.pop("key"),
+        request.GET.pop("key")[0],
+        request.GET.popitem()[0],
+        request.GET.popitem()[1],
+        request.GET.popitem()[1][0],
+        request.GET.dict(),
+        request.GET.dict()["key"],
+        request.GET.urlencode(),
+        request.POST,
+        request.COOKIES,
+        request.COOKIES["key"],
+        request.COOKIES.get("key"),
+        request.FILES,
+        request.FILES["key"],
+        request.FILES["key"].content_type,
+        request.FILES["key"].content_type_extra,
+        request.FILES["key"].content_type_extra["key"],
+        request.FILES["key"].charset,
+        request.FILES["key"].name,
+        request.FILES["key"].file,
+        request.FILES["key"].file.read(),
+        request.FILES.get("key"),
+        request.FILES.get("key").name,
+        request.FILES.getlist("key"),
+        request.FILES.getlist("key")[0],
+        request.FILES.getlist("key")[0].name,
+        request.FILES.dict(),
+        request.FILES.dict()["key"],
+        request.FILES.dict()["key"].name,
+        request.META,
+        request.META["HTTP_USER_AGENT"],
+        request.META.get("HTTP_USER_AGENT"),
+        request.headers,
+        request.headers["user-agent"],
+        request.headers["USER_AGENT"],
+        request.resolver_match,
+        request.resolver_match.args,
+        request.resolver_match.args[0],
+        request.resolver_match.kwargs,
+        request.resolver_match.kwargs["key"],
+        request.get_full_path(),
+        request.get_full_path_info(),
+        request.read(),
+        request.readline(),
+        request.readlines(),
+        request.readlines()[0],
+        list(request),
     )
+
 
     # django.urls.ResolverMatch also supports iterable unpacking
     _view, args, kwargs = request.resolver_match

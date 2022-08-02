@@ -53,10 +53,10 @@ def t2():
     return bool
        
 def f():
-    
+
     global local_global
     local_global = 1
-    
+
     local_global
 
 #ODASA-2021
@@ -99,9 +99,7 @@ except ImportError:
 if module1:
     inst = module2.Class()
 
-#Some possible false positives, observed in ERP5.
-if 1:
-    pfp1 = 1
+pfp1 = 1
 
 pfp1
 
@@ -166,11 +164,6 @@ def outer():
 
 
 #ODASA-5896
-guesses_made = 0
-while guesses_made < 6:  # This loop is guaranteed to execute at least once.
+for _ in range(6):
     guess = int(input('Take a guess: '))
-    guesses_made += 1
-
-if guess == 1017: # FP here
-   pass
 

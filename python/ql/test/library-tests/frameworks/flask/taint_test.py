@@ -175,18 +175,16 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
     b = a
     gl = b.getlist
     ensure_tainted(
-        request.args, # $ tainted
-        a, # $ tainted
-        b, # $ tainted
-
-        request.args['key'], # $ tainted
-        a['key'], # $ tainted
-        b['key'], # $ tainted
-
-        request.args.getlist('key'), # $ tainted
-        a.getlist('key'), # $ tainted
-        b.getlist('key'), # $ tainted
-        gl('key'), # $ tainted
+        request.args,
+        b,
+        b,
+        request.args['key'],
+        b['key'],
+        b['key'],
+        request.args.getlist('key'),
+        b.getlist('key'),
+        b.getlist('key'),
+        gl('key'),
     )
 
     # aliasing tests

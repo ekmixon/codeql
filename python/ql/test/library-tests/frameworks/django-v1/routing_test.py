@@ -5,7 +5,7 @@ from django.views.generic import View
 
 
 def url_match_xss(request, foo, bar, no_taint=None):  # $requestHandler routedParameter=foo routedParameter=bar
-    return HttpResponse('url_match_xss: {} {}'.format(foo, bar))  # $HttpResponse
+    return HttpResponse(f'url_match_xss: {foo} {bar}')
 
 
 def get_params_xss(request):  # $requestHandler
@@ -27,22 +27,22 @@ class Foo(object):
 
 
     def post(self, request, untrusted):  # $ MISSING: requestHandler routedParameter=untrusted
-        return HttpResponse('Foo post: {}'.format(untrusted))  # $HttpResponse
+        return HttpResponse(f'Foo post: {untrusted}')
 
 
 class ClassView(View, Foo):
 
     def get(self, request, untrusted):  # $ requestHandler routedParameter=untrusted
-        return HttpResponse('ClassView get: {}'.format(untrusted))  # $HttpResponse
+        return HttpResponse(f'ClassView get: {untrusted}')
 
 
 def show_articles(request, page_number=1):  # $requestHandler routedParameter=page_number
     page_number = int(page_number)
-    return HttpResponse('articles page: {}'.format(page_number))  # $HttpResponse
+    return HttpResponse(f'articles page: {page_number}')
 
 
 def xxs_positional_arg(request, arg0, arg1, no_taint=None):  # $requestHandler routedParameter=arg0 routedParameter=arg1
-    return HttpResponse('xxs_positional_arg: {} {}'.format(arg0, arg1))  # $HttpResponse
+    return HttpResponse(f'xxs_positional_arg: {arg0} {arg1}')
 
 
 urlpatterns = [
@@ -63,7 +63,7 @@ urlpatterns = [
 # Using patterns() for routing
 
 def show_user(request, username):  # $requestHandler routedParameter=username
-    return HttpResponse('show_user {}'.format(username))  # $HttpResponse
+    return HttpResponse(f'show_user {username}')
 
 
 urlpatterns = patterns(url(r"^users/(?P<username>[^/]+)", show_user))  # $routeSetup="^users/(?P<username>[^/]+)"

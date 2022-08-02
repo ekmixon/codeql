@@ -1,9 +1,8 @@
 #File not always closed
 
 def not_close1():
-    f1 = open("filename")
-    f1.write("Error could occur")
-    f1.close()
+    with open("filename") as f1:
+        f1.write("Error could occur")
 
 def not_close2():
     f2 = open("filename")
@@ -39,7 +38,7 @@ def closed7():
         f7 = open("filename")
         f7.write("Error could occur")
     finally:
-        if not f7 is None:
+        if f7 is not None:
             f7.close()
 
 #Incorrectly guarded close()
@@ -101,8 +100,7 @@ def opener_func1(name):
     return open(name)
 
 def opener_func2(name):
-    t1 = opener_func1(name)
-    return t1
+    return opener_func1(name)
 
 def not_closed13(name):
     f13 = open(name)
@@ -126,9 +124,8 @@ def closed15():
 
 def may_not_be_closed16(name):
     try:
-        f16 = open(name)
-        f16.write("Hello")
-        f16.close()
+        with open(name) as f16:
+            f16.write("Hello")
     except IOError:
         pass
 
@@ -178,10 +175,7 @@ def closed20(path):
 #ODASA-3105
 def run(nodes_module):
     use_file = len(sys.argv) > 1
-    if use_file:
-        out = open(sys.argv[1], 'w', encoding='utf-8')
-    else:
-        out = sys.stdout
+    out = open(sys.argv[1], 'w', encoding='utf-8') if use_file else sys.stdout
     try:
         out.write("spam")
     finally:
@@ -192,10 +186,7 @@ def run(nodes_module):
 class GraphVizTrapWriter(object):
 
     def __init__(self, out):
-        if out is None:
-            self.out = sys.stdout
-        else:
-            self.out = open(out, 'w')
+        self.out = sys.stdout if out is None else open(out, 'w')
         self.pool = GraphVizIdPool(self.out)
 
     def __del__(self):

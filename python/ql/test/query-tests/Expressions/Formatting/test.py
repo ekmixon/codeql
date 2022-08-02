@@ -33,11 +33,7 @@ implicit_format1.format("Hello", "World", "Extra")
 format(implicit_format2, "Hello", "World", "Extra")
 
 #OK ODASA-3197
-if cond:
-    x_or_y = "{x}"
-else:
-    x_or_y = "{y}"
-    
+x_or_y = "{x}" if cond else "{y}"
 format(x_or_y, x="x", y="y")
 x_or_y.format(x="x", y="y")
 

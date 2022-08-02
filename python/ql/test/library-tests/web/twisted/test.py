@@ -3,22 +3,19 @@ from twisted.web import resource
 class MyRequestHandler1(resource.Resource):
     def render(self, request):
         foo(request.uri)
-        response = do_stuff_with(request)
-        return response
+        return do_stuff_with(request)
 
     def render_GET(self, request):
         x = request
         bar(x.uri)
         do_stuff_with(request)
-        response = do_stuff_with(request)
-        return response
+        return do_stuff_with(request)
 
     def render_POST(self, request):
         baz(request.args)
         foo = request.args.get("baz")
         quux = foo[5]
-        response = do_stuff_with(quux)
-        return response
+        return do_stuff_with(quux)
 
 class MyRequestHandler2(resource.Resource):
     def myrender(self, request):

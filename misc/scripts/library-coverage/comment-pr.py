@@ -83,7 +83,7 @@ def comment_pr(repo, run_id):
     comment = get_comment_text(
         f"{current_diff_folder}/{comparison_artifact_file_name}", repo, run_id)
 
-    if comment == None:
+    if comment is None:
         if prev_run_id == 0:
             print(
                 "Nothing to comment. There's no previous run, and there's no coverage change.")
@@ -126,9 +126,7 @@ def get_previous_run_id(repo, run_id, pr_number):
 
     ids = []
     for l in [json.loads(l) for l in output.splitlines()]:
-        for id in l:
-            ids.append(id)
-
+        ids.extend(iter(l))
     if ids[0] != int(run_id):
         raise Exception(
             f"Expected to find {run_id} in the list of matching runs.")

@@ -6,10 +6,6 @@ def bar(bar_x):  # $tracked
     print("bar", bar_x)  # $tracked
 
 
-if len(__file__) % 2 == 0:
-    f = foo
-else:
-    f = bar
-
+f = foo if len(__file__) % 2 == 0 else bar
 x = tracked  # $tracked
 f(x)  # $tracked

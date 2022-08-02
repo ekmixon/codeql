@@ -16,12 +16,10 @@ foo()
 
 def bar(x):
     test = False
-    try:
+    with suppress(Exception):
         if x:
             raise Exception("Bar")
         test = True
-    except Exception:
-        pass
     if test:
         print("Test was set")
         return
@@ -36,4 +34,3 @@ def fn_suppression():
     with suppress(Exception):
         raise Exception()
     return False
-    return True

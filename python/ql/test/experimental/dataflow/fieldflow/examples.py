@@ -52,8 +52,7 @@ SINK(obj.foo)
 # Local flow
 def fields_with_local_flow(x):
     obj = MyObj(x)
-    a = obj.foo
-    return a
+    return obj.foo
 
 
 SINK(fields_with_local_flow(SOURCE))

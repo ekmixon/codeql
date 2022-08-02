@@ -34,19 +34,17 @@ with open(instruction_path, 'r', encoding='utf-8') as instr:
                 saw_blank_line_in_qldoc = True
             elif not saw_blank_line_in_qldoc:
                 qldoc_lines.append(line)
+        elif start_qldoc_re.search(line):
+            # Starting a new QLDoc comment.
+            saw_blank_line_in_qldoc = False
+            qldoc_lines.append(line)
+            if not end_qldoc_re.search(line):
+                in_qldoc = True
         else:
-            if start_qldoc_re.search(line):
-                # Starting a new QLDoc comment.
-                saw_blank_line_in_qldoc = False
-                qldoc_lines.append(line)
-                if not end_qldoc_re.search(line):
-                    in_qldoc = True
-            else:
-                instruction_match = instruction_class_re.search(line)
-                if instruction_match:
+            if instruction_match := instruction_class_re.search(line):
                     # Found the declaration of an `Instruction` class. Record the QLDoc comments.
-                    instruction_comments[instruction_match.group('name')] = qldoc_lines
-                qldoc_lines = []
+                instruction_comments[instruction_match['name']] = qldoc_lines
+            qldoc_lines = []
 
 # Scan `Opcode.qll`. Whenever we see the declaration of an `Opcode` class for which we have a
 # corresponding `Instruction` class, we'll attach a copy of the `Instruction`'s QLDoc comment.
@@ -59,43 +57,41 @@ with open(opcode_path, 'r', encoding='utf-8') as opcode:
             qldoc_lines.append(line)
             if end_qldoc_re.search(line):
                 in_qldoc = False
+        elif start_qldoc_re.search(line):
+            qldoc_lines.append(line)
+            if not end_qldoc_re.search(line):
+                in_qldoc = True
         else:
-            if start_qldoc_re.search(line):
-                qldoc_lines.append(line)
-                if not end_qldoc_re.search(line):
-                    in_qldoc = True
-            else:
-                name_without_suffix = None
-                name = None
-                indent = ''
-                opcode_base_match = opcode_base_class_re.search(line)
-                if opcode_base_match:
-                    name_without_suffix = opcode_base_match.group('name')
-                    name = name_without_suffix + 'Opcode'
-                else:
-                    opcode_match = opcode_class_re.search(line)
-                    if opcode_match:
-                        name_without_suffix = opcode_match.group('name')
-                        name = name_without_suffix
-                        # Indent by two additional spaces, since opcodes are declared in the
-                        # `Opcode` module.
-                        indent = '  '
-                
-                if name_without_suffix:
-                    # Found an `Opcode` that matches a known `Instruction`. Replace the QLDoc with
-                    # a copy of the one from the `Instruction`.
-                    if instruction_comments.get(name_without_suffix):
-                        article = 'an' if needs_an_re.search(name_without_suffix) else 'a'
-                        qldoc_lines = [
-                            indent + '/**\n',
-                            indent + ' * The `Opcode` for ' + article + ' `' + name_without_suffix + 'Instruction`.\n',
-                            indent + ' *\n',
-                            indent + ' * See the `' + name_without_suffix + 'Instruction` documentation for more details.\n',
-                            indent + ' */\n'
-                        ]
-                output_lines.extend(qldoc_lines)
-                qldoc_lines = []
-                output_lines.append(line)
+            name = None
+            indent = ''
+            name_without_suffix = None
+            if opcode_base_match := opcode_base_class_re.search(line):
+                name_without_suffix = opcode_base_match['name']
+                name = f'{name_without_suffix}Opcode'
+            elif opcode_match := opcode_class_re.search(line):
+                name_without_suffix = opcode_match['name']
+                name = name_without_suffix
+                # Indent by two additional spaces, since opcodes are declared in the
+                # `Opcode` module.
+                indent = '  '
+
+            if name_without_suffix and instruction_comments.get(
+                name_without_suffix
+            ):
+                article = 'an' if needs_an_re.search(name_without_suffix) else 'a'
+                qldoc_lines = [
+                    indent + '/**\n',
+                    f'{indent} * The `Opcode` for {article} `{name_without_suffix}'
+                    + 'Instruction`.\n',
+                    indent + ' *\n',
+                    f'{indent} * See the `{name_without_suffix}'
+                    + 'Instruction` documentation for more details.\n',
+                    indent + ' */\n',
+                ]
+
+            output_lines.extend(qldoc_lines)
+            qldoc_lines = []
+            output_lines.append(line)
 
 # Write out the updated `Opcode.qll`
 with open(opcode_path, 'w', encoding='utf-8') as opcode:

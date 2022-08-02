@@ -1,7 +1,5 @@
 def check_output(outtext, f):
-    if outtext == "OK\n":
-        pass
-    else:
+    if outtext != "OK\n":
         raise RuntimeError("Function failed", outtext, f.__name__)
 
 

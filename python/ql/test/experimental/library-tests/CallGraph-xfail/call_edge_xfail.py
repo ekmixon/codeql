@@ -14,7 +14,7 @@ def xfail_baz():
 # name:xfail_lambda
 xfail_lambda = lambda: print('xfail_lambda')
 
-if len(sys.argv) >= 2 and not sys.argv[1] in ['0', 'False', 'false']:
+if len(sys.argv) >= 2 and sys.argv[1] not in ['0', 'False', 'false']:
     func = xfail_foo
 else:
     func = xfail_bar

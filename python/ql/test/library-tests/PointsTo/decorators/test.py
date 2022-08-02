@@ -51,10 +51,7 @@ def register(name=None):
             raise ValueError("not a callable")
         return func
 
-    if callable(name):
-        return decorator(name)
-    else:
-        return decorator
+    return decorator(name) if callable(name) else decorator
 
 @register(17)
 def foo():

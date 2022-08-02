@@ -13,5 +13,5 @@ def jinja2():
 
 def jinja3():
     random = 1234
-    t = Jinja2_Template("sink"+random)
+    t = Jinja2_Template(f"sink{random}")
 

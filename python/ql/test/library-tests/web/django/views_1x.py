@@ -5,7 +5,7 @@ from django.views.generic import View
 
 
 def url_match_xss(request, foo, bar, no_taint=None):
-    return HttpResponse('url_match_xss: {} {}'.format(foo, bar))
+    return HttpResponse(f'url_match_xss: {foo} {bar}')
 
 
 def get_params_xss(request):
@@ -27,22 +27,22 @@ class Foo(object):
 
 
     def post(self, request, untrusted):
-        return HttpResponse('Foo post: {}'.format(untrusted))
+        return HttpResponse(f'Foo post: {untrusted}')
 
 
 class ClassView(View, Foo):
 
     def get(self, request, untrusted):
-        return HttpResponse('ClassView get: {}'.format(untrusted))
+        return HttpResponse(f'ClassView get: {untrusted}')
 
 
 def show_articles(request, page_number=1):
     page_number = int(page_number)
-    return HttpResponse('articles page: {}'.format(page_number))
+    return HttpResponse(f'articles page: {page_number}')
 
 
 def xxs_positional_arg(request, arg0, arg1, no_taint=None):
-    return HttpResponse('xxs_positional_arg: {} {}'.format(arg0, arg1))
+    return HttpResponse(f'xxs_positional_arg: {arg0} {arg1}')
 
 
 urlpatterns = [
@@ -63,7 +63,7 @@ urlpatterns = [
 # Using patterns() for routing
 
 def show_user(request, username):
-    return HttpResponse('show_user {}'.format(username))
+    return HttpResponse(f'show_user {username}')
 
 
 urlpatterns = patterns(url(r'^users/(?P<username>[^/]+)$', show_user))

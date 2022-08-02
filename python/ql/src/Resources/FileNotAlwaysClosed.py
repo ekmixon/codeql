@@ -1,6 +1,5 @@
-f = open("filename")
+with open("filename") as f:
     ... # Actions to perform on file
-f.close()
 # File only closed if actions are completed successfully
 
 with open("filename") as f:

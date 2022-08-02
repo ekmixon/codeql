@@ -29,7 +29,7 @@ secret_message = b"secret message"
 # Following example at https://cryptography.io/en/latest/hazmat/primitives/asymmetric/rsa.html#encryption
 encrypted = public_key.encrypt(secret_message, padding=ENCRYPT_PADDING)
 
-print("encrypted={}".format(encrypted))
+print(f"encrypted={encrypted}")
 
 print()
 
@@ -38,7 +38,7 @@ decrypted = private_key.decrypt(
     padding=ENCRYPT_PADDING
 )
 
-print("decrypted={}".format(decrypted))
+print(f"decrypted={decrypted}")
 assert decrypted == secret_message
 
 print("\n---\n")
@@ -62,7 +62,7 @@ signature = private_key.sign(
     algorithm=HASH_ALGORITHM,
 )
 
-print("signature={}".format(signature))
+print(f"signature={signature}")
 
 print()
 

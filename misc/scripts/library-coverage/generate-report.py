@@ -54,7 +54,7 @@ def collect_package_stats(packages: pack.PackageCollection, cwes, filter):
             for cwe in cwes:
                 count = 0
                 for sink in cwes[cwe]["sink"].split(" "):
-                    sink = "sink:" + sink
+                    sink = f"sink:{sink}"
                     count += package.get_kind_count(sink)
                 if count > 0:
                     if cwe not in framework_cwes:
@@ -88,39 +88,40 @@ except Exception as e:
     print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
     raise e
 
-# The script can be run in two modes:
-# (i) dev: run on the local developer machine, and collect the coverage data. The output is generated into the expected
-#          folders: {language}/documentation/library-coverage/
-# (ii) ci: run in a CI action. The output is generated to the root folder, and then in a subsequent step packaged as a
-#          build artifact.
-mode = "dev"
-if len(sys.argv) > 1:
-    mode = sys.argv[1]
+mode = sys.argv[1] if len(sys.argv) > 1 else "dev"
+if mode not in ["dev", "ci"]:
+    print(
+        (
+            f"Unknown execution mode: {mode}"
+            + ". Expected either 'dev' or 'ci'."
+        ),
+        file=sys.stderr,
+    )
 
-if mode != "dev" and mode != "ci":
-    print("Unknown execution mode: " + mode +
-          ". Expected either 'dev' or 'ci'.", file=sys.stderr)
     exit(1)
 
-# The QL model holding the CSV info can come from directly a PR or the main branch, but optionally we can use an earlier
-# SHA too, therefore it's checked out seperately into a dedicated subfolder.
-query_prefix = ""
-if len(sys.argv) > 2:
-    query_prefix = sys.argv[2] + "/"
-
-
+query_prefix = f"{sys.argv[2]}/" if len(sys.argv) > 2 else ""
 # Languages for which we want to generate coverage reports.
 configs = [
     utils.LanguageConfig(
-        "java", "Java", ".java", query_prefix + "java/ql/src/meta/frameworks/Coverage.ql"),
+        "java",
+        "Java",
+        ".java",
+        f"{query_prefix}java/ql/src/meta/frameworks/Coverage.ql",
+    ),
     utils.LanguageConfig(
-        "csharp", "C#", ".cs", query_prefix + "csharp/ql/src/meta/frameworks/Coverage.ql")
+        "csharp",
+        "C#",
+        ".cs",
+        f"{query_prefix}csharp/ql/src/meta/frameworks/Coverage.ql",
+    ),
 ]
+
 
 # The names of input and output files. The placeholder {language} is replaced with the language name.
 output_ql_csv = "output-{language}.csv"
-input_framework_csv = settings.documentation_folder + "frameworks.csv"
-input_cwe_sink_csv = settings.documentation_folder + "cwe-sink.csv"
+input_framework_csv = f"{settings.documentation_folder}frameworks.csv"
+input_cwe_sink_csv = f"{settings.documentation_folder}cwe-sink.csv"
 
 if mode == "dev":
     output_rst = settings.repo_output_rst

@@ -33,8 +33,7 @@ class D(object):
 D.foo(1)
 D().foo(2)
 
-l = [1,2,3]
-l.append(4)
+l = [1, 2, 3, 4]
 len(l)
 
 f(arg0=0, arg1=1, arg2=2)

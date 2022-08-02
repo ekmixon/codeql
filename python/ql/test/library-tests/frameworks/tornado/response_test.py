@@ -13,7 +13,7 @@ class ResponseWriting(tornado.web.RequestHandler):
             # Content-type will be set to `application/json`
             self.write(d) # $ HttpResponse responseBody=d MISSING: mimetype=application/json SPURIOUS: mimetype=text/html
         else:
-            raise Exception("Bad type {} {}".format(type_, type(type_)))
+            raise Exception(f"Bad type {type_} {type(type_)}")
 
 
 class ExplicitContentType(tornado.web.RequestHandler):

@@ -4,6 +4,6 @@ class MyTest(TestCase):
     
     
     def testInts(self):
-        self.assertTrue(1 == 1)
+        self.assertTrue(True)
         self.assertFalse(1 > 2)
-        self.assertTrue(1 in []) #This will fail
+        self.assertTrue(1 in {})

@@ -68,23 +68,22 @@ def test_and():
 def test_tricky():
     s = TAINTED_STRING
 
-    x = is_safe(s)
-    if x:
+    if x := is_safe(s):
         ensure_not_tainted(s) # FP
 
     s_ = s
-    if is_safe(s):
+    if is_safe(s_):
         ensure_not_tainted(s_) # FP
 
 def test_nesting_not():
     s = TAINTED_STRING
 
-    if not(not(is_safe(s))):
+    if (is_safe(s)):
         ensure_not_tainted(s)
     else:
         ensure_tainted(s)
 
-    if not(not(not(is_safe(s)))):
+    if not(is_safe(s)):
         ensure_tainted(s)
     else:
         ensure_not_tainted(s)
@@ -94,17 +93,17 @@ def test_nesting_not():
 def test_nesting_not_with_and_true():
     s = TAINTED_STRING
 
-    if not(is_safe(s) and True):
+    if not is_safe(s):
         ensure_tainted(s)
     else:
         ensure_not_tainted(s)
 
-    if not(not(is_safe(s) and True)):
+    if is_safe(s):
         ensure_not_tainted(s)
     else:
         ensure_tainted(s)
 
-    if not(not(not(is_safe(s) and True))):
+    if not is_safe(s):
         ensure_tainted(s)
     else:
         ensure_not_tainted(s)

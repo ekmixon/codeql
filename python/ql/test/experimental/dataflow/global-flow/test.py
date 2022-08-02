@@ -35,16 +35,8 @@ g_ins.append(75)
 # A global with multiple potential definitions
 
 import unknown_module
-if unknown_module.attr:
-    g_mult = [200] # $writes=g_mult
-else:
-    g_mult = [300] # $writes=g_mult
-
-# A global variable that may be redefined depending on some unknown value
-
-g_redef = [400] # $writes=g_redef
-if unknown_module.attr:
-    g_redef = [500] # $writes=g_redef
+g_mult = [200] if unknown_module.attr else [300]
+g_redef = [500] if unknown_module.attr else [400]
 
 def global_access():
     l = 5

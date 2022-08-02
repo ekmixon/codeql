@@ -1,18 +1,12 @@
 
 #Mistakenly mixed list and string
 def greeting():
-    if is_global():
-        greet = [ "Hello", "World" ]
-    else:
-        greet = "Hello"
+    greet = [ "Hello", "World" ] if is_global() else "Hello"
     for word in greet:
         print(word)
 
 #Only use list
 def fixed_greeting():
-    if is_global():
-        greet = [ "Hello", "World" ]
-    else:
-        greet = [ "Hello" ]
+    greet = [ "Hello", "World" ] if is_global() else [ "Hello" ]
     for word in greet:
         print(word)

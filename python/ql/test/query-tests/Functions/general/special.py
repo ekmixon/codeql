@@ -21,8 +21,8 @@ class I(Interface):
 
 class M(I):
 
-    def __setattr__(name, value):
+    def __setattr__(self, value):
         pass
 
-    def __getitem__(name):
+    def __getitem__(self):
         pass

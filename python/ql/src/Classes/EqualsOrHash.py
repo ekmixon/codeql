@@ -9,9 +9,11 @@ class Point(object):
         return 'Point(%r, %r)' % (self._x, self._y)
 
     def __eq__(self, other):
-        if not isinstance(other, Point):
-            return False
-        return self._x == other._x and self._y == other._y
+        return (
+            self._x == other._x and self._y == other._y
+            if isinstance(other, Point)
+            else False
+        )
 
 
 # Improved: equality and hash method defined (inequality method still missing)
@@ -25,9 +27,11 @@ class PointUpdated(object):
         return 'Point(%r, %r)' % (self._x, self._y)
 
     def __eq__(self, other):
-        if not isinstance(other, Point):
-            return False
-        return self._x == other._x and self._y == other._y
+        return (
+            self._x == other._x and self._y == other._y
+            if isinstance(other, Point)
+            else False
+        )
 
     def __hash__(self):  
         return hash(self._x) ^ hash(self._y)
@@ -43,9 +47,11 @@ class UnhashablePoint(object):
         return 'Point(%r, %r)' % (self._x, self._y)
 
     def __eq__(self, other):
-        if not isinstance(other, Point):
-            return False
-        return self._x == other._x and self._y == other._y
+        return (
+            self._x == other._x and self._y == other._y
+            if isinstance(other, Point)
+            else False
+        )
 
     #Tell the interpreter that instances of this class cannot be hashed
     __hash__ = None

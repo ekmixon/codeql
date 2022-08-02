@@ -19,10 +19,7 @@ def popargs(*args, **kwargs):
 
         # We're in the actual function
         self = cls_or_self
-        if vpath:
-            return getattr(self, vpath.pop(0), None)
-        else:
-            return self
+        return getattr(self, vpath.pop(0), None) if vpath else self
 
     return decorated
 

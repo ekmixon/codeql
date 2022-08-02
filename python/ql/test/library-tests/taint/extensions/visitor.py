@@ -9,7 +9,7 @@ class Visitor(object):
 
     def visit(self, node, arg):
         """Visit a node."""
-        method = 'visit_' + node.__class__.__name__
+        method = f'visit_{node.__class__.__name__}'
         getattr(self, method, self.generic_visit)(node, arg)
 
     def generic_visit(self, node, arg):

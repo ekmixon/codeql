@@ -252,12 +252,15 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
     # - LOAD_BUILD_CLASS: Called when constructing a class.
     # - IMPORT_NAME: Observed to result in a call to filename='<frozen
     #   importlib._bootstrap>', linenum=389, funcname='parent'
-    if FAIL_ON_UNKNOWN_BYTECODE:
-        if inst.opname not in ["LOAD_BUILD_CLASS", "IMPORT_NAME"] + WITH_OPNAMES:
-            LOGGER.warning(
-                f"Don't know how to handle this type of instruction: {inst.opname}"
-            )
-            raise BaseException()
+    if (
+        FAIL_ON_UNKNOWN_BYTECODE
+        and inst.opname
+        not in ["LOAD_BUILD_CLASS", "IMPORT_NAME"] + WITH_OPNAMES
+    ):
+        LOGGER.warning(
+            f"Don't know how to handle this type of instruction: {inst.opname}"
+        )
+        raise BaseException()
 
     return BytecodeUnknown(inst.opname)
 

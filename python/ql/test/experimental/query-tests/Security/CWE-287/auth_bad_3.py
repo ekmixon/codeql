@@ -12,8 +12,8 @@ def passwordNone():
     The bind's password argument is set to None
     """
 
-    dn = "dc={}".format(escape_rdn(request.args['dc']))
-    search_filter = "(user={})".format(escape_filter_chars(request.args['search']))
+    dn = f"dc={escape_rdn(request.args['dc'])}"
+    search_filter = f"(user={escape_filter_chars(request.args['search'])})"
 
     srv = Server('servername', get_info=ALL)
     conn = Connection(srv, 'user_dn', None)
@@ -26,8 +26,8 @@ def passwordNoneKwargs():
     The bind's password argument is set to None
     """
 
-    dn = "dc={}".format(escape_rdn(request.args['dc']))
-    search_filter = "(user={})".format(escape_filter_chars(request.args['search']))
+    dn = f"dc={escape_rdn(request.args['dc'])}"
+    search_filter = f"(user={escape_filter_chars(request.args['search'])})"
 
     srv = Server('servername', get_info=ALL)
     conn = Connection(srv, user='user_dn', password=None)
@@ -39,8 +39,8 @@ def passwordEmpty():
     The bind's password argument is an empty string
     """
 
-    dn = "dc={}".format(escape_rdn(request.args['dc']))
-    search_filter = "(user={})".format(escape_filter_chars(request.args['search']))
+    dn = f"dc={escape_rdn(request.args['dc'])}"
+    search_filter = f"(user={escape_filter_chars(request.args['search'])})"
 
     srv = Server('servername', get_info=ALL)
     conn = Connection(srv, user='user_dn', password="")
@@ -53,8 +53,8 @@ def notPassword():
     The bind's password argument is not set
     """
 
-    dn = "dc={}".format(escape_rdn(request.args['dc']))
-    search_filter = "(user={})".format(escape_filter_chars(request.args['search']))
+    dn = f"dc={escape_rdn(request.args['dc'])}"
+    search_filter = f"(user={escape_filter_chars(request.args['search'])})"
 
     srv = Server('servername', get_info=ALL)
     conn = Connection(srv, user='user_dn')

@@ -124,10 +124,9 @@ class Popen3:
     def __del__(self):
         # In case the child hasn't been waited on, check if it's done.
         self.poll(_deadstate=sys.maxint)
-        if self.sts < 0:
-            if _active is not None:
-                # Child is still running, keep us alive until we can wait on it.
-                _active.append(self)
+        if self.sts < 0 and _active is not None:
+            # Child is still running, keep us alive until we can wait on it.
+            _active.append(self)
 
     def _run_child(self, cmd):
         if isinstance(cmd, basestring):
@@ -206,10 +205,9 @@ class Popen3Again:
     def __del__(self):
         # In case the child hasn't been waited on, check if it's done.
         self.poll(_deadstate=sys.maxint)
-        if self.sts < 0:
-            if _active is not None:
-                # Child is still running, keep us alive until we can wait on it.
-                _active.append(self)
+        if self.sts < 0 and _active is not None:
+            # Child is still running, keep us alive until we can wait on it.
+            _active.append(self)
 
     def _run_child(self, cmd):
         if isinstance(cmd, basestring):

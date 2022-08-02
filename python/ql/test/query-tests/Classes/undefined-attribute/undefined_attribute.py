@@ -57,10 +57,7 @@ class UsesSetattr(object):
 class GuardedByHasAttr(object):
 
     def ok4(self):
-        if hasattr(self, "x"):
-            return self.x
-        else:
-            return None
+        return self.x if hasattr(self, "x") else None
 
 class HasGetAttr(object):
 
@@ -134,10 +131,7 @@ class Guarded(object):
         self.x = 1
         
     def use_x(self):
-        if self.guard:
-            return self.x
-        else:
-            return 0
+        return self.x if self.guard else 0
 
 #ODASA-2034
 class ODASA2034A(object):
@@ -161,12 +155,12 @@ class ODASA2034B(object):
 
 class Test5(object):
 
-    def readFromStream(stream):
-        word = stream.read(4)
+    def readFromStream(self):
+        word = self.read(4)
         if word == "true":
             return BooleanObject(True)
         elif word == "fals":
-            stream.read(1)
+            self.read(1)
             return BooleanObject(False)
         assert False
     readFromStream = staticmethod(readFromStream)
@@ -238,10 +232,7 @@ assert Foo2.a == 1
 class Customer1(object):
 
     def x(self):
-        if not hasattr(self, "attr"):
-            return None
-        else:
-            return self.attr
+        return self.attr if hasattr(self, "attr") else None
 
 #ODASA-4619
 class Odasa4619a(object):

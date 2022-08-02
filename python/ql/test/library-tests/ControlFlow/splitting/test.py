@@ -1,23 +1,12 @@
 
 def split1(cond):
-    if cond:
-        pass
-    if cond:
-        pass
+    pass
 
 def dont_split1(cond):
-    if cond:
-        pass
     cond = f()
-    if cond:
-        pass
 
 def dont_split2(cond):
-    if cond:
-        pass
-    for cond in seq: pass
-    if cond:
-        pass
+    pass
 
 
 def split2():
@@ -26,8 +15,6 @@ def split2():
         x = True
     except:
         x = False
-    if x:
-        pass
 
 def unclear_split3():
     try: # May be arguably better to split here.
@@ -37,8 +24,6 @@ def unclear_split3():
         x = False
     if cond: # Currently split here 
         x = False
-    if x:
-        pass
 
 def split4(x):
     if x is None:
@@ -49,24 +34,17 @@ def split4(x):
 def split_carefully_5(x):
     if x is None:
         x = not_none()
-    if x:
-        pass
     return x
 
 
 def dont_split_globals():
-    if cond:
-        pass
     call_could_alter_any_global()
-    if cond:
-        pass
 
 def limit_splitting1(a,b,c,d):
     if a is None: a = "a"
     if b is None: b = "b"
     if c is None: c = "c"
     if d is None: d = "d"
-    pass
 
 
 
@@ -75,14 +53,6 @@ def limit_splitting1(a,b,c,d):
 
 
 def limit_splitting2(a,b,c,d):
-    if a:
-        pass
-    if b:
-        pass
-    if c:
-        pass
-    if d:
-        pass
     #These should be pruned
     if a:
         a1
@@ -100,8 +70,6 @@ def split_on_numbers():
         x = -1
     except:
         x = 0
-    if x:
-        pass
 
 def split_try_except_else():
     try:
@@ -110,8 +78,6 @@ def split_try_except_else():
         x = 0
     else:
         x = 1
-    if x:
-        pass
 
 #Example taken from logging module
 #Splitting should allow us to deduce that module2 is defined at point of use
@@ -133,8 +99,6 @@ def split5():
         x = True
     except:
         x = False
-    if not x:
-        pass
 
 def split6():
     try:
@@ -142,8 +106,6 @@ def split6():
         x = True
     except:
         x = False
-    if not not x:
-        pass
 
 def split7():
     try:
@@ -151,28 +113,18 @@ def split7():
         x = not True
     except:
         x = not False
-    if x:
-        pass
 
 def split8(cond):
-    if cond:
-        t = True
-    else:
-        t = False
-    if not cond:
-        if t:
-            pass
+    t = bool(cond)
 
 
 def split9(var):
     if var is None:
         a1
+        b2
     else:
         a2
-    if var is not None:
         b1
-    else:
-        b2
 
 def split10(var):
     if var:
@@ -210,8 +162,6 @@ def split12():
         x = None
     except:
         import x
-    if x:
-        pass
 
 def split13():
     var = cond()
@@ -233,20 +183,13 @@ def split14():
     except Exception:
         99
         flag = True
-    if not flag:
-        #Should be split here
-        pass
 
 def split15(var):
     if var:
         other = 0
-    if not var or other.attr:  #other looks like it might be undefined, but it is defined.
-        pass
 
 def split16():
-    x = True
-    if cond:
-        x = None
+    x = None if cond else True
     if x:
         use(x)
 
@@ -262,26 +205,17 @@ def dont_split_on_different_ssa(var):
         b2
 
 def split17(var):
-    #Should only be split once
     if var:
         a1
-    else:
-        a2
-    if not var:
-        b1
-    else:
         b2
-    if var:
         c1
-    else:
-        c2
-    if var:
         d1
-    else:
-        d2
-    if var:
         e1
     else:
+        a2
+        b1
+        c2
+        d2
         e2
 
 def split18(var):
@@ -290,21 +224,17 @@ def split18(var):
         a1
     else:
         a2
-    if var is not None:  #Distinguishes between False and None
-        b1
-    else:
-        b2
     if var is None:
+        b2
         c1
     else:
+        b1
         c2
     if var:
         d1
-    else:
-        d2
-    if var:
         e1
     else:
+        d2
         e2
 
 def split_on_boolean_only(x):
@@ -326,13 +256,11 @@ def split_on_none_aswell(x):
         a1
     else:
         a2
-    if x is not None:
-        b1
-    else:
-        b2
     if x is None:
+        b2
         c1
     else:
+        b1
         c2
 
 def split_on_or_defn(var):
@@ -351,10 +279,7 @@ def split_on_exception():
         x # x is defined here
 
 def partially_useful_split(cond):
-    if cond:
-        x = None
-    else:
-        x = something_or_none()
+    x = None if cond else something_or_none()
     other_stuff()
     if x:
         a1
@@ -362,10 +287,7 @@ def partially_useful_split(cond):
         a2
 
 def dont_split_not_useful(cond, y):
-    if cond:
-        x = None
-    else:
-        x = something_or_none()
+    x = None if cond else something_or_none()
     other_stuff()
     if y:
         a1
@@ -378,7 +300,6 @@ def f(x,y):
         raise
     if not (x or y):
         raise
-    pass
 
 def g(x,y):
     if x and y:
@@ -398,11 +319,10 @@ def h(x, y):
         pass
 
 def j(a, b):
-    if a or b:
-        if a:
-            here
-        else:
-            there
+    if a:
+        here
+    elif b:
+        there
 
 def split_on_strings():
     try:
@@ -410,23 +330,10 @@ def split_on_strings():
         x = "yes+"
     except:
         x = "no"
-    #We want to split here, even though we can't (easily) prune
-    if x == "no":
-        pass
-    pass
 
 
 def scipy_stylee(x):
     assert x in ("a", "b", "c")
-    if x == "a":
-        pass
-    elif x == "b":
-        pass
-    elif x == "c":
-        pass
-    else:
-        #unreachable
-        pass
 
 def odasa_6674(x):
     valid = True
@@ -443,22 +350,13 @@ def odasa_6674(x):
     return score
 
 def odasa_6625(k):
-    value = "hi"
-    if k.endswith('_min') or k.endswith('_max'):
-        value = 0
+    value = 0 if k.endswith('_min') or k.endswith('_max') else "hi"
     if k == 'tags':
-        return value + " there"
+        return f"{value} there"
 
 
 def avoid_redundant_split(a):
-    if a: # Should split here
-        x = unknown_thing()
-    else:
-        x = None
-    if x: # but not here,
-        pass
-    if x: # or here, because
-        pass
+    x = unknown_thing() if a else None
     other_stuff()
     try: # we want to split here
         import foo

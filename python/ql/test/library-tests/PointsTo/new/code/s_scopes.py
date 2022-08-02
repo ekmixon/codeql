@@ -2,8 +2,6 @@
 #Global or builtin
 if a:
     float = True
-pass
-
 class C2(object):
 
     i1 = int

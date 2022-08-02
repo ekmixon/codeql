@@ -4,10 +4,9 @@ class GenericEquality(object):
     def __eq__(self, other):
         if type(other) is not type(self):
             return False
-        for attr in self.__dict__:
-            if getattr(other, attr) != getattr(self, attr):
-                return False
-        return True
+        return all(
+            getattr(other, attr) == getattr(self, attr) for attr in self.__dict__
+        )
 
 
 class AddAttributes(GenericEquality):

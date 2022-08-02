@@ -63,7 +63,7 @@ class WithDecoratorOnlySetter(object):
 
     @x.setter
     def x(self, value):
-        print('{} setting value to {}'.format(self.__class__, value))
+        print(f'{self.__class__} setting value to {value}')
 
 class FunkyButValid(object):
 
@@ -74,7 +74,7 @@ class FunkyButValid(object):
 
     @x.setter
     def y(self, value):
-        print('setting value to {}'.format(value))
+        print(f'setting value to {value}')
 
     @y.getter
     def z(self):
@@ -102,7 +102,7 @@ del wat.z
 class D(object):
 
     @classmethod
-    def c1(self):
+    def c1(cls):
         pass
 
     def c2(self):

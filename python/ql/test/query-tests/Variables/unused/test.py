@@ -1,7 +1,7 @@
 
 #Unused
 def fail():
-    for t in [TypeA, TypeB]:
+    for _ in [TypeA, TypeB]:
         x = TypeA()
         run_test(x)
 
@@ -13,10 +13,7 @@ def OK1(seq):
 
 #OK counting
 def OK2(seq):
-    i = 3
-    for x in seq:
-        i += 1
-    return i
+    return 3 + sum(1 for _ in seq)
 
 #OK check emptiness
 def OK3(seq):
@@ -38,9 +35,8 @@ def OK5(seq):
 #ODASA-3794
 def OK6(seq):
     for thing in seq:
-        if sum(1 for s in STATUSES
-               if thing <= s < thing + 100) >= quorum:
-                    return True
+        if sum(thing <= s < thing + 100 for s in STATUSES) >= quorum:
+            return True
 
 #OK -- Implicitly using count
 def OK7(seq):
@@ -95,7 +91,7 @@ maybe_defined_in_all = 17
 
 #ODASA-5895
 def rand_list():
-    return [ random.random() for i in range(100) ]
+    return [random.random() for _ in range(100)]
 
 def kwargs_is_a_use(seq):
     for arg in seq:
@@ -109,9 +105,9 @@ def cleanup(sessions):
 
 # For SuspiciousUnusedLoopIterationVariable.ql
 # ok
-for x in list(range(100)):
-        print('hi')
+for _ in list(range(100)):
+    print('hi')
 
 # ok
-for y in list(list(range(100))):
-        print('hi')
+for _ in list(list(range(100))):
+    print('hi')

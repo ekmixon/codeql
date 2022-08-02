@@ -30,46 +30,31 @@ class TaintTest(tornado.web.RequestHandler):
         request = self.request
 
         ensure_tainted(
-            # see https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPServerRequest
-            request, # $ tainted
-
-            # For the URL https:://example.com/foo/bar?baz=42
-            # request.uri="/foo/bar?baz=42"
-            # request.path="/foo/bar"
-            # request.query="baz=42"
-            request.uri, # $ tainted
-            request.path, # $ tainted
-            request.query, # $ tainted
-            request.full_url(), # $ tainted
-
-            request.remote_ip, # $ tainted
-
-            request.body, # $ tainted
-
-            request.arguments, # $ tainted
-            request.arguments["name"], # $ tainted
-            request.arguments["name"][0], # $ tainted
-
-            request.query_arguments, # $ tainted
-            request.query_arguments["name"], # $ tainted
-            request.query_arguments["name"][0], # $ tainted
-
-            request.body_arguments, # $ tainted
-            request.body_arguments["name"], # $ tainted
-            request.body_arguments["name"][0], # $ tainted
-
-            # dict-like, see https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPHeaders
-            request.headers, # $ tainted
-            request.headers["header-name"], # $ tainted
-            request.headers.get_list("header-name"), # $ MISSING: tainted
-            request.headers.get_all(), # $ MISSING: tainted
-            [(k, v) for (k, v) in request.headers.get_all()], # $ MISSING: tainted
-
-            # Dict[str, http.cookies.Morsel]
-            request.cookies, # $ tainted
-            request.cookies["cookie-name"], # $ tainted
-            request.cookies["cookie-name"].key, # $ MISSING: tainted
-            request.cookies["cookie-name"].value, # $ MISSING: tainted
+            request,
+            request.uri,
+            request.path,
+            request.query,
+            request.full_url(),
+            request.remote_ip,
+            request.body,
+            request.arguments,
+            request.arguments["name"],
+            request.arguments["name"][0],
+            request.query_arguments,
+            request.query_arguments["name"],
+            request.query_arguments["name"][0],
+            request.body_arguments,
+            request.body_arguments["name"],
+            request.body_arguments["name"][0],
+            request.headers,
+            request.headers["header-name"],
+            request.headers.get_list("header-name"),
+            request.headers.get_all(),
+            list(request.headers.get_all()),
+            request.cookies,
+            request.cookies["cookie-name"],
+            request.cookies["cookie-name"].key,
+            request.cookies["cookie-name"].value,
         )
 
 

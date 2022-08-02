@@ -7,7 +7,7 @@ from django.views.decorators.http import require_GET
 
 
 def url_match_xss(request, foo, bar, no_taint=None):  # $requestHandler routedParameter=foo routedParameter=bar
-    return HttpResponse('url_match_xss: {} {}'.format(foo, bar))  # $HttpResponse
+    return HttpResponse(f'url_match_xss: {foo} {bar}')
 
 
 def get_params_xss(request):  # $requestHandler
@@ -29,13 +29,13 @@ class Foo(object):
 
 
     def post(self, request, untrusted):  # $ MISSING: requestHandler routedParameter=untrusted
-        return HttpResponse('Foo post: {}'.format(untrusted))  # $HttpResponse
+        return HttpResponse(f'Foo post: {untrusted}')
 
 
 class ClassView(View, Foo):
 
     def get(self, request, untrusted):  # $ requestHandler routedParameter=untrusted
-        return HttpResponse('ClassView get: {}'.format(untrusted))  # $HttpResponse
+        return HttpResponse(f'ClassView get: {untrusted}')
 
 
 # direct import with full path to `View` class
@@ -46,11 +46,11 @@ class ClassView2(django.views.generic.base.View):
 
 def show_articles(request, page_number=1):  # $requestHandler routedParameter=page_number
     page_number = int(page_number)
-    return HttpResponse('articles page: {}'.format(page_number))  # $HttpResponse
+    return HttpResponse(f'articles page: {page_number}')
 
 
 def xxs_positional_arg(request, arg0, arg1, no_taint=None):  # $requestHandler routedParameter=arg0 routedParameter=arg1
-    return HttpResponse('xxs_positional_arg: {} {}'.format(arg0, arg1))  # $HttpResponse
+    return HttpResponse(f'xxs_positional_arg: {arg0} {arg1}')
 
 
 urlpatterns = [
@@ -84,10 +84,10 @@ urlpatterns = [
 
 # saying page_number is an externally controlled *string* is a bit strange, when we have an int converter :O
 def page_number(request, page_number=1):  # $requestHandler routedParameter=page_number
-    return HttpResponse('page_number: {}'.format(page_number))  # $HttpResponse
+    return HttpResponse(f'page_number: {page_number}')
 
 def foo_bar_baz(request, foo, bar, baz):  # $requestHandler routedParameter=foo routedParameter=bar routedParameter=baz
-    return HttpResponse('foo_bar_baz: {} {} {}'.format(foo, bar, baz))  # $HttpResponse
+    return HttpResponse(f'foo_bar_baz: {foo} {bar} {baz}')
 
 def path_kwargs(request, foo, bar):  # $requestHandler routedParameter=foo routedParameter=bar
     return HttpResponse('path_kwargs: {} {} {}'.format(foo, bar))  # $HttpResponse
@@ -130,7 +130,7 @@ class PossiblyNotRouted(View):
     # consider it to be a handle incoming HTTP requests
 
     def get(self, request, possibly_not_routed=42):  # $ requestHandler routedParameter=possibly_not_routed
-        return HttpResponse('PossiblyNotRouted get: {}'.format(possibly_not_routed))  # $HttpResponse
+        return HttpResponse(f'PossiblyNotRouted get: {possibly_not_routed}')
 
 
 @require_GET

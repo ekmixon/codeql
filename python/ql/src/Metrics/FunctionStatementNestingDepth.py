@@ -3,4 +3,4 @@ def print_character_codes_bad(strings):
         for s in strings:
             if s is not None:
                 for c in s:
-                    print(c + '=' + ord(c))
+                    print(f'{c}={ord(c)}')

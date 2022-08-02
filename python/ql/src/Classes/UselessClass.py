@@ -4,13 +4,11 @@ class GCDFinder(object):
         self.b = b
 
     def calculate(self):
-        a = self.a 
+        a = self.a
         b = self.b
         while a != 0 and b != 0:
             if a > b:
                 a = a % b
             else:
                 b = b % a
-        if a == 0:
-            return b
-        return a
+        return b if a == 0 else a

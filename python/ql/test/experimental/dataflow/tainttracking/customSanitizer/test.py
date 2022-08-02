@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 # Actual tests
 
 def emulated_authentication_check(arg):
-    if not arg == "safe":
+    if arg != "safe":
         raise Exception("user unauthenticated")
 
 
@@ -35,9 +35,7 @@ def test_custom_sanitizer_guard():
     if emulated_is_safe(s):
         ensure_not_tainted(s)
         s = TAINTED_STRING
-        ensure_tainted(s) # $ tainted
-    else:
-        ensure_tainted(s) # $ tainted
+    ensure_tainted(s) # $ tainted
 
 
 def emulated_escaping(arg):

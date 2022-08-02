@@ -5,11 +5,11 @@ a == b
 a.x == b.x
 
 #Same variables
-a == a
+True
 a.x == a.x
 
 #Compare constants
-1 == 1
+True
 1 == 2
 
 #Maybe missing self
@@ -23,4 +23,4 @@ class X(object):
             print ("Yes")
 
 #Compare constants in assert -- ok
-assert(1 == 1)
+pass

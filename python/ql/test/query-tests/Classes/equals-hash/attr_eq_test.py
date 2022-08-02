@@ -8,9 +8,11 @@ class Point(object):
         return 'Point(%r, %r)' % (self._x, self._y)
 
     def __eq__(self, other):
-        if not isinstance(other, Point):
-            return False
-        return self._x == other._x and self._y == other._y
+        return (
+            self._x == other._x and self._y == other._y
+            if isinstance(other, Point)
+            else False
+        )
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -37,9 +39,11 @@ class GoodColorPoint(Point):
         return 'ColorPoint(%r, %r)' % (self._x, self._y, self._color)
 
     def __eq__(self, other):
-        if not isinstance(other, GoodColorPoint):
-            return False
-        return Point.__eq__(self, other) and self._color == other._color
+        return (
+            Point.__eq__(self, other) and self._color == other._color
+            if isinstance(other, GoodColorPoint)
+            else False
+        )
 
     def __ne__(self, other):
         return not self.__eq__(other)

@@ -25,7 +25,7 @@ def return_in_loop_in_finally(f, seq):
     try:
         f()
     finally:
-        for i in seq:
+        for _ in seq:
             break
             
 #But this is not
@@ -38,7 +38,6 @@ def return_in_loop_in_finally(f, seq):
 
 def unnecessary_pass(arg):
     print (arg)
-    pass
 
 #Non-iterator in for loop
 
@@ -53,10 +52,7 @@ for x in NonIterator():
 #None in for loop
 
 def dodgy_iter(x):
-    if x:
-        s = None
-    else:
-        s = [0,1]
+    s = None if x else [0,1]
     #Error -- Could be None
     for i in s:
         print(i)
@@ -74,12 +70,11 @@ class GetItem(object):
     def __getitem__(self, i):
         return i
 
-for y in GetItem():
+for _ in GetItem():
     pass
 
 class D(dict): pass
-
-for z in D():
+for _ in D():
     pass
 
 
@@ -94,20 +89,15 @@ for z in D():
         
         
 def modification_of_locals():
-    x = 0
     locals()['x'] = 1
-    l = locals()
-    l.update({'x':1, 'y':2})
+    l = locals() | {'x':1, 'y':2}
     l.pop('y')
     del l['x']
     l.clear()
-    return x
+    return 0
 
 
 #C-style things
-
-if (cond):
-    pass
 
 while (cond):
     pass
@@ -167,5 +157,5 @@ def assert_ok(seq):
 
 # False positive. ODASA-8042. Fixed in PR #2401.
 class false_positive:
-    e = (x for x in [])
+    e = iter([])
 

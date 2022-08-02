@@ -4,13 +4,13 @@ from .globals import current_app
 class Flask(object):
     # Only some methods mocked, signature copied from
     # https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask
-    def run(host=None, port=None, debug=None, load_dotenv=True, **options):
+    def run(self, port=None, debug=None, load_dotenv=True, **options):
         pass
 
-    def make_response(rv):
+    def make_response(self):
         pass
 
-    def add_url_rule(rule, endpoint=None, view_func=None, provide_automatic_options=None, **options):
+    def add_url_rule(self, endpoint=None, view_func=None, provide_automatic_options=None, **options):
         pass
 
 class Response(object):

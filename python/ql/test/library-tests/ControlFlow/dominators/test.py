@@ -11,27 +11,16 @@ def g():
     return unreachable
 
 def h(x):
-    if x:
-        return x
-    else:
-        return None
+    return x or None
 
 
 
 
 def k(a, b):
-    for x in a or b:
-        pass
     return 0
 
 def l(a, b, c):
-    if a or b or c:
-        return a or b or c   
-    else:
-        return None
+    return a or b or c or None
 
 def m(a, b, c):
-    if a and b and c:
-        return a and b and c   
-    else:
-        return None
+    return a and b and c or None

@@ -6,12 +6,7 @@ class C:
 class D:
     pass
 
-if x:
-    v1 = C
-else:
-    v1 = D
-
-
+v1 = C if x else D
 version_test = sys.version_info < (3,)
 
 

@@ -1,8 +1,6 @@
 print("builtins test")
 len("bar")
-l = list()
-l.append(42)
-
+l = [42]
 import sys
 sys.getdefaultencoding()
 

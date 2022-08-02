@@ -100,7 +100,7 @@ except Exception as e:
 #
 # (and assumes the codeql-go repo is in a similar location)
 codeql_search_path = "./codeql:./codeql-go:."   # will be extended further down
-    
+
 # Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
 # can run this script from any location within the CodeQL git repository.
 try:
@@ -108,7 +108,7 @@ try:
 
     # Current working directory is in a Git repo. Add it to the search path, just in case it's the CodeQL repo
     git_toplevel_dir = git_toplevel_dir.stdout.strip()
-    codeql_search_path += ":" + git_toplevel_dir + ":" + git_toplevel_dir + "/../codeql-go"
+    codeql_search_path += f":{git_toplevel_dir}:{git_toplevel_dir}/../codeql-go"
 except:
     # git rev-parse --show-toplevel exited with non-zero exit code. We're not in a Git repo
     pass
@@ -125,7 +125,17 @@ for lang in languages:
     for pack in packs:
         # Get absolute paths to queries in this pack by using 'codeql resolve queries'
         try:
-            queries_subp = subprocess_run(["codeql","resolve","queries","--search-path", codeql_search_path, "%s-%s.qls" % (lang, pack)])
+            queries_subp = subprocess_run(
+                [
+                    "codeql",
+                    "resolve",
+                    "queries",
+                    "--search-path",
+                    codeql_search_path,
+                    f"{lang}-{pack}.qls",
+                ]
+            )
+
         except Exception as e:
             # Resolving queries might go wrong if the github/codeql and github/codeql-go repositories are not
             # on the search path.
@@ -138,7 +148,7 @@ for lang in languages:
         # Investigate metadata for every query by using 'codeql resolve metadata'
         for queryfile in queries_subp.stdout.strip().split("\n"):
             query_metadata_json = subprocess_run(["codeql","resolve","metadata",queryfile]).stdout.strip()
-            
+
             # Turn an absolute path to a query file into an nwo-prefixed path (e.g. github/codeql/java/ql/src/....)
             queryfile_nwo = prefix_repo_nwo(queryfile)
 

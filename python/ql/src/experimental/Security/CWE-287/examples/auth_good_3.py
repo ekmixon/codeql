@@ -5,8 +5,8 @@ from ldap3.utils.conv import escape_filter_chars
 
 @app.route("/passwordFromEnv")
 def passwordFromEnv():
-    dn = "dc={}".format(escape_rdn(request.args['dc']))
-    search_filter = "(user={})".format(escape_filter_chars(request.args['search']))
+    dn = f"dc={escape_rdn(request.args['dc'])}"
+    search_filter = f"(user={escape_filter_chars(request.args['search'])})"
 
     srv = Server('servername', get_info=ALL)
     conn = Connection(srv, user='user_dn',

@@ -1,6 +1,2 @@
-if cond:
-    meth = obj1.foo
-else:
-    meth = obj2.bar
-
+meth = obj1.foo if cond else obj2.bar
 meth()

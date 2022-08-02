@@ -50,7 +50,7 @@ def server_bad_flow():
         return format_error(err)
 
 def format_error(msg):
-    return "[ERROR] " + msg
+    return f"[ERROR] {msg}"
 
 #Unrelated error
 @app.route('/maybe_xss')

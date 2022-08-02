@@ -23,7 +23,6 @@ def f5():
 
 def f6():
     raise ExceptionB()
-    raise IOError()
 
 def f7():
     if x:
@@ -45,28 +44,25 @@ def f8a():
 
 def f9():
     try:
-        try:
-            f7()
-        except ExceptionB:
-            pass
+        f7()
+    except ExceptionB:
+        pass
     finally:
         pass
 
 def f10():
     try:
-        try:
-            f7()
-        except ExceptionB:
-            pass
+        f7()
+    except ExceptionB:
+        pass
     finally:
         return
 
 def f11():
     try:
-        try:
-            f7()
-        except ExceptionB:
-            pass
+        f7()
+    except ExceptionB:
+        pass
     finally:
         raise ExceptionC()
 
@@ -141,45 +137,24 @@ def f23():
 
 def f24():
     try:
-        pass
-        pass
         f7()
-        pass
-        pass
     finally:
-        pass
-        pass
         pass
 
 def f25():
     try:
-        pass
-        pass
         f7()
-        pass
-        pass
     finally:
         try:
-            pass
             if x:
-                pass
                 raise ExceptionC()
-            pass
         finally:
             pass
-            pass
-            pass
-        pass
 
 def f26():
     try:
-        pass
-        pass
         f7()
-        pass
-        pass
     except ExceptionA:
-        pass
         raise ExceptionC()
 
 def f27():

@@ -2,24 +2,15 @@
 
 
 def f(x):
-    if x:
-        return 1
-    else:
-        return None
+    return 1 if x else None
     
 def g(x, y):
-    if x:
-        return f(y)
-    else:
-        return 0.7
+    return f(y) if x else 0.7
     
 def h(a, b, c, d):
     t = f(a)
     v = g(b, c)
-    if d:
-        return t
-    else:
-        return v
+    return t if d else v
     
 h(1,2,3,4)
 

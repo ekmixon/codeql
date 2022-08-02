@@ -1,4 +1,4 @@
 class Entry(object):
     @classmethod
-    def make(klass):
+    def make(cls):
         return Entry()

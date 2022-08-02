@@ -36,10 +36,7 @@ print(int(return_three() / return_two()))
 # These SHOULD NOT be found by the query.
 
 def halve(x):
-    if isinstance(x, float):
-        return x / 2
-    else:
-        return (1.0 * x) / 2
+    return x / 2 if isinstance(x, float) else (1.0 * x) / 2
 
 print(halve(1))
 print(halve(1.0))

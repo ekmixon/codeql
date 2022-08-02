@@ -52,7 +52,7 @@ async def through_404_exception(request): # $ requestHandler
 
 @routes.get("/redirect_301") # $ routeSetup="/redirect_301"
 async def redirect_301(request): # $ requestHandler
-    if not "kwarg" in request.url.query:
+    if "kwarg" not in request.url.query:
         raise web.HTTPMovedPermanently("/login") # $ HttpResponse HttpRedirectResponse mimetype=application/octet-stream redirectLocation="/login"
     else:
         raise web.HTTPMovedPermanently(location="/logout") # $ HttpResponse HttpRedirectResponse mimetype=application/octet-stream redirectLocation="/logout"
@@ -60,7 +60,7 @@ async def redirect_301(request): # $ requestHandler
 
 @routes.get("/redirect_302") # $ routeSetup="/redirect_302"
 async def redirect_302(request): # $ requestHandler
-    if not "kwarg" in request.url.query:
+    if "kwarg" not in request.url.query:
         raise web.HTTPFound("/login") # $ HttpResponse HttpRedirectResponse mimetype=application/octet-stream redirectLocation="/login"
     else:
         raise web.HTTPFound(location="/logout") # $ HttpResponse HttpRedirectResponse mimetype=application/octet-stream redirectLocation="/logout"

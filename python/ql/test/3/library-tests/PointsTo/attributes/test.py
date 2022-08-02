@@ -24,19 +24,13 @@ def f(x, y, z):
 
 #Beware of cross talk, via some non-mapping global object (e.g. None)
 def g(x, i, j):
-    if x:
-        d1 = None
-    else:
-        d1 = []
+    d1 = None if x else []
     d1[i] = 0.7
     d1[j]
 
 
 def h(x, i, j):
-    if x:
-        d2 = None
-    else:
-        d2 = []
+    d2 = None if x else []
     d2[i] = 3
     d2[j]
 
@@ -78,10 +72,7 @@ class D(object):
 class E(object):
 
     def __init__(self, cond):
-        if cond:
-            self.x = 0
-        else:
-            self.x = 1
+        self.x = 0 if cond else 1
 
 E().x
 

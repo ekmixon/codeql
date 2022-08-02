@@ -19,14 +19,14 @@ secret_message = b"secret message"
 encrypted = rsa.encrypt(secret_message, public_key) # $ CryptographicOperation CryptographicOperationAlgorithm=RSA CryptographicOperationInput=secret_message
 encrypted = rsa.encrypt(message=secret_message, pub_key=public_key) # $ CryptographicOperation CryptographicOperationAlgorithm=RSA CryptographicOperationInput=secret_message
 
-print("encrypted={}".format(encrypted))
+print(f"encrypted={encrypted}")
 
 print()
 
 decrypted = rsa.decrypt(encrypted, private_key) # $ CryptographicOperation CryptographicOperationAlgorithm=RSA CryptographicOperationInput=encrypted
 decrypted = rsa.decrypt(crypto=encrypted, priv_key=private_key) # $ CryptographicOperation CryptographicOperationAlgorithm=RSA CryptographicOperationInput=encrypted
 
-print("decrypted={}".format(decrypted))
+print(f"decrypted={decrypted}")
 assert decrypted == secret_message
 
 print("\n---\n")
@@ -52,7 +52,7 @@ signature = rsa.sign(message=message, priv_key=private_key, hash_method="SHA-256
 
 assert signature == signature_from_hash
 
-print("signature={}".format(signature))
+print(f"signature={signature}")
 
 print()
 

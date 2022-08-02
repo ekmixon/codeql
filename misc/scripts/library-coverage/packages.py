@@ -12,7 +12,7 @@ class PackagePart:
         # "summary", "sink", or "source"
         self.part = part
         # "source:remote", "sink:create-file", ...
-        self.kind = part + ":" + kind
+        self.kind = f"{part}:{kind}"
         self.count = int(count)
 
 
@@ -31,18 +31,10 @@ class Package:
         self.parts.append(part)
 
     def get_part_count(self, p):
-        count = 0
-        for part in self.parts:
-            if part.part == p:
-                count += part.count
-        return count
+        return sum(part.count for part in self.parts if part.part == p)
 
     def get_kind_count(self, k):
-        count = 0
-        for part in self.parts:
-            if part.kind == k:
-                count += part.count
-        return count
+        return sum(part.count for part in self.parts if part.kind == k)
 
 
 class PackageCollection:
@@ -78,16 +70,20 @@ class PackageCollection:
         return self.packages
 
     def __get_or_create_package(self, package_name, package_count):
-        if package_name not in self.package_names:
-            self.package_names.add(package_name)
-            package = Package(package_name, package_count)
-            self.packages.append(package)
-            return package
-        else:
-            for package in self.packages:
-                if package.name == package_name:
-                    return package
-            return None
+        if package_name in self.package_names:
+            return next(
+                (
+                    package
+                    for package in self.packages
+                    if package.name == package_name
+                ),
+                None,
+            )
+
+        self.package_names.add(package_name)
+        package = Package(package_name, package_count)
+        self.packages.append(package)
+        return package
 
     def get_parts(self):
         parts = set()
@@ -104,7 +100,4 @@ class PackageCollection:
         return sorted(kinds)
 
     def get_part_count(self, p):
-        count = 0
-        for package in self.packages:
-            count += package.get_part_count(p)
-        return count
+        return sum(package.get_part_count(p) for package in self.packages)

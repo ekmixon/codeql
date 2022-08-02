@@ -5,6 +5,4 @@ def incorrect_except_order(val):
         val.attr
     except Exception:
         print ("Exception")
-    except AttributeError:
-        print ("AttributeError")
         

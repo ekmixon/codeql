@@ -10,7 +10,6 @@ def func(func_arg):
 
 def nop():
     print("nop")
-    pass
 
 
 func(nop)

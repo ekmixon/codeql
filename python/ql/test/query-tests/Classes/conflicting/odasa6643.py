@@ -5,12 +5,12 @@
 
 class ThreadingMixIn(object):
 
-    def process_request(selfself, req):
+    def process_request(self, req):
         pass
 
 class HTTPServer(object):
 
-    def process_request(selfself, req):
+    def process_request(self, req):
         pass
 
 class _ThreadingSimpleServer(ThreadingMixIn, HTTPServer):

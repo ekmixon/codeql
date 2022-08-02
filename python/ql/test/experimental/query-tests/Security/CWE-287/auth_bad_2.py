@@ -12,8 +12,11 @@ def simple_bind_example():
     The bind's password argument is not set
     """
 
-    dn = "dc={}".format(ldap.dn.escape_dn_chars(request.args['dc']))
-    search_filter = "(user={})".format(ldap.filter.escape_filter_chars(request.args['search']))
+    dn = f"dc={ldap.dn.escape_dn_chars(request.args['dc'])}"
+    search_filter = (
+        f"(user={ldap.filter.escape_filter_chars(request.args['search'])})"
+    )
+
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
     ldap_connection.simple_bind('cn=root')
@@ -26,8 +29,11 @@ def simple_bind_s_example():
     The bind's password argument is not set
     """
 
-    dn = "dc={}".format(ldap.dn.escape_dn_chars(request.args['dc']))
-    search_filter = "(user={})".format(ldap.filter.escape_filter_chars(request.args['search']))
+    dn = f"dc={ldap.dn.escape_dn_chars(request.args['dc'])}"
+    search_filter = (
+        f"(user={ldap.filter.escape_filter_chars(request.args['search'])})"
+    )
+
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
     ldap_connection.simple_bind_s('cn=root')
@@ -40,8 +46,11 @@ def bind_s_example():
     The bind's password argument is set to None
     """
 
-    dn = "dc={}".format(ldap.dn.escape_dn_chars(request.args['dc']))
-    search_filter = "(user={})".format(ldap.filter.escape_filter_chars(request.args['search']))
+    dn = f"dc={ldap.dn.escape_dn_chars(request.args['dc'])}"
+    search_filter = (
+        f"(user={ldap.filter.escape_filter_chars(request.args['search'])})"
+    )
+
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
     ldap_connection.bind_s('cn=root', None)
@@ -53,8 +62,11 @@ def bind_s_example_kwargs():
     The bind's password argument is set to None
     """
 
-    dn = "dc={}".format(ldap.dn.escape_dn_chars(request.args['dc']))
-    search_filter = "(user={})".format(ldap.filter.escape_filter_chars(request.args['search']))
+    dn = f"dc={ldap.dn.escape_dn_chars(request.args['dc'])}"
+    search_filter = (
+        f"(user={ldap.filter.escape_filter_chars(request.args['search'])})"
+    )
+
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
     ldap_connection.bind_s(who='cn=root', cred=None)
@@ -66,8 +78,11 @@ def bind_example():
     The bind's password argument is an empty string
     """
 
-    dn = "dc={}".format(ldap.dn.escape_dn_chars(request.args['dc']))
-    search_filter = "(user={})".format(ldap.filter.escape_filter_chars(request.args['search']))
+    dn = f"dc={ldap.dn.escape_dn_chars(request.args['dc'])}"
+    search_filter = (
+        f"(user={ldap.filter.escape_filter_chars(request.args['search'])})"
+    )
+
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
     ldap_connection.bind('cn=root', "")
@@ -80,8 +95,11 @@ def bind_example():
     The bind's password argument is an empty string
     """
 
-    dn = "dc={}".format(ldap.dn.escape_dn_chars(request.args['dc']))
-    search_filter = "(user={})".format(ldap.filter.escape_filter_chars(request.args['search']))
+    dn = f"dc={ldap.dn.escape_dn_chars(request.args['dc'])}"
+    search_filter = (
+        f"(user={ldap.filter.escape_filter_chars(request.args['search'])})"
+    )
+
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
     ldap_connection.bind(who='cn=root', cred="")

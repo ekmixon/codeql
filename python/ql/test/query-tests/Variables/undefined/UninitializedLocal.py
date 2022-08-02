@@ -2,16 +2,14 @@
 class C:
 
     def m1(self):
-        y = ug1
         x = 1
-        return y
+        return ug1
 
     def m2(self, p):
         return p
 
     def m3(self, x1):
         return u2
-        u2 = x1
 
     def m4(self, x2):
         if x2:
@@ -19,9 +17,8 @@ class C:
         return u3
 
 def f():
-    y = ug1
     x = 1
-    return y
+    return ug1
 
 def g(x3):
     def h():
@@ -64,8 +61,6 @@ def check_del(cond):
     u8 = 1
     if cond:
         del u8
-    else:
-        pass
     u8
     if cond:
         u9 = 1
@@ -147,16 +142,13 @@ def split_not_OK():
         cond = not True
     except:
         cond = not False
-    if not not cond:
+    if cond:
         return u19
 
 def double_is_none(x):
     if x is not None:
         v = 0
-    if x is None:
-        return 0
-    else:
-        return v
+    return 0 if x is None else v
 
 #ODASA-4241
 def def_in_post_loop(seq):
@@ -172,39 +164,27 @@ def f(cond1, cond2):
         x = 1
     else:
         y = 1
-    if cond2:
-        return x
-    else:
-        return y
+    return x if cond2 else y
 
 def needs_splitting(var):
     if var:
         other = 0
-    if not var or other:  #other looks like it might be undefined, but it is defined.
-        pass
 
 def odasa4867(status):
     fail = (status != 200)
     if not fail:
         1
-    if not fail:
         var = 2
-    if not fail:
         3
-    if not fail and not l(var): # Observed FP - var is defined.
-        4
+        if not l(var):
+            4
     fail = True   # It is possible that this was interfering with splitting.
     if not fail:  # Not the same SSA variable as earlier
         5
 
 def odasa5896(number):
-    guesses_made = 0
-    while guesses_made < 6:  # This loop is guaranteed to execute at least once.
+    for _ in range(6):
         guess = int(input('Take a guess: '))
-        guesses_made += 1
-
-    if guess == number: # FP here
-        pass
 
 #ODASA 6212
 class C(object):
@@ -272,15 +252,7 @@ def odasa6742(cond, obj):
 
 #ODASA-6904
 def avoid_redundant_split(a):
-    if a: # Should split here
-        b = x()
-    else:
-        b = None
-    if b: # but not here,
-        pass
-    if b: # or here, because
-        pass
-    pass
+    b = x() if a else None
     try: # we want to split here
         import foo
         var = True

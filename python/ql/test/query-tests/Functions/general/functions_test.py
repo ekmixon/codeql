@@ -10,10 +10,7 @@ def ok1(x):
         return
 
 def ok2(x):
-    if x:
-        return 4
-    else:
-        return "Hi"
+    return 4 if x else "Hi"
 
 def cr1(x):
     if x:
@@ -123,10 +120,7 @@ def use_implicit_return_value_ok(arg):
     return do_nothing()
 
 def mutli_return(arg):
-    if arg:
-        return do_something()
-    else:
-        return do_nothing()
+    return do_something() if arg else do_nothing()
 
 #Modification of parameter with default
 

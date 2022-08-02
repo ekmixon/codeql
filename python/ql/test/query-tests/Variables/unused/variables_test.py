@@ -131,9 +131,5 @@ def decorated_inner_function():
 def test_dict_unpacking(queryset, field_name, value):
     #True positive
     for tag in value.split(','):
-        queryset = queryset.filter(**{field_name + '__name': tag1})
-    return queryset
-    #False positive
-    for tag in value.split(','):
-        queryset = queryset.filter(**{field_name + '__name': tag})
+        queryset = queryset.filter(**{f'{field_name}__name': tag1})
     return queryset

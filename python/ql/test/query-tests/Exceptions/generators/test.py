@@ -8,7 +8,6 @@ def bad2(seq):
     it = iter(seq)
     #Not OK as seq  may be empty
     raise KeyError(next(it))
-    yield 0
 
 def ok1(seq):
     #Not a generator
@@ -45,8 +44,7 @@ def ok4(seq, ctx):
 #ODASA-6536
 def next_in_comp(seq, fields):
     seq_iter = iter(seq)
-    values = [ next(seq_iter) if f.attname in NAMES else DEFAULT for f in fields ]
-    return values
+    return [ next(seq_iter) if f.attname in NAMES else DEFAULT for f in fields ]
 
 def ok5(seq):
     yield next(iter([]), 'foo')

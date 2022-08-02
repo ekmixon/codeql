@@ -36,11 +36,9 @@ if __name__ == "__main__":
         print(CLASS_PREAMBLE.format(class_name=sc.__name__))
 
         for f in dataclasses.fields(sc):
-            field_template = ATTR_TEMPLATES.get(f.type)
-            if field_template:
-                generated = field_template.format(name=f.name)
-                print(f"  {generated}")
-            else:
+            if not (field_template := ATTR_TEMPLATES.get(f.type)):
                 raise Exception("no template for", f.type)
 
+            generated = field_template.format(name=f.name)
+            print(f"  {generated}")
         print(CLASS_AFTER)

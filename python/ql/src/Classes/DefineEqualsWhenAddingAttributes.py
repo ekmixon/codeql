@@ -8,9 +8,11 @@ class Point(object):
         return 'Point(%r, %r)' % (self._x, self._y)
 
     def __eq__(self, other):
-        if not isinstance(other, Point):
-            return False
-        return self._x == other._x and self._y == other._y
+        return (
+            self._x == other._x and self._y == other._y
+            if isinstance(other, Point)
+            else False
+        )
 
 class ColorPoint(Point):
 

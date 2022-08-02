@@ -16,7 +16,7 @@ def code_execution():
     bar = 43
 
     obj_name = request.args.get("obj")
-    if obj_name == "foo" or obj_name == "bar":
+    if obj_name in ["foo", "bar"]:
         # TODO: Should not alert on this
         obj = eval(obj_name) # OK
         print(obj, obj*10)

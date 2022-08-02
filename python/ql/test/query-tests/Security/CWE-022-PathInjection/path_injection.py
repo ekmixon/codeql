@@ -103,7 +103,7 @@ def no_dot_dot():
 @app.route("/no-dot-dot-with-prefix")
 def no_dot_dot_with_prefix():
     filename = request.args.get('filename', '')
-    path = os.path.join(STATIC_DIR, "img-"+filename)
+    path = os.path.join(STATIC_DIR, f"img-{filename}")
     # Note: Since `filename` has a prefix, it's not possible to use an absolute path.
     # Therefore, for UNIX-only programs, the `../` check is enough to stop path injections.
     if '../' in path:

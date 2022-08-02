@@ -20,10 +20,7 @@ import M
 M = none
 
 def _double_loop(seq):
-    for i in seq:
-        pass
-    for i in seq:
-        pass
+    pass
 
 class Mult(object):
 
@@ -79,34 +76,28 @@ def append_all(xs):
         __doc__ += x
 
 def append_local(xs):
-    doc = ""
-    doc += "xs:"
+    doc = "" + "xs:"
     for x in xs:
         doc += x
     return doc
 
 #ODASA-4100
 def odasa4100(name, language, options = ''):
-    distro_files = []
-    if language == 'distro-cpp':
-        distro_files = [ "file" ]
+    distro_files = [ "file" ] if language == 'distro-cpp' else []
     if distro_files:
         emit_odasa_deps()
     #Flow-graph splitting will make this definition unused on the distro_files is True branch
     env = ''
     if distro_files:
         env = 'env "ODASA_HOME=' + _top + '/' + distro_path + '" '
-    emit_cmd(env + "some other stuff")
+    emit_cmd(f"{env}some other stuff")
 
 #ODASA-4166
 
 #This is OK as the first definition is a "declaration"
 def odasa4166(cond):
     x = None
-    if cond:
-        x = some_value()
-    else:
-        x = default_value()
+    x = some_value() if cond else default_value()
     return x
 
 

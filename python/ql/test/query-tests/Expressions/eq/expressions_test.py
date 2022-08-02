@@ -31,14 +31,10 @@ V3 = "v3"
 
 class C:
     def __init__(self, c):
-        if c:
-            self.version = V2
-        else:
-            self.version = V3
+        self.version = V2 if c else V3
 
     def meth(self):
-        if self.version is V2:    #FP here.
-            pass
+        pass
 
 
 #Using 'is' when should be using '=='
@@ -82,8 +78,6 @@ class C(object):
 def both_sides_known(zero_based="auto", query_id=False):
     if query_id and zero_based == "auto":
         zero_based = True
-    if zero_based is False: # False positive here
-        pass
 
 #Avoid depending on enum back port for Python 2 tests:
 class Enum(object):

@@ -10,10 +10,7 @@ def ok1(x):
         return
 
 def ok2(x):
-    if x:
-        return 4
-    else:
-        return "Hi"
+    return 4 if x else "Hi"
 
 def cr1(x):
     if x:
@@ -89,7 +86,7 @@ class Normal(object):
         pass
 
     @classmethod
-    def n_cmethod(self):
+    def n_cmethod(cls):
         pass
 
 def return_value_ignored():
@@ -110,10 +107,7 @@ def use_implicit_return_value_ok(arg):
     return do_nothing()
    
 def multi_return(arg):
-    if arg:
-        return do_something()
-    else:
-        return do_nothing()
+    return do_something() if arg else do_nothing()
     
 def do_something():
     print ("Hello")

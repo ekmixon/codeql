@@ -14,7 +14,7 @@ class Normal(object):
 
     # not ok
     @classmethod
-    def n_cmethod(self):
+    def n_cmethod(cls):
         pass
 
     # not ok
@@ -25,32 +25,32 @@ class Normal(object):
     # this is allowed because it has a decorator other than @classmethod
     @classmethod
     @id
-    def n_suppress(any_name):
+    def n_suppress(cls):
         pass
 
 
 class Class(type):
 
-    def __init__(cls):
+    def __init__(self):
         pass
 
-    def c_method(y):
+    def c_method(self):
         pass
 
-    def c_ok(cls):
+    def c_ok(self):
         pass
 
     @id
-    def c_suppress(any_name):
+    def c_suppress(self):
         pass
 
 
 class NonSelf(object):
 
-    def __init__(x):
+    def __init__(self):
         pass
 
-    def s_method(y):
+    def s_method(self):
         pass
 
     def s_method2():
@@ -67,24 +67,24 @@ class NonSelf(object):
     def s_cmethod(cls):
         pass
 
-    def s_smethod2(ok):
+    def s_smethod2(self):
         pass
     s_smethod2 = staticmethod(s_smethod2)
 
-    def s_cmethod2(cls):
+    def s_cmethod2(self):
         pass
     s_cmethod2 = classmethod(s_cmethod2)
 
 #Possible FPs for non-self. ODASA-2439
 
 class Acceptable1(object):
-    def _func(f):
-        return f
+    def _func(self):
+        return self
     _func(x)
 
 class Acceptable2(object):
-    def _func(f):
-        return f
+    def _func(self):
+        return self
 
     @_func
     def meth(self):
@@ -106,14 +106,14 @@ class Acceptable3(object):
 class Meta(type):
 
     #__new__ is an implicit class method, so the first arg is the metaclass
-    def __new__(metacls, name, bases, cls_dict):
-        return super(Meta, metacls).__new__(metacls, name, bases, cls_dict)
+    def __new__(cls, name, bases, cls_dict):
+        return super(Meta, cls).__new__(cls, name, bases, cls_dict)
 
 #ODASA-6062
 import zope.interface
 class Z(zope.interface.Interface):
 
-    def meth(arg):
+    def meth(self):
         pass
 
 Z().meth(0)

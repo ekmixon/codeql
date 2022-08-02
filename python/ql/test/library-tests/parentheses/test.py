@@ -17,9 +17,9 @@ def no():
     o.m[0]
     x()[0]
     yield v
-    [1 for a in b]
-    {x for x in z}
-    {x:y for x,y in z}
+    [1 for _ in b]
+    set(z)
+    dict(z)
 
 #Yes
 def yes():
@@ -39,14 +39,14 @@ def yes():
     (o.m[0])
     (x()[0])
     (yield 1)
-    ([1 for a in b])
-    ({x for x in z})
-    ({x:y for x,y in z})
+    [1 for _ in b]
+    set(z)
+    dict(z)
     (b"x")
     ("x"+1)
     (1+f())
     (1+2+f())
-    ("Failed to parse template " + name + ": " + repr(ex))
+    f"Failed to parse template {name}: {repr(ex)}"
     (1+2+3+4)
     (1+2+3+4+5)
     (1+2+3+4+5+6)

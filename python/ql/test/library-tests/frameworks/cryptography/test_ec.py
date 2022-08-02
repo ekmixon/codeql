@@ -26,7 +26,7 @@ signature = private_key.sign(
     signature_algorithm=SIGNATURE_ALGORITHM,
 )
 
-print("signature={}".format(signature))
+print(f"signature={signature}")
 
 print()
 

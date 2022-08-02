@@ -18,8 +18,8 @@ def normal():
     safe_dc = escape_rdn(unsafe_dc)
     safe_filter = escape_filter_chars(unsafe_filter)
 
-    dn = "dc={}".format(safe_dc)
-    search_filter = "(user={})".format(safe_filter)
+    dn = f"dc={safe_dc}"
+    search_filter = f"(user={safe_filter})"
 
     srv = ldap3.Server('ldap://127.0.0.1')
     conn = ldap3.Connection(srv, user=dn, auto_bind=True)
@@ -38,8 +38,8 @@ def direct():
     safe_dc = escape_rdn(unsafe_dc)
     safe_filter = escape_filter_chars(unsafe_filter)
 
-    dn = "dc={}".format(safe_dc)
-    search_filter = "(user={})".format(safe_filter)
+    dn = f"dc={safe_dc}"
+    search_filter = f"(user={safe_filter})"
 
     srv = ldap3.Server('ldap://127.0.0.1')
     conn = ldap3.Connection(srv, user=dn, auto_bind=True).search(

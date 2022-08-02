@@ -18,7 +18,6 @@ class C(object):
         if isinstance(self.y, int):
             use(self.y)
         use(self.z)
-        pass # Give phi nodes a location
 
 
 class Oddities(object):
@@ -44,11 +43,7 @@ V3 = "v3"
 
 class E(object):
     def __init__(self, c):
-        if c:
-            self.version = V2
-        else:
-            self.version = V3
+        self.version = V2 if c else V3
 
     def meth(self):
-        if self.version is V2:    #FP here.
-            pass
+        pass

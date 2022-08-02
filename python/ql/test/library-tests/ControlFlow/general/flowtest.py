@@ -6,9 +6,7 @@ def definitions(p1): # Multiple defns of same variable
     v2 = 2
     if p1:
         v1 = 1
-        v2 = 2
-    else:
-        v2 = 2
+    v2 = 2
     v1
     v2
 

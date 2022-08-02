@@ -14,7 +14,7 @@ def home(request):
 )
 def greet(request):
     name = request.POST['arg']
-    return Response('Welcome %s!' % name)
+    return Response(f'Welcome {name}!')
 
 
 @view_config(
